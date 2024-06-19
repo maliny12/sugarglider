@@ -1,0 +1,15 @@
+Package: ribbon
+Type: Package
+Title: "Ribbon" ggplot2 extension for geom ribbon
+Version: 0.0.0.9000
+Authors@R: person("Maliny", "Po", ,"malinypo@yahoo.com", role = c("aut", "cre"))
+Description: The "Ribbon" package extends ggplot2 by adding a custom geom_ribbon for improved ribbon plot creation. It offers advanced customization options, providing users with precise control over the appearance and behavior of ribbons in their visualizations. 
+License: MIT 
+Encoding: UTF-8
+LazyData: true
+Imports:
+    tidyverse,
+    ggplot2
+RoxygenNote: 7.3.1
+Depends: 
+    R (>= 2.10)
