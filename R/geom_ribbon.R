@@ -52,8 +52,8 @@ setup_data <- function(data,
     data <- data |>
       dplyr::mutate(
         x_minor = x_scale(.data$x_minor),
-        y1_minor = y_scale(.data$y1_minor),
-        y2_minor = y_scale(.data$y2_minor)
+        ymin_minor = y_scale(.data$ymin_minor),
+        ymax_minor = y_scale(.data$ymax_minor)
       )
   }
 
@@ -65,10 +65,10 @@ setup_data <- function(data,
                         rescale(.data$x_minor),
                         width),
       ymin = glyph_mapping(.data$y_major,
-                           rescale(.data$y1_minor),
+                           rescale(.data$ymin_minor),
                            height),
-      ymin = glyph_mapping(.data$y_major,
-                           rescale(.data$y2_minor),
+      ymax = glyph_mapping(.data$y_major,
+                           rescale(.data$ymax_minor),
                            height)
     )
 
