@@ -18,29 +18,41 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL,
 
 }
 
-######################## (Work In Progress)
-
 # Define the ggproto object for the custom geom
 GeomRibbon <- ggplot2::ggproto(
   "geomRibbon", ggplot2::Geom,
   ## Aesthetic
   required_aes = c("x_major", "y_major",
-                   "x_minor", "y1_minor", "y2_minor"),
+                   "x_minor", "ymin_minor", "ymax_minor"),
   default_aes = ggplot2::aes(
     colour = "black", fill = "blue", size = 0.5, alpha = 0.7,
     linetype = 1),
 
+  # Setup data (DON'T FORGET: integrate param)
+  setup_data = function(data) {
+    glyph_setup_data(data)
+  },
 
-  draw_panel = function(data, panel_scales, coord, ...) {
-    # ...
-  }
+  # Work in progress
+  draw_panel = function(data, panel_param, coord, ...) {
+    coords <- coord$transform(data, panel_scales)
+    grid::polygonGrob(
+      x = c(coords$x, rev(coords$x)),
+      y = c(coords$ymin, rev(coords$ymax)),
+      gp = grid::gpar(
+        fill = alpha(data$fill, data$alpha),
+        col = NA  # no border for ribbon
+      )
+    )
+  },
 
-
+  draw_key = draw_key_polygon
 )
-########################
 
 
-setup_data <- function(data,
+#######################################################
+# (DON'T FORGET: restructure it to make use of param)
+glyph_setup_data <- function(data,
                        # size relative parent element
                        height = ggplot2::rel(1),
                        width = ggplot2::rel(1),
@@ -74,8 +86,8 @@ setup_data <- function(data,
 
 }
 
-#########################
-# rescale : Adjust the coordinate system to an interval of [-1,1]
+
+# rescale : Adjust minor axes to to fit within an interval of [-1,1]
 rescale <- function(dx) {
   rng <- range(dx, na.rm = TRUE)
   2 * (dx - rng[1])/(rng[2] - rng[1]) - 1
@@ -85,6 +97,10 @@ rescale <- function(dx) {
 glyph_mapping <- function(spatial, scaled_value, length) {
   spatial + scaled_value * (length / 2)
 }
+
+
+
+
 
 # ############################# Testing
 # # Load map data for Australia
