@@ -2,9 +2,12 @@
 # Define a wrapper function
 geom_glyph_ribbon <- function( mapping = NULL, data = NULL,
                                stat = "identity", position = "identity",
-                               ..., na.rm = FALSE, show.legend = NA,
-                               inherit.aes = TRUE) {
-
+                               na.rm = FALSE, show.legend = NA,
+                               x_major = NULL, y_major = NULL,
+                               x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
+                               height = ggplot2::rel(2), width = ggplot2::rel(2.3),
+                               x_scale = identity, y_scale = identity,
+                               inherit.aes = TRUE, ...) {
   layer(
     geom = GeomRibbon,
     mapping = mapping,
@@ -13,7 +16,12 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm, ...)
+    params = list(
+                  height = height,
+                  width = width,
+                  x_scale = list(x_scale),
+                  y_scale = list(y_scale),
+                  ...)
   )
 
 }
@@ -24,43 +32,51 @@ GeomRibbon <- ggplot2::ggproto(
   ## Aesthetic
   required_aes = c("x_major", "y_major",
                    "x_minor", "ymin_minor", "ymax_minor"),
+
   default_aes = ggplot2::aes(
-    colour = "black", fill = "blue", size = 0.5, alpha = 0.7,
-    linetype = 1),
+    colour = "black", size = 0.5, alpha = 0.7,
+    linetype = 1,
+    width = ggplot2::rel(2.3),
+    height = ggplot2::rel(2),
+    x_scale = list(identity),
+    y_scale = list(identity)
+    ),
 
-  # Setup data (DON'T FORGET: integrate param)
-  setup_data = function(data) {
-    glyph_setup_data(data)
+  setup_data = function(data, params) {
+    data <- glyph_setup_data(data, params)
   },
 
-  # Work in progress
-  draw_panel = function(data, panel_param, coord, ...) {
-    coords <- coord$transform(data, panel_scales)
-    grid::polygonGrob(
-      x = c(coords$x, rev(coords$x)),
-      y = c(coords$ymin, rev(coords$ymax)),
-      gp = grid::gpar(
-        fill = alpha(data$fill, data$alpha),
-        col = NA  # no border for ribbon
-      )
-    )
-  },
+  # Draw polygons
+  draw_panel = function(data,  panel_params, ...) {
+    ggplot2:::GeomPath$draw_panel(data, panel_params, ...)
 
-  draw_key = draw_key_polygon
+  }
+
 )
 
 
 #######################################################
-# (DON'T FORGET: restructure it to make use of param)
-glyph_setup_data <- function(data,
-                       # size relative parent element
-                       height = ggplot2::rel(1),
-                       width = ggplot2::rel(1),
-                       x_scale = identity,
-                       y_scale = identity) {
+# Prepare data for geom_glyph_ribbon
+glyph_setup_data <- function(data, params) {
+
+  # Ensure geom draws each glyph as a distinct path
+  if (dplyr::n_distinct(data$group) == 1){
+    data$group <- as.integer(factor(paste(data$x_major, data$y_major)))
+    data <- data |>  dplyr::group_by(.data$group)
+  }
+
+  # Convert x_minor to numeric
+  if (!is.numeric(data$x_minor)){
+    data[["x_minor"]] <- as.numeric(data[["x_minor"]])
+  }
 
 
-  if (!any(identical(x_scale, identity), identical(y_scale, identity))){
+  if (!any(identical(params$x_scale, identity),
+           identical(params$y_scale, identity))){
+
+    x_scale <- get_scale(params$x_scale)
+    y_scale <- get_scale(params$y_scale)
+
     data <- data |>
       dplyr::mutate(
         x_minor = x_scale(.data$x_minor),
@@ -69,20 +85,21 @@ glyph_setup_data <- function(data,
       )
   }
 
-
-  # Linear Transformation using scaled positional adjustment
+  # Linear transformation using scaled positional adjustment
   data <- data |>
     dplyr::mutate(
       x = glyph_mapping(.data$x_major,
                         rescale(.data$x_minor),
-                        width),
-      ymin = glyph_mapping(.data$y_major,
+                        params$width),
+      y = glyph_mapping(.data$y_major,
                            rescale(.data$ymin_minor),
-                           height),
-      ymax = glyph_mapping(.data$y_major,
+                           params$height),
+      yend = glyph_mapping(.data$y_major,
                            rescale(.data$ymax_minor),
-                           height)
+                           params$height)
     )
+
+  data |> dplyr::ungroup()
 
 }
 
@@ -90,6 +107,7 @@ glyph_setup_data <- function(data,
 # rescale : Adjust minor axes to to fit within an interval of [-1,1]
 rescale <- function(dx) {
   rng <- range(dx, na.rm = TRUE)
+  if (rng[1] == rng[2]) return(rep(0, length(dx))) # Avoid division by zero
   2 * (dx - rng[1])/(rng[2] - rng[1]) - 1
 }
 
@@ -99,29 +117,37 @@ glyph_mapping <- function(spatial, scaled_value, length) {
 }
 
 
+# get_scale: Retrieve function from global environment
+get_scale <- function(x) {
+  fnc <- x[[1]]
+  if (is.character(fnc)) {
+    fnc <- get(unique(x)[1], envir = globalenv(), mode = "function")
+  }
+  fnc
+}
+
 
 
 
 # ############################# Testing
-# # Load map data for Australia
-# australia_map <- map_data("world")
+# Load map data for Australia
+# australia_map <- ggplot2::map_data("world")
 #
-# Create the plot with the base map and custom ribbons
-# ggplot() +
-#   geom_polygon(data = australia_map, aes(x = long, y = lat), fill = "gray80", colour = "white") +
-#   geom_glyph_ribbon(data = aus_temp, aes(x = long, y = lat, ymin = tmin, ymax = tmax), fill = "blue", alpha = 0.6)
+# library(cubble)
+# aus_temp |>
+#   ggplot(aes(x_major = long, y_major = lat,
+#              x_minor = date, ymin_minor = tmin, y_minor = tmin, ymax_minor = tmax)) +
+#   geom_sf(data = ozmaps::abs_ste,
+#           fill = "grey95", color = "white",
+#           inherit.aes = FALSE) +
+#   geom_glyph_box() +
+#   geom_glyph_line() +
+#   geom_glyph_ribbon() +
+#   theme_void()
 
-#
-# # Small sample data
-# df <- data.frame(
-#   x = c(133, 143),
-#   y = c(-27, -35),
-#   ymin = c(-28, -36),
-#   ymax = c(-26, -34),
-#
-# )
-#
-# # Create the plot with the base map and custom ribbons
-# ggplot() +
-#   geom_polygon(data = australia_map, aes(x = long, y = lat, group = group), fill = "gray80", colour = "white") +
-#   geom_glyph_ribbon(data = df, aes(x = x, y = y, ymin = ymin, ymax = ymax, fill = fill, alpha = alpha))
+
+
+
+
+
+

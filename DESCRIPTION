@@ -8,8 +8,8 @@ License: MIT
 Encoding: UTF-8
 LazyData: true
 Imports:
-    tidyverse,
-    ggplot2
+    ggplot2,
+    dplyr
 RoxygenNote: 7.3.1
 Depends: 
     R (>= 2.10)
