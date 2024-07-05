@@ -31,11 +31,12 @@ GeomRibbon <- ggplot2::ggproto(
   "geomRibbon", ggplot2::Geom,
   ## Aesthetic
   required_aes = c("x_major", "y_major",
-                   "x_minor", "ymin_minor", "ymax_minor"),
+                   "x_minor", "y_minor", "ymax_minor"),
 
   default_aes = ggplot2::aes(
     colour = "black", size = 0.5, alpha = 0.7,
     linetype = 1,
+    linewidth = 0.5,
     width = ggplot2::rel(2.3),
     height = ggplot2::rel(2),
     x_scale = list(identity),
@@ -56,7 +57,7 @@ GeomRibbon <- ggplot2::ggproto(
 
 
 #######################################################
-# Prepare data for geom_glyph_ribbon
+# glyph_setup_data: repare data for geom_glyph_ribbon
 glyph_setup_data <- function(data, params) {
 
   # Ensure geom draws each glyph as a distinct path
@@ -80,7 +81,7 @@ glyph_setup_data <- function(data, params) {
     data <- data |>
       dplyr::mutate(
         x_minor = x_scale(.data$x_minor),
-        ymin_minor = y_scale(.data$ymin_minor),
+        y_minor = y_scale(.data$y_minor),
         ymax_minor = y_scale(.data$ymax_minor)
       )
   }
@@ -92,7 +93,7 @@ glyph_setup_data <- function(data, params) {
                         rescale(.data$x_minor),
                         params$width),
       y = glyph_mapping(.data$y_major,
-                           rescale(.data$ymin_minor),
+                           rescale(.data$y_minor),
                            params$height),
       yend = glyph_mapping(.data$y_major,
                            rescale(.data$ymax_minor),
@@ -102,7 +103,6 @@ glyph_setup_data <- function(data, params) {
   data |> dplyr::ungroup()
 
 }
-
 
 # rescale : Adjust minor axes to to fit within an interval of [-1,1]
 rescale <- function(dx) {
@@ -129,22 +129,31 @@ get_scale <- function(x) {
 
 
 
-# ############################# Testing
-# Load map data for Australia
-# australia_map <- ggplot2::map_data("world")
-#
+############################# Testing
+# Load cubble for `geom_glyph_box()`
 # library(cubble)
+# library(ribbon)
+# library(ggspatial)
+#
 # aus_temp |>
 #   ggplot(aes(x_major = long, y_major = lat,
-#              x_minor = date, ymin_minor = tmin, y_minor = tmin, ymax_minor = tmax)) +
+#              x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
 #   geom_sf(data = ozmaps::abs_ste,
 #           fill = "grey95", color = "white",
 #           inherit.aes = FALSE) +
 #   geom_glyph_box() +
 #   geom_glyph_ribbon() +
-#   theme_void()
-
-
+#   labs(title = "Australian daily temperature",
+#        subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
+#        caption = "Data source: RNOAA ",
+#        x = "Longtitude", y = "Latitude") +
+#   annotation_scale(location = "bl", width_hint = 0.5)  +
+#   annotation_north_arrow(location = "bl", which_north = "true",
+#                          pad_x = unit(0.75, "in"), pad_y = unit(0.5, "in"),
+#                          style = north_arrow_fancy_orienteering) +
+#   theme_glyph() # custom theme
+#
+#
 
 
 
