@@ -141,7 +141,6 @@ get_scale <- function(x) {
 #           fill = "grey95", color = "white",
 #           inherit.aes = FALSE) +
 #   geom_glyph_box() +
-#   geom_glyph_line() +
 #   geom_glyph_ribbon() +
 #   theme_void()
 
