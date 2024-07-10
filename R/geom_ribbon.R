@@ -8,7 +8,7 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL,
                                height = ggplot2::rel(2), width = ggplot2::rel(2.3),
                                x_scale = identity, y_scale = identity,
                                inherit.aes = TRUE, ...) {
-  layer(
+  ggplot2::layer(
     geom = GeomRibbon,
     mapping = mapping,
     data = data,
@@ -71,6 +71,12 @@ glyph_setup_data <- function(data, params) {
     data[["x_minor"]] <- as.numeric(data[["x_minor"]])
   }
 
+  # Handle missing data
+  if (any(is.na(data)) ) {
+    warning(paste("Removed rows containing missing values"))
+    data <- data |> na.omit()
+  }
+
 
   if (!any(identical(params$x_scale, identity),
            identical(params$y_scale, identity))){
@@ -106,6 +112,10 @@ glyph_setup_data <- function(data, params) {
 
 # rescale : Adjust minor axes to to fit within an interval of [-1,1]
 rescale <- function(dx) {
+
+  stopifnot(!is.na(dx))
+  stopifnot(length(dx) > 0)
+
   rng <- range(dx, na.rm = TRUE)
   if (rng[1] == rng[2]) return(rep(0, length(dx))) # Avoid division by zero
   2 * (dx - rng[1])/(rng[2] - rng[1]) - 1
@@ -115,7 +125,6 @@ rescale <- function(dx) {
 glyph_mapping <- function(spatial, scaled_value, length) {
   spatial + scaled_value * (length / 2)
 }
-
 
 # get_scale: Retrieve function from global environment
 get_scale <- function(x) {
@@ -141,8 +150,7 @@ get_scale <- function(x) {
 #   geom_sf(data = ozmaps::abs_ste,
 #           fill = "grey95", color = "white",
 #           inherit.aes = FALSE) +
-#   geom_glyph_box() +
-#   geom_glyph_ribbon() +
+#   geom_glyph_ribbon()
 #   labs(title = "Australian daily temperature",
 #        subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
 #        caption = "Data source: RNOAA ",
@@ -153,8 +161,6 @@ get_scale <- function(x) {
 #                          style = north_arrow_fancy_orienteering) +
 #   theme_glyph() # custom theme
 #
-#
-
 
 
 
