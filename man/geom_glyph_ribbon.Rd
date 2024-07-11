@@ -2,7 +2,7 @@
 % Please edit documentation in R/geom_ribbon.R
 \name{geom_glyph_ribbon}
 \alias{geom_glyph_ribbon}
-\title{Create a Glyph Ribbon Geometry}
+\title{Create a Glyph Ribbon plot using ggplot2}
 \usage{
 geom_glyph_ribbon(
   mapping = NULL,
@@ -80,14 +80,14 @@ a warning. If \code{TRUE}, missing values are silently removed.}
 It can also be a named logical vector to finely select the aesthetics to
 display.}
 
-\item{x_major, }{y_major, x_minor, y_minor, ymax_minor. Each combination of
-x_major and y_major form a unique grid cell. y_minor and yamx_minor defines
-lower and upper bound of the geom_ribbon.}
+\item{x_major, y_major, x_minor, y_minor, ymax_minor}{Each combination of
+`x_major` and `y_major` forms a unique grid cell. `y_minor` and `ymax_minor` define
+the lower and upper bounds of the geom_ribbon.}
 
-\item{height, }{width The height and width of each glyph.}
+\item{height, width}{The height and width of each glyph.}
 
-\item{x_scale, }{y_scale The scaling function to be applied to each set of
-minor values within a grid cell. Defaults to `identity`}
+\item{x_scale, y_scale}{The scaling function applied to each set of minor
+values within a grid cell. Defaults to `identity`.}
 
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
@@ -123,12 +123,12 @@ lists which parameters it can accept.
 }}
 }
 \value{
-a ggplot object.
+A ggplot object.
 }
 \description{
-This function creates a ribbon geometry designed to display glyphs based on major and minor
-coordinates, adding a visual layer to ggplot objects that represents variable data with
-ribbon-like polygons.
+This function creates a ribbon geometry designed to display glyphs based on
+the combination of `x_major` and `y_major`. For each `x_minor` value,
+`geom_glyph_ribbon()` displays a y interval defined by `y_minor` and `ymax_minor`.
 }
 \examples{
 
@@ -154,7 +154,6 @@ aus_temp |>
   theme_glyph()
 
 # Extend glyph map with reference box
-
 library(cubble)
 aus_temp |>
   ggplot(aes(x_major = long, y_major = lat,

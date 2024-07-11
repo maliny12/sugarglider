@@ -1,18 +1,18 @@
-#' Create a Glyph Ribbon Geometry
+#' Create a Glyph Ribbon plot using ggplot2
 #'
-#' This function creates a ribbon geometry designed to display glyphs based on major and minor
-#' coordinates, adding a visual layer to ggplot objects that represents variable data with
-#' ribbon-like polygons.
+#' This function creates a ribbon geometry designed to display glyphs based on
+#' the combination of `x_major` and `y_major`. For each `x_minor` value,
+#' `geom_glyph_ribbon()` displays a y interval defined by `y_minor` and `ymax_minor`.
 #'
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_path
-#' @param x_major, y_major, x_minor, y_minor, ymax_minor. Each combination of
-#' x_major and y_major form a unique grid cell. y_minor and yamx_minor defines
-#' lower and upper bound of the geom_ribbon.
-#' @param height, width The height and width of each glyph.
-#' @param x_scale, y_scale The scaling function to be applied to each set of
-#' minor values within a grid cell. Defaults to `identity`
-#' @return a ggplot object.
+#' @param x_major,y_major,x_minor,y_minor,ymax_minor Each combination of
+#' `x_major` and `y_major` forms a unique grid cell. `y_minor` and `ymax_minor` define
+#' the lower and upper bounds of the geom_ribbon.
+#' @param height,width The height and width of each glyph.
+#' @param x_scale,y_scale The scaling function applied to each set of minor
+#' values within a grid cell. Defaults to `identity`.
+#' @return A ggplot object.
 #' @examples
 #'
 #' library(ggplot2)
@@ -37,7 +37,6 @@
 #'   theme_glyph()
 #'
 #' # Extend glyph map with reference box
-#'
 #' library(cubble)
 #' aus_temp |>
 #'   ggplot(aes(x_major = long, y_major = lat,
@@ -142,7 +141,7 @@ glyph_setup_data <- function(data, params) {
       )
   }
 
-  # Linear transformation using scaled positional adjustment
+# Linear transformation using scaled positional adjustment
   data <- data |>
     dplyr::mutate(
       x = glyph_mapping(.data$x_major,
