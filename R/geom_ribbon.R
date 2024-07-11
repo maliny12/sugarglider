@@ -106,8 +106,12 @@ GeomRibbon <- ggplot2::ggproto(
 
 
 #######################################################
-# glyph_setup_data: repare data for geom_glyph_ribbon
+# glyph_setup_data: prepare data for geom_glyph_ribbon
 glyph_setup_data <- function(data, params) {
+
+  stopifnot(class(data$x_minor) %in% c( "Date", "yearmonth",
+                                          "yearweek", "yearquarter",
+                                          "POSIXct", "POSIXlt"))
 
   # Ensure geom draws each glyph as a distinct path
   if (dplyr::n_distinct(data$group) == 1){
