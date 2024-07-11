@@ -27,8 +27,7 @@ test_that("Plot returns ggplot object" ,{
   expect_s3_class(p, "ggplot")
 })
 
-
-# ###################### data handling
+####################### data handling
 test_that("geom_ribbon handles missing data in long, lat, or temperature", {
   df <- data.frame(long = c(NA, 1, 2, 4, 2),
                    lat = c(10, NA, 20, 10, 4),
@@ -39,50 +38,20 @@ test_that("geom_ribbon handles missing data in long, lat, or temperature", {
   expect_warning(print(p), "Removed rows containing missing values")
 })
 
-#
-#
-# ###################### edge cases
-test_that("geom_ribbon creates separate ribbons for each long and lat combination", {
-  df <- data.frame(long = c(1, 1, 2, 2),
-                   lat = c(10, 20, 10, 20),
-                   date = rep(seq(as.Date('2020-01-01'), by = "1 day", length.out = 4), 1),
-                   min = c(0, 1, 2, 3),
-                   max = c(5, 6, 7, 8))
-  p <- ggplot(df, aes(x = date, ymin = min, ymax = max, group = interaction(long, lat), fill = as.factor(long))) +
-    geom_ribbon()
-  print(p)  # Visual check to ensure separation by long and lat
+###################### aesthetic mappings
+
+###################### interaction with other geom
+test_that("geom_ribbon interacts correctly with other geoms", {
+  df <- data.frame(long = 1,
+                   lat = 10,
+                   date = seq(as.Date('2020-01-01'), by = "1 day", length.out = 5),
+                   min = runif(5),
+                   max = runif(5, 1, 2))
+  p <- plot_fn(df) +
+    ggplot2::geom_point()
+  expect_s3_class(p, "ggplot")
 })
-#
-#
+
 # ###################### aesthetic mappings
-#
-#
-#
-#
-#
-# ###################### interaction with other geom
-# test_that("geom_ribbon interacts correctly with other geoms like geom_point", {
-#   df <- data.frame(long = 1,
-#                    lat = 10,
-#                    date = seq(as.Date('2020-01-01'), by = "1 day", length.out = 5),
-#                    min = runif(5),
-#                    max = runif(5, 1, 2))
-#   p <- ggplot(df, aes(x = date, y = min, ymin = min, ymax = max, group = interaction(long, lat))) +
-#     geom_ribbon() +
-#     geom_point()
-#   expect_s3_class(p, "ggplot")
-# })
-#
-#
-# ###################### aesthetic mappings
-# test_that("geom_ribbon correctly maps long, lat, date, min, and max aesthetics", {
-#   df <- data.frame(long = rep(1:2, each = 5),
-#                    lat = rep(c(10, 20), each = 5),
-#                    date = rep(seq(as.Date('2020-01-01'), length.out = 5, by = "1 day"), 2),
-#                    min = runif(10),
-#                    max = runif(10, 1, 2))
-#   p <- ggplot(df, aes(long, lat, ymin = min, ymax = max, group = interaction(long, lat), fill = date)) +
-#     geom_ribbon()
-#   expect_s3_class(p, "ggplot")
-# })
+
 
