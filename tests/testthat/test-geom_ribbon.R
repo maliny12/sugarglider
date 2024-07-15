@@ -50,7 +50,7 @@ test_that("geom_ribbon() checks the aesthetics", {
 
 })
 
-test_that("geom_ribbon handles missing data in long, lat, or temperature", {
+test_that("geom_ribbon() handles missing data in long, lat, or temperature", {
   df <- data.frame(long = c(NA, 1, 2, 4, 2),
                    lat = c(10, NA, 20, 10, 4),
                    date = seq(as.Date('2020-01-01'), by = "1 day", length.out = 5),

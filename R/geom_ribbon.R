@@ -56,7 +56,7 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL,
                                x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
                                height = ggplot2::rel(2), width = ggplot2::rel(2.3),
                                x_scale = identity, y_scale = identity,
-                               inherit.aes = TRUE, ...) {
+                               global_rescale = TRUE, inherit.aes = TRUE, ...) {
   ggplot2::layer(
     geom = GeomRibbon,
     mapping = mapping,
@@ -70,6 +70,7 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL,
                   width = width,
                   x_scale = list(x_scale),
                   y_scale = list(y_scale),
+                  global_rescale = global_rescale,
                   ...)
   )
 
@@ -89,7 +90,8 @@ GeomRibbon <- ggplot2::ggproto(
     width = ggplot2::rel(2.3),
     height = ggplot2::rel(2),
     x_scale = list(identity),
-    y_scale = list(identity)
+    y_scale = list(identity),
+    global_rescale = TRUE
     ),
 
   setup_data = function(data, params) {
@@ -110,7 +112,7 @@ GeomRibbon <- ggplot2::ggproto(
 glyph_setup_data <- function(data, params) {
 
   stopifnot(class(data$x_minor) %in% c( "Date", "yearmonth",
-                                          "yearweek", "yearquarter",
+                                          "yearweek", "yearquarter", "yearqtr",
                                           "POSIXct", "POSIXlt"))
 
   # Ensure geom draws each glyph as a distinct path
@@ -145,7 +147,10 @@ glyph_setup_data <- function(data, params) {
       )
   }
 
-# Linear transformation using scaled positional adjustment
+
+ # Linear transformation using scaled positional adjustment
+  if (params$global_rescale == TRUE) {data <- data |> dplyr::ungroup()}
+
   data <- data |>
     dplyr::mutate(
       x = glyph_mapping(.data$x_major,
@@ -192,27 +197,23 @@ get_scale <- function(x) {
 
 
 ############################# Testing
-# Load cubble for `geom_glyph_box()`
+## Load cubble for `geom_glyph_box()`
 # library(cubble)
 # library(ribbon)
-# library(ggspatial)
+# library(ggplot2)
 #
 # aus_temp |>
 #   ggplot(aes(x_major = long, y_major = lat,
-#              x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
+#              x_minor = period, y_minor = tmin, ymax_minor = tmax)) +
 #   geom_sf(data = ozmaps::abs_ste,
 #           fill = "grey95", color = "white",
 #           inherit.aes = FALSE) +
-#   geom_glyph_ribbon() +
 #   geom_glyph_box() +
+#   geom_glyph_ribbon() +
 #   labs(title = "Australian daily temperature",
 #        subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
 #        caption = "Data source: RNOAA ",
 #        x = "Longtitude", y = "Latitude") +
-#   annotation_scale(location = "bl", width_hint = 0.5)  +
-#   annotation_north_arrow(location = "bl", which_north = "true",
-#                          pad_x = unit(0.75, "in"), pad_y = unit(0.5, "in"),
-#                          style = north_arrow_fancy_orienteering) +
 #   theme_glyph() # custom theme
 #
 

@@ -29,6 +29,12 @@ prcp_data_raw <- stations |>
   rename(lat = latitude, long = longitude, elev = elevation)
 
 aus_temp <- prcp_data_raw |>
-  unnest(temp)
+  unnest(temp) |>
+  mutate(period = zoo::as.yearqtr(date)) |>
+  na.omit() |>
+  group_by(id, long, lat, period) |>
+  summarise(tmax = mean(tmax),
+            tmin = mean(tmin),
+            .groups = "drop")
 
 usethis::use_data(aus_temp, overwrite = TRUE)

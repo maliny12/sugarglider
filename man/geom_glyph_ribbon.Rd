@@ -20,6 +20,7 @@ geom_glyph_ribbon(
   width = ggplot2::rel(2.3),
   x_scale = identity,
   y_scale = identity,
+  global_rescale = TRUE,
   inherit.aes = TRUE,
   ...
 )

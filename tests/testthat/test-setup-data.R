@@ -38,7 +38,7 @@ test_that("scaling functions are applied correctly", {
 })
 
 
-test_that("edge cases with non-numeric and empty data are handled", {
+test_that("function can handle edge cases with non-numeric and empty data", {
   edge_case_data <- data
   edge_case_data$x_minor[1:2] <- NA  # Introducing NAs
   edge_case_data$y_minor[1:2] <- c(NA, NA)
