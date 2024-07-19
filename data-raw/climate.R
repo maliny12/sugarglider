@@ -24,17 +24,33 @@ prcp_data_raw <- stations |>
   mutate(temp = list(meteo_pull_monitors(
     monitors = id, var = c("TMAX", "TMIN"),
     date_min = "2022-01-01",
-    date_max = "2023-01-01") |>
+    date_max = "2022-12-30") |>
       select(-id))) |>
   rename(lat = latitude, long = longitude, elev = elevation)
 
 aus_temp <- prcp_data_raw |>
   unnest(temp) |>
-  mutate(period = zoo::as.yearqtr(date)) |>
   na.omit() |>
-  group_by(id, long, lat, period) |>
-  summarise(tmax = mean(tmax),
-            tmin = mean(tmin),
-            .groups = "drop")
+  mutate(temp |>
+           ggplot(aes(x_major = long, y_major = lat,
+                      x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
+           geom_sf(data = ozmaps::abs_ste,
+                   fill = "grey95", color = "white",
+                   inherit.aes = FALSE) +
+           geom_glyph_box(height = ggplot2::rel(2), width = ggplot2::rel(2.3)) +
+           geom_glyph_ribbon() +
+           labs(title = "Australian daily temperature",
+                subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
+                caption = "Data source: RNOAA ",
+                x = "Longtitude", y = "Latitude") +
+           coord_sf(xlim = c(112, 155)) +
+           theme_glyph() # custom theme = floor_date(date, "quarter")) |>
+  group_by(id, long, lat, quarter) |>
+  summarise(tmin = mean(tmin),
+           tmax = mean(tmax),
+           .groups = "drop")
+  # mutate(period = lubridate::month(date)) |>
+  # group_by(id, long, lat, period) |>
+  # summarise(tmax = mean(tmax), tmin = mean(tmin), .groups = "drop")
 
 usethis::use_data(aus_temp, overwrite = TRUE)

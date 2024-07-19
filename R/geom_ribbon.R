@@ -77,14 +77,14 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL,
 }
 
 # Define the ggproto object for the custom geom
-GeomRibbon <- ggplot2::ggproto(
-  "geomRibbon", ggplot2::Geom,
+GeomGlyphRibbon <- ggplot2::ggproto(
+  "GeomGlyphRibbon", ggplot2::GeomRibbon,
   ## Aesthetic
   required_aes = c("x_major", "y_major",
                    "x_minor", "y_minor", "ymax_minor"),
 
   default_aes = ggplot2::aes(
-    colour = "black", size = 0.5, alpha = 0.7,
+    colour = "black",
     linetype = 1,
     linewidth = 0.5,
     width = ggplot2::rel(2.3),
@@ -100,8 +100,8 @@ GeomRibbon <- ggplot2::ggproto(
 
   # Draw polygons
   draw_panel = function(data,  panel_params, ...) {
-    ggplot2:::GeomPath$draw_panel(data, panel_params, ...)
 
+   ggplot2:::GeomRibbon(data, panel_params, ...)
   }
 
 )
@@ -111,9 +111,9 @@ GeomRibbon <- ggplot2::ggproto(
 # glyph_setup_data: prepare data for geom_glyph_ribbon
 glyph_setup_data <- function(data, params) {
 
-  stopifnot(class(data$x_minor) %in% c( "Date", "yearmonth",
-                                          "yearweek", "yearquarter", "yearqtr",
-                                          "POSIXct", "POSIXlt"))
+  stopifnot(class(data$x_minor) %in% c("Date", "yearmonth", "numeric",
+                                       "yearweek", "yearquarter", "yearqtr",
+                                       "POSIXct", "POSIXlt"))
 
   # Ensure geom draws each glyph as a distinct path
   if (dplyr::n_distinct(data$group) == 1){
@@ -156,10 +156,10 @@ glyph_setup_data <- function(data, params) {
       x = glyph_mapping(.data$x_major,
                         rescale(.data$x_minor),
                         params$width),
-      y = glyph_mapping(.data$y_major,
+      ymin = glyph_mapping(.data$y_major,
                            rescale(.data$y_minor),
                            params$height),
-      yend = glyph_mapping(.data$y_major,
+      ymax = glyph_mapping(.data$y_major,
                            rescale(.data$ymax_minor),
                            params$height)
     )
@@ -197,26 +197,44 @@ get_scale <- function(x) {
 
 
 ############################# Testing
-## Load cubble for `geom_glyph_box()`
+# # ## Load cubble for `geom_glyph_box()`
 # library(cubble)
 # library(ribbon)
 # library(ggplot2)
+# library(sf)
 #
-# aus_temp |>
+# temp |>
 #   ggplot(aes(x_major = long, y_major = lat,
-#              x_minor = period, y_minor = tmin, ymax_minor = tmax)) +
+#              x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
 #   geom_sf(data = ozmaps::abs_ste,
 #           fill = "grey95", color = "white",
 #           inherit.aes = FALSE) +
-#   geom_glyph_box() +
+#   geom_glyph_box(height = ggplot2::rel(2), width = ggplot2::rel(2.3)) +
 #   geom_glyph_ribbon() +
 #   labs(title = "Australian daily temperature",
 #        subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
 #        caption = "Data source: RNOAA ",
 #        x = "Longtitude", y = "Latitude") +
+#   coord_sf(xlim = c(112, 155)) +
 #   theme_glyph() # custom theme
 #
+#
+# #
+# aus_temp |>
+#   ggplot(aes(x_major = long, y_major = lat,
+#              x_minor = quarter, y_minor = tmin, ymax_minor = tmax)) +
+#   geom_sf(data = ozmaps::abs_ste,
+#           fill = "grey95", color = "white",
+#           inherit.aes = FALSE) +
+#   geom_glyph_box(height = ggplot2::rel(2), width = ggplot2::rel(2.3)) +
+#   geom_glyph_ribbon(height = ggplot2::rel(2), width = ggplot2::rel(2.3)) +
+#   labs(title = "Australian daily temperature",
+#        subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
+#        caption = "Data source: RNOAA ",
+#        x = "Longtitude", y = "Latitude") +
+#   coord_sf(xlim = c(112, 155)) +
+#   theme_glyph() # custom theme
 
-
+#
 
 
