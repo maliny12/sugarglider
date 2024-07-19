@@ -31,26 +31,11 @@ prcp_data_raw <- stations |>
 aus_temp <- prcp_data_raw |>
   unnest(temp) |>
   na.omit() |>
-  mutate(temp |>
-           ggplot(aes(x_major = long, y_major = lat,
-                      x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
-           geom_sf(data = ozmaps::abs_ste,
-                   fill = "grey95", color = "white",
-                   inherit.aes = FALSE) +
-           geom_glyph_box(height = ggplot2::rel(2), width = ggplot2::rel(2.3)) +
-           geom_glyph_ribbon() +
-           labs(title = "Australian daily temperature",
-                subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
-                caption = "Data source: RNOAA ",
-                x = "Longtitude", y = "Latitude") +
-           coord_sf(xlim = c(112, 155)) +
-           theme_glyph() # custom theme = floor_date(date, "quarter")) |>
-  group_by(id, long, lat, quarter) |>
+  mutate(quarter = floor_date(date, "quarter")) |>
+  mutate(month = lubridate::month(date)) |>
+  group_by(id, long, lat, month) |>
   summarise(tmin = mean(tmin),
            tmax = mean(tmax),
            .groups = "drop")
-  # mutate(period = lubridate::month(date)) |>
-  # group_by(id, long, lat, period) |>
-  # summarise(tmax = mean(tmax), tmin = mean(tmin), .groups = "drop")
 
 usethis::use_data(aus_temp, overwrite = TRUE)

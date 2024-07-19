@@ -58,7 +58,7 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL,
                                x_scale = identity, y_scale = identity,
                                global_rescale = TRUE, inherit.aes = TRUE, ...) {
   ggplot2::layer(
-    geom = GeomRibbon,
+    geom = GeomGlyphRibbon,
     mapping = mapping,
     data = data,
     stat = stat,
@@ -84,9 +84,8 @@ GeomGlyphRibbon <- ggplot2::ggproto(
                    "x_minor", "y_minor", "ymax_minor"),
 
   default_aes = ggplot2::aes(
-    colour = "black",
-    linetype = 1,
-    linewidth = 0.5,
+    linetype = 1, fill = "grey40", color = "grey50",
+    linewidth = 0.5, alpha = 0.8,
     width = ggplot2::rel(2.3),
     height = ggplot2::rel(2),
     x_scale = list(identity),
@@ -98,10 +97,11 @@ GeomGlyphRibbon <- ggplot2::ggproto(
     data <- glyph_setup_data(data, params)
   },
 
+
   # Draw polygons
   draw_panel = function(data,  panel_params, ...) {
 
-   ggplot2:::GeomRibbon(data, panel_params, ...)
+   ggplot2::GeomRibbon$draw_panel(data, panel_params, ...)
   }
 
 )
@@ -133,6 +133,7 @@ glyph_setup_data <- function(data, params) {
   }
 
 
+
   if (!any(identical(params$x_scale, identity),
            identical(params$y_scale, identity))){
 
@@ -152,20 +153,22 @@ glyph_setup_data <- function(data, params) {
   if (params$global_rescale == TRUE) {data <- data |> dplyr::ungroup()}
 
   data <- data |>
+    tidyr::pivot_longer(cols = c(.data$y_minor, .data$ymax_minor),
+                        names_to = "type", values_to = "value") |>
+    dplyr::mutate(scaled_data = rescale(value)) |>
+    dplyr::select(-value) |>
+    tidyr::pivot_wider(names_from = "type", values_from = "scaled_data") |>
     dplyr::mutate(
-      x = glyph_mapping(.data$x_major,
-                        rescale(.data$x_minor),
-                        params$width),
-      ymin = glyph_mapping(.data$y_major,
-                           rescale(.data$y_minor),
-                           params$height),
-      ymax = glyph_mapping(.data$y_major,
-                           rescale(.data$ymax_minor),
-                           params$height)
-    )
-
+                  x = glyph_mapping(.data$x_major,
+                                    rescale(.data$x_minor),
+                                    params$width),
+                  ymin = glyph_mapping(.data$y_major,
+                                        .data$y_minor,
+                                        params$height),
+                   ymax = glyph_mapping(.data$y_major,
+                                        .data$ymax_minor,
+                                        params$height))
   data |> dplyr::ungroup()
-
 }
 
 # rescale : Adjust minor axes to to fit within an interval of [-1,1]
@@ -178,6 +181,7 @@ rescale <- function(dx) {
   if (rng[1] == rng[2]) return(rep(0, length(dx))) # Avoid division by zero
   2 * (dx - rng[1])/(rng[2] - rng[1]) - 1
 }
+
 
 # glyph_mapping: Scaled positional adjustment
 glyph_mapping <- function(spatial, scaled_value, length) {
@@ -197,15 +201,15 @@ get_scale <- function(x) {
 
 
 ############################# Testing
-# # ## Load cubble for `geom_glyph_box()`
+# # # ## Load cubble for `geom_glyph_box()`
 # library(cubble)
 # library(ribbon)
 # library(ggplot2)
 # library(sf)
-#
-# temp |>
+
+# aus_temp |>
 #   ggplot(aes(x_major = long, y_major = lat,
-#              x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
+#              x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
 #   geom_sf(data = ozmaps::abs_ste,
 #           fill = "grey95", color = "white",
 #           inherit.aes = FALSE) +
@@ -217,24 +221,4 @@ get_scale <- function(x) {
 #        x = "Longtitude", y = "Latitude") +
 #   coord_sf(xlim = c(112, 155)) +
 #   theme_glyph() # custom theme
-#
-#
-# #
-# aus_temp |>
-#   ggplot(aes(x_major = long, y_major = lat,
-#              x_minor = quarter, y_minor = tmin, ymax_minor = tmax)) +
-#   geom_sf(data = ozmaps::abs_ste,
-#           fill = "grey95", color = "white",
-#           inherit.aes = FALSE) +
-#   geom_glyph_box(height = ggplot2::rel(2), width = ggplot2::rel(2.3)) +
-#   geom_glyph_ribbon(height = ggplot2::rel(2), width = ggplot2::rel(2.3)) +
-#   labs(title = "Australian daily temperature",
-#        subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
-#        caption = "Data source: RNOAA ",
-#        x = "Longtitude", y = "Latitude") +
-#   coord_sf(xlim = c(112, 155)) +
-#   theme_glyph() # custom theme
-
-#
-
 
