@@ -18,34 +18,34 @@
 #' library(ggplot2)
 #'
 #' # Basic glyph map with base map and custom theme
-#' aus_temp |>
-#'   ggplot(aes(x_major = long, y_major = lat,
-#'          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
-#'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-#'           color = "white",inherit.aes = FALSE) +
-#'   geom_glyph_ribbon() +
-#'   theme_glyph()
+# aus_temp |>
+#   ggplot(aes(x_major = long, y_major = lat,
+#          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
+#   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
+#           color = "white",inherit.aes = FALSE) +
+#   geom_glyph_ribbon() +
+#   theme_glyph()
 #'
 #'
 #' # Adjust width and height of the glyph
-#' aus_temp |>
-#'   ggplot(aes(x_major = long, y_major = lat,
-#'          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
-#'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-#'           color = "white",inherit.aes = FALSE) +
-#'   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
-#'   theme_glyph()
+# aus_temp |>
+#   ggplot(aes(x_major = long, y_major = lat,
+#          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
+#   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
+#           color = "white",inherit.aes = FALSE) +
+#   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
+#   theme_glyph()
 #'
 #' # Extend glyph map with reference box
-#' library(cubble)
-#' aus_temp |>
-#'   ggplot(aes(x_major = long, y_major = lat,
-#'          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
-#'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-#'           color = "white",inherit.aes = FALSE) +
-#'   geom_glyph_box() +
-#'   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
-#'   theme_glyph()
+# library(cubble)
+# aus_temp |>
+#   ggplot(aes(x_major = long, y_major = lat,
+#          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
+#   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
+#           color = "white",inherit.aes = FALSE) +
+#   geom_glyph_box(width = rel(4.5), height = rel(3)) +
+#   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
+#   theme_glyph()
 
 
 # Define a wrapper function
@@ -111,6 +111,8 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 # glyph_setup_data: prepare data for geom_glyph_ribbon
 glyph_setup_data <- function(data, params) {
 
+
+
   stopifnot(class(data$x_minor) %in% c("Date", "yearmonth", "numeric",
                                        "yearweek", "yearquarter", "yearqtr",
                                        "POSIXct", "POSIXlt"))
@@ -139,12 +141,15 @@ glyph_setup_data <- function(data, params) {
     x_scale <- get_scale(params$x_scale)
     y_scale <- get_scale(params$y_scale)
 
+
     data <- data |>
       dplyr::mutate(
         x_minor = x_scale(.data$x_minor),
         y_minor = y_scale(.data$y_minor),
         ymax_minor = y_scale(.data$ymax_minor)
       )
+
+
   }
 
 
@@ -154,7 +159,7 @@ glyph_setup_data <- function(data, params) {
   }
 
   data <- data |>
-    tidyr::pivot_longer(cols = c(.data$y_minor, .data$ymax_minor),
+    tidyr::pivot_longer(cols = c("y_minor", "ymax_minor"),
                         names_to = "type", values_to = "value") |>
     dplyr::mutate(scaled_data = rescale(value)) |>
     dplyr::select(-value) |>
@@ -176,6 +181,7 @@ glyph_setup_data <- function(data, params) {
   }
 
   data |> dplyr::ungroup()
+
 }
 
 # rescale : Adjust minor axes to to fit within an interval of [-1,1]

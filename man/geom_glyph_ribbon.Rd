@@ -136,32 +136,9 @@ the combination of `x_major` and `y_major`. For each `x_minor` value,
 library(ggplot2)
 
 # Basic glyph map with base map and custom theme
-aus_temp |>
-  ggplot(aes(x_major = long, y_major = lat,
-         x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-          color = "white",inherit.aes = FALSE) +
-  geom_glyph_ribbon() +
-  theme_glyph()
 
 
 # Adjust width and height of the glyph
-aus_temp |>
-  ggplot(aes(x_major = long, y_major = lat,
-         x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-          color = "white",inherit.aes = FALSE) +
-  geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
-  theme_glyph()
 
 # Extend glyph map with reference box
-library(cubble)
-aus_temp |>
-  ggplot(aes(x_major = long, y_major = lat,
-         x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-          color = "white",inherit.aes = FALSE) +
-  geom_glyph_box() +
-  geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
-  theme_glyph()
 }

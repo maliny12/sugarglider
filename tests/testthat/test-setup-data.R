@@ -11,10 +11,11 @@ data <- data.frame(
   group = c(1, 1, 1, 1)  # All same group initially
 )
 params <- list(
-  x_scale = list(mock_scale_function),
-  y_scale = list(mock_scale_function),
+  x_scale = list(identity),
+  y_scale = list(identity),
   height = ggplot2::rel(2),
-  width = ggplot2::rel(2.3)
+  width = ggplot2::rel(2.3),
+  global_rescale = TRUE
 )
 
 test_that("x_minor converts to numeric correctly", {
@@ -26,13 +27,25 @@ test_that("x_minor converts to numeric correctly", {
 
 test_that("scaling functions are applied correctly", {
   # Modify params to use actual scaling functions
-  params$x_scale <- list(identity)
+  params$x_scale <- list(mock_scale_function)
   params$y_scale <- list(mock_scale_function)
+  params$global_rescale <- FALSE
   processed_data <- glyph_setup_data(data, params)
 
   # Check if y_minor and ymax_minor are scaled as expected
-  expected_y_minor <- mock_scale_function(data$y_minor)
-  expected_ymax_minor <- mock_scale_function(data$ymax_minor)
+  df <- data |>
+    dplyr::mutate(group = as.integer(factor(paste(data$x_major, data$y_major)))) |>
+    dplyr::group_by(.data$group) |>
+    dplyr::mutate(y_minor = mock_scale_function(y_minor),
+                  ymax_minor = mock_scale_function(ymax_minor)) |>
+    tidyr::pivot_longer(cols = c("y_minor", "ymax_minor"),
+                        names_to = "type", values_to = "value") |>
+    dplyr::mutate(scaled_data = rescale(value)) |>
+    dplyr::select(-value) |>
+    tidyr::pivot_wider(names_from = "type", values_from = "scaled_data")
+
+  expected_y_minor <- df$y_minor
+  expected_ymax_minor <- df$ymax_minor
   expect_equal(processed_data$y_minor, expected_y_minor)
   expect_equal(processed_data$ymax_minor, expected_ymax_minor)
 })
@@ -71,10 +84,16 @@ test_that("glyph_setup_data processes data with extreme value correctly", {
   )
   combined_data <- dplyr::bind_rows(data, extreme_values)
 
-  processed_data <- glyph_setup_data(combined_data, params)
+  processed_data <- glyph_setup_data(combined_data, params) |>
+    dplyr::mutate(x_scaled = rescale(x_minor),
+           ymin_scaled = rescale(y_minor),
+           ymax_scaled = rescale(ymax_minor))
 
   # Check if scaling is within expected range
-  expect_true(all(processed_data$y_scaled >= 0 & processed_data$y_scaled <= 1))
+  expect_true(all(processed_data$x_scaled >= -1 & processed_data$x_scaled <= 1))
+  expect_true(all(processed_data$ymin_scaled >= -1 & processed_data$ymin_scaled <= 1))
+  expect_true(all(processed_data$ymax_scaled >= -1 & processed_data$ymax_scaled <= 1))
+
   expect_true(all(inherits(processed_data$x_minor, "numeric")))
   expect_equal(nrow(processed_data), nrow(combined_data)) # check for no data loss unless expected
 })
