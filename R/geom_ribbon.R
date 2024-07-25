@@ -105,39 +105,144 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 
 )
 
-# add_glyph_boxes <- function( mapping = NULL, data = NULL,
-#                              stat = "identity", position = "identity",
-#                              na.rm = FALSE, show.legend = NA,
-#                              x_major = NULL, y_major = NULL,
-#                              x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
-#                              height = ggplot2::rel(2), width = ggplot2::rel(2.3),
-#                              x_scale = identity, y_scale = identity,
-#                              global_rescale = TRUE, inherit.aes = TRUE, ...) {
-#   ggplot2::layer(
-#     geom = GeomGlyphRibbon,
-#     mapping = mapping,
-#     data = data,
-#     stat = stat,
-#     position = position,
-#     show.legend = show.legend,
-#     inherit.aes = inherit.aes,
-#     params = list(
-#       height = height,
-#       width = width,
-#       x_scale = list(x_scale),
-#       y_scale = list(y_scale),
-#       global_rescale = global_rescale,
-#       ...)
-#   )
-#
-# }
+#' Add Glyph Boxes layer to glyph plot
+#'
+#'This function introduces a custom layer to a ggplot, employing 'glyph boxes'
+#'to visually represent individual glyph. Users can specify various aesthetics
+#'including alpha, height, width, color, linetype, and fill to customize the appearance.
+#'
+#' @param data The data to be displayed in this layer. If \code{NULL}, the default, the data is
+#' inherited from the plot data as specified in the call to \code{ggplot()}.
+#' @param x_major,y_major,x_minor,ymin_minor,ymax_minor Aesthetics to map plot coordinates
+#' for major and minor glyph components.
+#' @param alpha The transparency level of the glyph box (ranges between 0 and 1).
+#' @param height,width The relative height and width of each glyph box.
+#' @param color The color of the outline of the glyph box.
+#' @param linetype The type of line to use for the outline of the glyph box.
+#' @param fill The color used to fill the glyph box.
+#' @param ... Additional parameters.
+#'
+#' @return A layer object that can be added to a ggplot.
+#'
+#' @export
 
+
+add_glyph_boxes <- function( mapping = NULL, data = NULL,
+                             stat = "identity", position = "identity",
+                             x_major = NULL, y_major = NULL, x_minor = NULL,
+                             ymin_minor = NULL, ymax_minor = NULL, alpha = 1,
+                             height = ggplot2::rel(2), width = ggplot2::rel(2.3),
+                             color = "grey", linetype = "solid", fill = "white",
+                             inherit.aes = TRUE, show.legend = NA, ...) {
+  ggplot2::layer(
+    geom = GeomGlyphBox,
+    mapping = mapping,
+    data = data,
+    stat = stat,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(
+      height = height,
+      width = width,
+      color = color,
+      linetype = linetype,
+      fill = fill,
+      alpha = alpha,
+      ...)
+  )
+
+
+}
+
+
+GeomGlyphBox <- ggplot2::ggproto(
+  "GeomGlyphBox", ggplot2::Geom,
+  ## Aesthetic
+  required_aes = c("x_major", "y_major",
+                   "x_minor", "ymin_minor", "ymax_minor"),
+
+  default_aes = ggplot2::aes(
+    linetype = "solid", fill = "white", color = "grey",
+    linewidth = 0.5, alpha = 0.5,
+    width = ggplot2::rel(2.3),
+    height = ggplot2::rel(2)
+  ),
+
+  setup_data = function(data, params) {
+    data <- glyph_setup_data(data, params)
+    glyph_box(data, params)
+  },
+
+  draw_panel = function(data,  panel_params, coord, alpha = alpha,
+                        fill = fill, linetype = linetype, color = color, ...) {
+    ggplot2:::GeomRect$draw_panel(data, panel_params, coord, ...)
+  }
+
+)
+
+#' Add Reference Lines to glyph plot
+#'
+#' This function draw reference lines that include both major and minor division markers.
+#'
+#' @param data The data to be displayed in this layer. If \code{NULL}, the default, the data is
+#' inherited from the plot data as specified in the call to \code{ggplot()}.
+#' @param x_major,y_major,x_minor,ymin_minor,ymax_minor Aesthetics to map plot coordinates
+#' for major and minor glyph components.
+#' @return A ggplot2 layer.
+#' @export
+
+add_ref_lines <- function( mapping = NULL, data = NULL,
+                             stat = "identity", position = "identity",
+                             show.legend = NA, x_major = NULL, y_major = NULL,
+                             x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
+                             height = ggplot2::rel(2), width = ggplot2::rel(2.3),
+                             inherit.aes = TRUE, ...) {
+  ggplot2::layer(
+    geom = GeomGlyphLine,
+    mapping = mapping,
+    data = data,
+    stat = stat,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(
+      height = height,
+      width = width,
+      ...)
+  )
+
+
+}
+
+
+GeomGlyphLine <- ggplot2::ggproto(
+  "GeomGlyphLine", ggplot2::Geom,
+  ## Aesthetic
+  required_aes = c("x_major", "y_major",
+                   "x_minor", "ymin_minor", "ymax_minor"),
+
+  default_aes = ggplot2::aes(
+    linetype = "solid", color = "grey",
+    linewidth = 0.5, alpha = 1,
+    width = ggplot2::rel(2.3),
+    height = ggplot2::rel(2)
+  ),
+
+  setup_data = function(data, params) {
+    data <- glyph_setup_data(data, params)
+    ref_line(data, params)
+  },
+
+  draw_panel = function(data,  panel_params, coord, ...) {
+    ggplot2:::GeomPath$draw_panel(data, panel_params, coord, ...)
+  }
+
+)
 
 #######################################################
 # glyph_setup_data: prepare data for geom_glyph_ribbon
 glyph_setup_data <- function(data, params) {
-
-
 
   stopifnot(class(data$x_minor) %in% c("Date", "yearmonth", "numeric",
                                        "yearweek", "yearquarter", "yearqtr",
@@ -160,27 +265,27 @@ glyph_setup_data <- function(data, params) {
     data <- data |> na.omit()
   }
 
+  if (custom_scale(params$x_scale)) {
+      x_scale <- get_scale(params$x_scale)
+      data <- data |>
+        dplyr::mutate(
+          x_minor = x_scale(.data$x_minor)
+        )
+    }
 
-  if (!any(identical(params$x_scale, identity),
-           identical(params$y_scale, identity))){
-
-    x_scale <- get_scale(params$x_scale)
+  if (custom_scale(params$y_scale)) {
     y_scale <- get_scale(params$y_scale)
-
-
     data <- data |>
       dplyr::mutate(
-        x_minor = x_scale(.data$x_minor),
         ymin_minor = y_scale(.data$ymin_minor),
         ymax_minor = y_scale(.data$ymax_minor)
       )
-
-
   }
 
 
+
  # Linear transformation using scaled positional adjustment
-  if (params$global_rescale == TRUE) {
+  if (isTRUE(params$global_rescale)) {
     data <- data |> dplyr::ungroup()
   }
 
@@ -210,6 +315,30 @@ glyph_setup_data <- function(data, params) {
 
 }
 
+# glyph_box: Create reference boxes for glyph plot
+glyph_box <- function(data, params) {
+    data <- data |>
+      dplyr::mutate(
+        xmin = data$x_major - params$width/2,
+        xmax = data$x_major + params$width/2,
+        ymin = data$y_major - params$height/2,
+        ymax = data$y_major + params$height/2,
+      )
+    data
+}
+
+# ref_line: Calculate reference lines for glyph plot
+ref_line <- function(data, params){
+  data <- data |>
+    tidyr::expand_grid(delta = c(-1, 1)) |>
+    dplyr::mutate(
+      group = .data$group,
+      x = .data$x_major + (params$width / 2) * .data$delta,
+      y = .data$y_major
+    )
+  data
+}
+
 # rescale : Adjust minor axes to to fit within an interval of [-1,1]
 rescale <- function(dx) {
 
@@ -236,13 +365,19 @@ get_scale <- function(x) {
   fnc
 }
 
+custom_scale <- function(dx){
+  if (is.null(dx)){
+    return(FALSE)
+  }
 
+  if (!identical(dx, identity)){
+    return(TRUE)
+  }
+}
 
 
 ############################# Testing
-# # # ## Load cubble for `geom_glyph_box()`
-# library(cubble)
-# library(ribbon)
+# # # # ## Load cubble for `geom_glyph_box()`
 # library(ggplot2)
 # library(sf)
 #
@@ -252,7 +387,8 @@ get_scale <- function(x) {
 #   geom_sf(data = ozmaps::abs_ste,
 #           fill = "grey95", color = "white",
 #           inherit.aes = FALSE) +
-#   #geom_glyph_box(height = ggplot2::rel(2), width = ggplot2::rel(2.3)) +
+#   add_glyph_boxes() +
+#   add_ref_lines() +
 #   geom_glyph_ribbon() +
 #   labs(title = "Australian daily temperature",
 #        subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
