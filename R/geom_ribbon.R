@@ -2,12 +2,12 @@
 #'
 #' This function creates a ribbon geometry designed to display glyphs based on
 #' the combination of `x_major` and `y_major`. For each `x_minor` value,
-#' `geom_glyph_ribbon()` displays a y interval defined by `y_minor` and `ymax_minor`.
+#' `geom_glyph_ribbon()` displays a y interval defined by `ymin_minor` and `ymax_minor`.
 #'
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_path
-#' @param x_major,y_major,x_minor,y_minor,ymax_minor Each combination of
-#' `x_major` and `y_major` forms a unique grid cell. `y_minor` and `ymax_minor` define
+#' @param x_major,y_major,x_minor,ymin_minor,ymax_minor Each combination of
+#' `x_major` and `y_major` forms a unique grid cell. `ymin_minor` and `ymax_minor` define
 #' the lower and upper bounds of the geom_ribbon.
 #' @param height,width The height and width of each glyph.
 #' @param x_scale,y_scale The scaling function applied to each set of minor
@@ -20,7 +20,7 @@
 #' # Basic glyph map with base map and custom theme
 # aus_temp |>
 #   ggplot(aes(x_major = long, y_major = lat,
-#          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
+#          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
 #   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
 #           color = "white",inherit.aes = FALSE) +
 #   geom_glyph_ribbon() +
@@ -30,7 +30,7 @@
 #' # Adjust width and height of the glyph
 # aus_temp |>
 #   ggplot(aes(x_major = long, y_major = lat,
-#          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
+#          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
 #   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
 #           color = "white",inherit.aes = FALSE) +
 #   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
@@ -40,7 +40,7 @@
 # library(cubble)
 # aus_temp |>
 #   ggplot(aes(x_major = long, y_major = lat,
-#          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
+#          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
 #   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
 #           color = "white",inherit.aes = FALSE) +
 #   geom_glyph_box(width = rel(4.5), height = rel(3)) +
@@ -81,7 +81,7 @@ GeomGlyphRibbon <- ggplot2::ggproto(
   "GeomGlyphRibbon", ggplot2::GeomRibbon,
   ## Aesthetic
   required_aes = c("x_major", "y_major",
-                   "x_minor", "y_minor", "ymax_minor"),
+                   "x_minor", "ymin_minor", "ymax_minor"),
 
   default_aes = ggplot2::aes(
     linetype = 1, fill = "grey40", color = "grey50",
@@ -100,11 +100,37 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 
   # Draw polygons
   draw_panel = function(data,  panel_params, ...) {
-
    ggplot2::GeomRibbon$draw_panel(data, panel_params, ...)
   }
 
 )
+
+# add_glyph_boxes <- function( mapping = NULL, data = NULL,
+#                              stat = "identity", position = "identity",
+#                              na.rm = FALSE, show.legend = NA,
+#                              x_major = NULL, y_major = NULL,
+#                              x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
+#                              height = ggplot2::rel(2), width = ggplot2::rel(2.3),
+#                              x_scale = identity, y_scale = identity,
+#                              global_rescale = TRUE, inherit.aes = TRUE, ...) {
+#   ggplot2::layer(
+#     geom = GeomGlyphRibbon,
+#     mapping = mapping,
+#     data = data,
+#     stat = stat,
+#     position = position,
+#     show.legend = show.legend,
+#     inherit.aes = inherit.aes,
+#     params = list(
+#       height = height,
+#       width = width,
+#       x_scale = list(x_scale),
+#       y_scale = list(y_scale),
+#       global_rescale = global_rescale,
+#       ...)
+#   )
+#
+# }
 
 
 #######################################################
@@ -145,7 +171,7 @@ glyph_setup_data <- function(data, params) {
     data <- data |>
       dplyr::mutate(
         x_minor = x_scale(.data$x_minor),
-        y_minor = y_scale(.data$y_minor),
+        ymin_minor = y_scale(.data$ymin_minor),
         ymax_minor = y_scale(.data$ymax_minor)
       )
 
@@ -159,7 +185,7 @@ glyph_setup_data <- function(data, params) {
   }
 
   data <- data |>
-    tidyr::pivot_longer(cols = c("y_minor", "ymax_minor"),
+    tidyr::pivot_longer(cols = c("ymin_minor", "ymax_minor"),
                         names_to = "type", values_to = "value") |>
     dplyr::mutate(scaled_data = rescale(value)) |>
     dplyr::select(-value) |>
@@ -169,7 +195,7 @@ glyph_setup_data <- function(data, params) {
                                     rescale(.data$x_minor),
                                     params$width),
                   ymin = glyph_mapping(.data$y_major,
-                                        .data$y_minor,
+                                        .data$ymin_minor,
                                         params$height),
                    ymax = glyph_mapping(.data$y_major,
                                         .data$ymax_minor,
@@ -219,14 +245,14 @@ get_scale <- function(x) {
 # library(ribbon)
 # library(ggplot2)
 # library(sf)
-
+#
 # aus_temp |>
 #   ggplot(aes(x_major = long, y_major = lat,
-#              x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
+#              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
 #   geom_sf(data = ozmaps::abs_ste,
 #           fill = "grey95", color = "white",
 #           inherit.aes = FALSE) +
-#   geom_glyph_box(height = ggplot2::rel(2), width = ggplot2::rel(2.3)) +
+#   #geom_glyph_box(height = ggplot2::rel(2), width = ggplot2::rel(2.3)) +
 #   geom_glyph_ribbon() +
 #   labs(title = "Australian daily temperature",
 #        subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",

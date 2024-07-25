@@ -15,7 +15,7 @@ test_that("Plot returns ggplot object" ,{
   p <- data |>
     ggplot2::ggplot(
       ggplot2::aes(x_major = long, y_major = lat,
-                   x_minor = date, y_minor = min, ymax_minor = max)) +
+                   x_minor = date, ymin_minor = min, ymax_minor = max)) +
     geom_glyph_ribbon()
   expect_s3_class(p, "ggplot")
 })
@@ -25,26 +25,26 @@ test_that("geom_ribbon() checks the aesthetics", {
   # omit ymax_minor
   p <- ggplot2::ggplot(data,
               ggplot2::aes(x_major = long, y_major = lat,
-                          x_minor = date, y_minor = min)) +
+                          x_minor = date, ymin_minor = min)) +
     geom_glyph_ribbon()
   expect_error(ggplot2::ggplotGrob(p))
 
   p <- ggplot2::ggplot(data,
                        ggplot2::aes(x_major = long, ymax_minor = max,
-                                    x_minor = date, y_minor = min)) +
+                                    x_minor = date, ymin_minor = min)) +
     geom_glyph_ribbon()
   expect_error(ggplot2::ggplotGrob(p))
 
 
   p <- ggplot2::ggplot(data,
                        ggplot2::aes(x_major = long, y_major = lat, ymax_minor = max,
-                                    x_minor = as.character(date), y_minor = min)) +
+                                    x_minor = as.character(date), ymin_minor = min)) +
     geom_glyph_ribbon(width = "a")
   expect_error(ggplot2::ggplotGrob(p))
 
   p <- ggplot2::ggplot(data,
                        ggplot2::aes(x_major = long, y_major = lat, ymax_minor = max,
-                                    x_minor = as.character(date), y_minor = min)) +
+                                    x_minor = as.character(date), ymin_minor = min)) +
     geom_glyph_ribbon(height = "b")
   expect_error(ggplot2::ggplotGrob(p))
 
@@ -59,7 +59,7 @@ test_that("geom_ribbon() handles missing data in long, lat, or temperature", {
   p <- df |>
     ggplot2::ggplot(
       ggplot2::aes(x_major = long, y_major = lat,
-                   x_minor = date, y_minor = min, ymax_minor = max)) +
+                   x_minor = date, ymin_minor = min, ymax_minor = max)) +
     geom_glyph_ribbon()
   expect_warning(print(p), "Removed rows containing missing values")
 })
@@ -69,7 +69,7 @@ test_that("geom_ribbon works in both directions", {
   p <- data |>
     ggplot2::ggplot(
       ggplot2::aes(x_major = long, y_major = lat,
-                   x_minor = date, y_minor = max, ymax_minor = min)) +
+                   x_minor = date, ymin_minor = max, ymax_minor = min)) +
     geom_glyph_ribbon()
   x <- ggplot2::ggplot_build(p)$data[[1]]
   expect_false(is.null(x))
@@ -77,7 +77,7 @@ test_that("geom_ribbon works in both directions", {
   flipped <- data |>
     ggplot2::ggplot(
       ggplot2::aes(x_major = long, y_major = lat,
-                   x_minor = date, y_minor = min, ymax_minor = max)) +
+                   x_minor = date, ymin_minor = min, ymax_minor = max)) +
     geom_glyph_ribbon()
 
   y <- ggplot2::ggplot_build(flipped)$data[[1]]
@@ -96,7 +96,7 @@ test_that("geom_ribbon interacts correctly with other geoms", {
   p <- df |>
     ggplot2::ggplot(
       ggplot2::aes(x_major = long, y_major = lat,
-                   x_minor = date, y_minor = min, ymax_minor = max)) +
+                   x_minor = date, ymin_minor = min, ymax_minor = max)) +
     geom_glyph_ribbon() +
     ggplot2::geom_point()
   expect_s3_class(p, "ggplot")
@@ -106,7 +106,7 @@ test_that("geom_ribbon interacts correctly with other geoms", {
 #   p <- data |>
 #     ggplot2::ggplot(
 #       ggplot2::aes(x_major = long, y_major = lat,
-#                    x_minor = date, y_minor = min, ymax_minor = max)) +
+#                    x_minor = date, ymin_minor = min, ymax_minor = max)) +
 #     geom_glyph_ribbon()
 #
 #   disp_hist_base <- function() hist(mtcars$disp)
