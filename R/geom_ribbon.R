@@ -20,7 +20,7 @@
 #' # Basic glyph map with base map and custom theme
 #' aus_temp |>
 #'   ggplot(aes(x_major = long, y_major = lat,
-#'          x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
+#'          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
 #'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
 #'           color = "white",inherit.aes = FALSE) +
 #'   geom_glyph_ribbon() +
@@ -30,7 +30,7 @@
 #' # Adjust width and height of the glyph
 #' aus_temp |>
 #'   ggplot(aes(x_major = long, y_major = lat,
-#'          x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
+#'          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
 #'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
 #'           color = "white",inherit.aes = FALSE) +
 #'   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
@@ -40,7 +40,7 @@
 #' library(cubble)
 #' aus_temp |>
 #'   ggplot(aes(x_major = long, y_major = lat,
-#'          x_minor = date, y_minor = tmin, ymax_minor = tmax)) +
+#'          x_minor = month, y_minor = tmin, ymax_minor = tmax)) +
 #'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
 #'           color = "white",inherit.aes = FALSE) +
 #'   geom_glyph_box() +
@@ -133,7 +133,6 @@ glyph_setup_data <- function(data, params) {
   }
 
 
-
   if (!any(identical(params$x_scale, identity),
            identical(params$y_scale, identity))){
 
@@ -150,7 +149,9 @@ glyph_setup_data <- function(data, params) {
 
 
  # Linear transformation using scaled positional adjustment
-  if (params$global_rescale == TRUE) {data <- data |> dplyr::ungroup()}
+  if (params$global_rescale == TRUE) {
+    data <- data |> dplyr::ungroup()
+  }
 
   data <- data |>
     tidyr::pivot_longer(cols = c(.data$y_minor, .data$ymax_minor),
@@ -168,6 +169,12 @@ glyph_setup_data <- function(data, params) {
                    ymax = glyph_mapping(.data$y_major,
                                         .data$ymax_minor,
                                         params$height))
+
+  # Ensure linewidth is initialized
+  if (!("linewidth" %in% colnames(data))) {
+    data$linewidth <- 0.5
+  }
+
   data |> dplyr::ungroup()
 }
 
@@ -219,6 +226,6 @@ get_scale <- function(x) {
 #        subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
 #        caption = "Data source: RNOAA ",
 #        x = "Longtitude", y = "Latitude") +
-#   coord_sf(xlim = c(112, 155)) +
+#   coord_sf(xlim = c(113, 154)) +
 #   theme_glyph() # custom theme
 
