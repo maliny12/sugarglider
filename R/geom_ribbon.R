@@ -132,7 +132,7 @@ add_glyph_boxes <- function( mapping = NULL, data = NULL,
                              x_major = NULL, y_major = NULL, x_minor = NULL,
                              ymin_minor = NULL, ymax_minor = NULL, alpha = 1,
                              height = ggplot2::rel(2), width = ggplot2::rel(2.3),
-                             color = "grey", linetype = "solid", fill = "white",
+                             color = "grey85", linetype = "solid", fill = "white",
                              inherit.aes = TRUE, show.legend = NA, ...) {
   ggplot2::layer(
     geom = GeomGlyphBox,
@@ -163,7 +163,7 @@ GeomGlyphBox <- ggplot2::ggproto(
                    "x_minor", "ymin_minor", "ymax_minor"),
 
   default_aes = ggplot2::aes(
-    linetype = "solid", fill = "white", color = "grey",
+    linetype = "solid", fill = "white", color = "grey85",
     linewidth = 0.5, alpha = 0.5,
     width = ggplot2::rel(2.3),
     height = ggplot2::rel(2)
@@ -223,7 +223,7 @@ GeomGlyphLine <- ggplot2::ggproto(
                    "x_minor", "ymin_minor", "ymax_minor"),
 
   default_aes = ggplot2::aes(
-    linetype = "solid", color = "grey",
+    linetype = "solid", color = "grey85",
     linewidth = 0.5, alpha = 1,
     width = ggplot2::rel(2.3),
     height = ggplot2::rel(2)
@@ -240,9 +240,63 @@ GeomGlyphLine <- ggplot2::ggproto(
 
 )
 
+add_ribbon_legend <- function( mapping = NULL, data = NULL,
+                        stat = "identity", position = "identity",
+                        na.rm = FALSE, show.legend = NA,
+                        x_major = NULL, y_major = NULL,
+                        x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
+                        x_scale = identity, y_scale = identity,
+                        global_rescale = TRUE, inherit.aes = TRUE, ...) {
+  ggplot2::layer(
+    geom = GeomGlyphLegend,
+    mapping = mapping,
+    data = data,
+    stat = stat,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(
+      x_scale = list(x_scale),
+      y_scale = list(y_scale),
+      global_rescale = global_rescale,
+      ...)
+  )
+
+}
+
+# Define the ggproto object for the custom geom
+GeomGlyphLegend <- ggplot2::ggproto(
+  "GeomGlyphLegend", ggplot2::Geom,
+  ## Aesthetic
+  required_aes = c("x_minor", "ymin_minor", "ymax_minor"),
+
+  default_aes = ggplot2::aes(
+    linetype = 1, fill = "grey40", color = "grey50",
+    linewidth = 0.5, alpha = 0.8,
+    x_scale = list(identity),
+    y_scale = list(identity),
+    global_rescale = TRUE
+  ),
+
+  setup_data = function(data, params){
+    data <- glyph_setup_data(data, params, legend = TRUE)
+  },
+
+  # Draw polygons
+  draw_panel = function(panel_params, coord, ...) {
+
+    ggplot2::GeomCustomAnn$draw_panel(xmin = -Inf, ymin = -Inf,
+                                      xmax = Inf, ymax = Inf, panel_params)
+
+  }
+
+)
+
 #######################################################
 # glyph_setup_data: prepare data for geom_glyph_ribbon
-glyph_setup_data <- function(data, params) {
+glyph_setup_data <- function(data, params,...) {
+
+  arg <- list(...)
 
   stopifnot(class(data$x_minor) %in% c("Date", "yearmonth", "numeric",
                                        "yearweek", "yearquarter", "yearqtr",
@@ -282,29 +336,37 @@ glyph_setup_data <- function(data, params) {
       )
   }
 
-
-
- # Linear transformation using scaled positional adjustment
-  if (isTRUE(params$global_rescale)) {
-    data <- data |> dplyr::ungroup()
-  }
-
+  if (isTRUE(params$global_rescale)) { data <- data |> dplyr::ungroup() }
   data <- data |>
     tidyr::pivot_longer(cols = c("ymin_minor", "ymax_minor"),
                         names_to = "type", values_to = "value") |>
     dplyr::mutate(scaled_data = rescale(value)) |>
     dplyr::select(-value) |>
-    tidyr::pivot_wider(names_from = "type", values_from = "scaled_data") |>
-    dplyr::mutate(
-                  x = glyph_mapping(.data$x_major,
-                                    rescale(.data$x_minor),
-                                    params$width),
-                  ymin = glyph_mapping(.data$y_major,
-                                        .data$ymin_minor,
-                                        params$height),
-                   ymax = glyph_mapping(.data$y_major,
-                                        .data$ymax_minor,
-                                        params$height))
+    tidyr::pivot_wider(names_from = "type", values_from = "scaled_data")
+
+  if (isTRUE(arg[[1]])){
+    # Skip the linear transformation for legend data
+    data <- data |>
+      dplyr::mutate(com = interaction(.data$x_major, .data$y_major)) |>
+      dplyr::filter(com == sample(com, 1)) |>
+      dplyr::select(-com)
+
+  } else {
+
+    # Linear transformation using scaled positional adjustment
+    data <- data |>
+      dplyr::mutate(
+        x = glyph_mapping(.data$x_major,
+                          rescale(.data$x_minor),
+                          params$width),
+        ymin = glyph_mapping(.data$y_major,
+                             .data$ymin_minor,
+                             params$height),
+        ymax = glyph_mapping(.data$y_major,
+                             .data$ymax_minor,
+                             params$height))
+  }
+
 
   # Ensure linewidth is initialized
   if (!("linewidth" %in% colnames(data))) {
@@ -365,6 +427,7 @@ get_scale <- function(x) {
   fnc
 }
 
+# custom_scale: Retrieve scaling function
 custom_scale <- function(dx){
   if (is.null(dx)){
     return(FALSE)
@@ -375,14 +438,24 @@ custom_scale <- function(dx){
   }
 }
 
+glyph_setup_grob <- function(data, panel_params){
+  p_grob <- ggplot2::ggplot( data,
+              ggplot2::aes(x = data$x_minor,ymin = data$ymin_minor,
+                           ymax = data$ymax_minor)) +
+          ggplot2::geom_ribbon()
+
+  ggplot2::ggplotGrob(p_grob)
+}
+
 
 ############################# Testing
-# # # # ## Load cubble for `geom_glyph_box()`
+# # # # # ## Load cubble for `geom_glyph_box()`
 # library(ggplot2)
 # library(sf)
 #
-# aus_temp |>
-#   ggplot(aes(x_major = long, y_major = lat,
+# data |>
+#   group_by(year,id)|>
+#   ggplot(aes(x_major = long, y_major = lat, fill = interaction(year,id),
 #              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
 #   geom_sf(data = ozmaps::abs_ste,
 #           fill = "grey95", color = "white",
@@ -396,4 +469,42 @@ custom_scale <- function(dx){
 #        x = "Longtitude", y = "Latitude") +
 #   coord_sf(xlim = c(113, 154)) +
 #   theme_glyph() # custom theme
+
+# # #
+# library(ggplot2)
+# library(sf)
+# library(tidyverse)
+# library(grid) # For the viewport function
+#
+# aus_temp |>
+# ggplot(aes(x_major = long, y_major = lat,
+#             x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+# geom_sf(data = ozmaps::abs_ste,
+# fill = "grey95", color = "white",
+#  inherit.aes = FALSE) +
+# add_glyph_boxes() +
+# add_ref_lines() +
+# geom_glyph_ribbon() +
+# add_ribbon_legend()
+# annotation_custom(
+#     grob = ggplotGrob(mini_plot),  # Convert mini plot to a grob
+#     xmin = 100, xmax = 120,        # X coordinates for placement
+#     ymin = -45, ymax = -35         # Y coordinates for placement
+#   )
+#
+# # Example data for the mini plot
+#   mini_data <- aus_temp |> filter(id == "ASN00001020")
+#
+#   # Create the mini plot
+#   mini_plot <- mini_data |> ggplot(aes(x_major = long, y_major = lat,
+#                           x_minor = month, ymin_minor = tmin, ymax_minor = tmax))  +
+#     geom_glyph_ribbon()
+#
+#
+#   main_plot + annotation_custom(
+#     grob = ggplotGrob(mini_plot),
+#     xmin = -Inf, xmax = -Inf,
+#     ymin = -Inf, ymax = -Inf
+#   )
+
 

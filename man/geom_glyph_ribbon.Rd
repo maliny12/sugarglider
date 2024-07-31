@@ -81,8 +81,8 @@ a warning. If \code{TRUE}, missing values are silently removed.}
 It can also be a named logical vector to finely select the aesthetics to
 display.}
 
-\item{x_major, y_major, x_minor, y_minor, ymax_minor}{Each combination of
-`x_major` and `y_major` forms a unique grid cell. `y_minor` and `ymax_minor` define
+\item{x_major, y_major, x_minor, ymin_minor, ymax_minor}{Each combination of
+`x_major` and `y_major` forms a unique grid cell. `ymin_minor` and `ymax_minor` define
 the lower and upper bounds of the geom_ribbon.}
 
 \item{height, width}{The height and width of each glyph.}
@@ -129,7 +129,7 @@ A ggplot object.
 \description{
 This function creates a ribbon geometry designed to display glyphs based on
 the combination of `x_major` and `y_major`. For each `x_minor` value,
-`geom_glyph_ribbon()` displays a y interval defined by `y_minor` and `ymax_minor`.
+`geom_glyph_ribbon()` displays a y interval defined by `ymin_minor` and `ymax_minor`.
 }
 \examples{
 
