@@ -344,7 +344,7 @@ glyph_setup_data <- function(data, params,...) {
     dplyr::select(-value) |>
     tidyr::pivot_wider(names_from = "type", values_from = "scaled_data")
 
-  if (isTRUE(arg[[1]])){
+  if (isTRUE(arg)){
     # Skip the linear transformation for legend data
     data <- data |>
       dplyr::mutate(com = interaction(.data$x_major, .data$y_major)) |>
@@ -485,6 +485,8 @@ glyph_setup_grob <- function(data, panel_params){
 # add_glyph_boxes() +
 # add_ref_lines() +
 # geom_glyph_ribbon() +
+# coord_sf(xlim = c(113, 154)) +
+# theme_glyph()
 # add_ribbon_legend()
 # annotation_custom(
 #     grob = ggplotGrob(mini_plot),  # Convert mini plot to a grob

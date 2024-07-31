@@ -1,8 +1,12 @@
 ---
-editor_options: 
-  markdown: 
-    wrap: 72
+title: "README"
+output: html_document
+date: "2024-07-31"
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
 
 # ribbon
 
@@ -40,3 +44,4 @@ aus_temp |>
 # Download the development version from GitHub:
 devtools::install_github("maliny12/ribbon")
 ```
+
