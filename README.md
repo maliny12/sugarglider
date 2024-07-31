@@ -1,9 +1,3 @@
----
-output: 
-  html_document: 
-    smart: false
-    keep_md: true
----
 
 # ribbon
 
