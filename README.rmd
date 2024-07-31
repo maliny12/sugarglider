@@ -1,3 +1,9 @@
+---
+output: 
+  html_document: 
+    smart: false
+    keep_md: true
+---
 
 # ribbon
 
@@ -11,7 +17,7 @@ based on the combination of `x_major` and `y_major`. For each `x_minor`
 value, `geom_glyph_ribbon()` displays a y interval defined by
 `ymin_minor` and `ymax_minor`. 
 
-```{r}
+```{r, message=FALSE, warning= FALSE}
 library(ribbon)
 library(sf)
 library(ggplot2)

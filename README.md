@@ -1,3 +1,9 @@
+---
+output: 
+  html_document: 
+    smart: false
+    keep_md: true
+---
 
 # ribbon
 
@@ -11,7 +17,8 @@ based on the combination of `x_major` and `y_major`. For each `x_minor`
 value, `geom_glyph_ribbon()` displays a y interval defined by
 `ymin_minor` and `ymax_minor`. 
 
-```{r}
+
+```r
 library(ribbon)
 library(sf)
 library(ggplot2)
@@ -26,13 +33,14 @@ aus_temp |>
   geom_glyph_ribbon() +
   coord_sf(xlim = c(113, 154)) +
   theme_glyph()
-
 ```
-![]
+
+![](README_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
 
 ### Installation
 
-```{r, eval=FALSE}
+
+```r
 # Download the development version from GitHub:
 devtools::install_github("maliny12/ribbon")
 ```
