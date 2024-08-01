@@ -94,7 +94,7 @@ GeomGlyphRibbon <- ggplot2::ggproto(
     ),
 
   setup_data = function(data, params) {
-    data <- glyph_setup_data(data, params)
+    data <- glyph_setup_data(data, params, legend = FALSE)
   },
 
 
@@ -170,7 +170,7 @@ GeomGlyphBox <- ggplot2::ggproto(
   ),
 
   setup_data = function(data, params) {
-    data <- glyph_setup_data(data, params)
+    data <- glyph_setup_data(data, params, legend = FALSE)
     glyph_box(data, params)
   },
 
@@ -230,7 +230,7 @@ GeomGlyphLine <- ggplot2::ggproto(
   ),
 
   setup_data = function(data, params) {
-    data <- glyph_setup_data(data, params)
+    data <- glyph_setup_data(data, params, legend = FALSE)
     ref_line(data, params)
   },
 
@@ -241,7 +241,7 @@ GeomGlyphLine <- ggplot2::ggproto(
 )
 
 add_ribbon_legend <- function( mapping = NULL, data = NULL,
-                        stat = "identity", position = "identity",
+                        stat = ggplot2::StatIdentity, position = ggplot2::PositionIdentity,
                         na.rm = FALSE, show.legend = NA,
                         x_major = NULL, y_major = NULL,
                         x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
@@ -283,10 +283,15 @@ GeomGlyphLegend <- ggplot2::ggproto(
   },
 
   # Draw polygons
-  draw_panel = function(panel_params, coord, ...) {
+  draw_panel = function(data, panel_params, coord, ...) {
 
-    ggplot2::GeomCustomAnn$draw_panel(xmin = -Inf, ymin = -Inf,
-                                      xmax = Inf, ymax = Inf, panel_params)
+    grob <- glyph_setup_grob(data, panel_params)
+    sample_vp <- viewport(x = 0.5, y = 0.5,
+                          width = 0.5, height = 0.5,
+                          just = c("left", "bottom"))
+    pushViewport(sample_vp)
+    grid.draw(grob)
+    popViewport()
 
   }
 
@@ -344,7 +349,7 @@ glyph_setup_data <- function(data, params,...) {
     dplyr::select(-value) |>
     tidyr::pivot_wider(names_from = "type", values_from = "scaled_data")
 
-  if (isTRUE(arg)){
+  if (isTRUE(arg[[1]])){
     # Skip the linear transformation for legend data
     data <- data |>
       dplyr::mutate(com = interaction(.data$x_major, .data$y_major)) |>
@@ -439,19 +444,16 @@ custom_scale <- function(dx){
 }
 
 glyph_setup_grob <- function(data, panel_params){
-  p_grob <- ggplot2::ggplot( data,
-              ggplot2::aes(x = data$x_minor,ymin = data$ymin_minor,
-                           ymax = data$ymax_minor)) +
-          ggplot2::geom_ribbon()
+  p_grob <- data |> ggplot2::ggplot(
+              ggplot2::aes(x_major = x_major, y_major = y_major, x_minor = x_minor,
+                           ymin_minor = ymin_minor, ymax_minor = ymax_minor)) +
+          geom_glyph_ribbon()
 
-  ggplot2::ggplotGrob(p_grob)
+  ggplotify::as.grob(p_grob)
 }
 
 
 ############################# Testing
-# # # # # ## Load cubble for `geom_glyph_box()`
-# library(ggplot2)
-# library(sf)
 #
 # data |>
 #   group_by(year,id)|>
@@ -470,43 +472,78 @@ glyph_setup_grob <- function(data, panel_params){
 #   coord_sf(xlim = c(113, 154)) +
 #   theme_glyph() # custom theme
 
-# # #
+
 # library(ggplot2)
 # library(sf)
 # library(tidyverse)
 # library(grid) # For the viewport function
+#
+#
+# aus_temp |>
+#   ggplot(aes(x_major = long, y_major = lat,
+#              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+#   geom_sf(data = ozmaps::abs_ste,
+#           fill = "grey95", color = "white",
+#           inherit.aes = FALSE) +
+#   add_glyph_boxes() +
+#   add_ref_lines() +
+#   geom_glyph_ribbon() +
+#   coord_sf(xlim = c(113, 154)) +
+#   theme_glyph()
+#
+#
+
+#
+# mini_data <- aus_temp |> filter(`id` == "ASN00001020")
+# mini_plot <- mini_data |> ggplot(aes(x_major = long, y_major = lat,
+#                   x_minor = month, ymin_minor = tmin, ymax_minor = tmax))  +
+#          geom_glyph_ribbon()
 #
 # aus_temp |>
 # ggplot(aes(x_major = long, y_major = lat,
 #             x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
 # geom_sf(data = ozmaps::abs_ste,
 # fill = "grey95", color = "white",
-#  inherit.aes = FALSE) +
+# inherit.aes = FALSE) +
 # add_glyph_boxes() +
 # add_ref_lines() +
 # geom_glyph_ribbon() +
-# coord_sf(xlim = c(113, 154)) +
-# theme_glyph()
-# add_ribbon_legend()
+# theme_glyph() +
 # annotation_custom(
-#     grob = ggplotGrob(mini_plot),  # Convert mini plot to a grob
-#     xmin = 100, xmax = 120,        # X coordinates for placement
-#     ymin = -45, ymax = -35         # Y coordinates for placement
-#   )
-#
-# # Example data for the mini plot
-#   mini_data <- aus_temp |> filter(id == "ASN00001020")
-#
-#   # Create the mini plot
-#   mini_plot <- mini_data |> ggplot(aes(x_major = long, y_major = lat,
-#                           x_minor = month, ymin_minor = tmin, ymax_minor = tmax))  +
-#     geom_glyph_ribbon()
-#
-#
-#   main_plot + annotation_custom(
 #     grob = ggplotGrob(mini_plot),
-#     xmin = -Inf, xmax = -Inf,
-#     ymin = -Inf, ymax = -Inf
+#      xmin = 95, xmax = 115,
+#      ymin = -45, ymax = -35
 #   )
+
+# aus_temp |>
+#   ggplot(aes(x_major = long, y_major = lat,
+#              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+#   geom_sf(data = ozmaps::abs_ste,
+#           fill = "grey95", color = "white",
+#           inherit.aes = FALSE)  +
+#   add_glyph_boxes() +
+#   add_ref_lines() +
+#   geom_glyph_ribbon() +
+#   theme_void() +
+#   add_ribbon_legend()
+#
+#
+# aus_temp |>
+#    ggplot(aes(x_major = long, y_major = lat,
+#               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+#    geom_sf(data = ozmaps::abs_ste,
+#                  fill = "grey95", color = "white",
+#                  inherit.aes = FALSE) +
+#   add_ribbon_legend() +
+
+
+
+
+
+
+
+
+
+
 
 
