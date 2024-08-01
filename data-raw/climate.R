@@ -31,7 +31,6 @@ prcp_data_raw <- stations |>
 aus_temp <- prcp_data_raw |>
   unnest(temp) |>
   na.omit() |>
-  mutate(quarter = floor_date(date, "quarter")) |>
   mutate(month = lubridate::month(date)) |>
   group_by(id, long, lat, month) |>
   summarise(tmin = mean(tmin),
