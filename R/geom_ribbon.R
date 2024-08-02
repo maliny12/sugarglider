@@ -132,8 +132,7 @@ add_glyph_boxes <- function( mapping = NULL, data = NULL,
                              x_major = NULL, y_major = NULL, x_minor = NULL,
                              ymin_minor = NULL, ymax_minor = NULL, alpha = 1,
                              height = ggplot2::rel(2), width = ggplot2::rel(2.3),
-                             color = "grey85", linetype = "solid", fill = "white",
-                             inherit.aes = TRUE, show.legend = NA, ...) {
+                             fill = "white", inherit.aes = TRUE, show.legend = NA, ...) {
   ggplot2::layer(
     geom = GeomGlyphBox,
     mapping = mapping,
@@ -145,10 +144,7 @@ add_glyph_boxes <- function( mapping = NULL, data = NULL,
     params = list(
       height = height,
       width = width,
-      color = color,
-      linetype = linetype,
       fill = fill,
-      alpha = alpha,
       ...)
   )
 
@@ -456,53 +452,53 @@ glyph_setup_grob <- function(data, panel_params){
 
 ############################# Testing
 #
-# data |>
-#   group_by(year,id)|>
-#   ggplot(aes(x_major = long, y_major = lat, fill = interaction(year,id),
-#              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-#   geom_sf(data = ozmaps::abs_ste,
-#           fill = "grey95", color = "white",
-#           inherit.aes = FALSE) +
-#   add_glyph_boxes() +
-#   add_ref_lines() +
-#   geom_glyph_ribbon() +
-#   labs(title = "Australian daily temperature",
-#        subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
-#        caption = "Data source: RNOAA ",
-#        x = "Longtitude", y = "Latitude") +
-#   coord_sf(xlim = c(113, 154)) +
-#   theme_glyph() # custom theme
+data |>
+  group_by(year,id)|>
+  ggplot(aes(x_major = long, y_major = lat, fill = interaction(year,id),
+             x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+  geom_sf(data = ozmaps::abs_ste,
+          fill = "grey95", color = "white",
+          inherit.aes = FALSE) +
+  add_glyph_boxes() +
+  add_ref_lines() +
+  geom_glyph_ribbon() +
+  labs(title = "Australian daily temperature",
+       subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
+       caption = "Data source: RNOAA ",
+       x = "Longtitude", y = "Latitude") +
+  coord_sf(xlim = c(113, 154)) +
+  theme_glyph() # custom theme
 
 #########################################
-# library(ggplot2)
-# library(sf)
-# library(tidyverse)
-# library(grid)
-# aus_temp |>
-#   ggplot(aes(x_major = long, y_major = lat,
-#              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-#   geom_sf(data = ozmaps::abs_ste,
-#           fill = "grey95", color = "white",
-#           inherit.aes = FALSE)  +
-#   add_glyph_boxes() +
-#   add_ref_lines() +
-#   geom_glyph_ribbon() +
-#   add_ribbon_legend() +
-#  theme_void()
+library(ggplot2)
+library(sf)
+library(tidyverse)
+library(grid)
+aus_temp |>
+  ggplot(aes(x_major = long, y_major = lat,
+             x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+  geom_sf(data = ozmaps::abs_ste,
+          fill = "grey95", color = "white",
+          inherit.aes = FALSE)  +
+  add_glyph_boxes() +
+  add_ref_lines() +
+  geom_glyph_ribbon() +
+  add_ribbon_legend() +
+ theme_void()
 #
-# aus_temp |>
-#   group_by(id) |>
-#   mutate(prcp = sample(1:100, 1)) |>
-#   ggplot(aes(x_major = long, y_major = lat, fill = prcp, color = prcp,
-#              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-#   geom_sf(data = ozmaps::abs_ste,
-#           fill = "grey95", color = "white",
-#           inherit.aes = FALSE)  +
-#   add_glyph_boxes() +
-#   add_ref_lines() +
-#   geom_glyph_ribbon() +
-#   add_ribbon_legend() +
-#   theme_void()
+aus_temp |>
+  group_by(id) |>
+  mutate(prcp = sample(1:100, 1)) |>
+  ggplot(aes(x_major = long, y_major = lat, fill = prcp, color = prcp,
+             x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+  geom_sf(data = ozmaps::abs_ste,
+          fill = "grey95", color = "white",
+          inherit.aes = FALSE)  +
+  add_glyph_boxes() +
+  add_ref_lines() +
+  geom_glyph_ribbon() +
+  add_ribbon_legend() +
+  theme_void()
 
 
 
