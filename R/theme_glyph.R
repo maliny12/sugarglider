@@ -24,7 +24,7 @@
 
 theme_glyph <- function(font = "sans") {
 
-  theme_void()  %+replace%
+  theme_bw()  %+replace%
     theme(
       plot.title = element_text(
         hjust = 0, vjust = 2, size = 18,
