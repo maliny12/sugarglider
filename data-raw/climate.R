@@ -30,12 +30,11 @@ prcp_data_raw <- stations |>
 
 aus_temp <- prcp_data_raw |>
   unnest(temp) |>
-  na.omit() |>
   mutate(month = lubridate::month(date)) |>
   group_by(id, long, lat, month) |>
-  summarise(tmin = mean(tmin),
-           tmax = mean(tmax),
-           prcp = mean(prcp),
+  summarise(tmin = mean(tmin, na.rm = TRUE),
+           tmax = mean(tmax, na.rm = TRUE),
+           prcp = mean(prcp, na.rm = TRUE),
            .groups = "drop")
 
 usethis::use_data(aus_temp, overwrite = TRUE)
@@ -53,13 +52,12 @@ hist_data_raw <- stations |>
 
 historical_temp <- hist_data_raw |>
   unnest(temp) |>
-  na.omit() |>
   mutate(month = lubridate::month(date),
          year = lubridate::year(date)) |>
   group_by(id, long, lat, month, year) |>
-  summarise(tmin = mean(tmin),
-            tmax = mean(tmax),
-            prcp = mean(prcp),
+  summarise(tmin = mean(tmin, na.rm = TRUE),
+            tmax = mean(tmax, na.rm = TRUE),
+            prcp = mean(prcp, na.rm = TRUE),
             .groups = "drop")
 
 usethis::use_data(historical_temp, overwrite = TRUE)

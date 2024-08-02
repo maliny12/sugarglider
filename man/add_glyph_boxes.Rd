@@ -17,8 +17,6 @@ add_glyph_boxes(
   alpha = 1,
   height = ggplot2::rel(2),
   width = ggplot2::rel(2.3),
-  color = "grey85",
-  linetype = "solid",
   fill = "white",
   inherit.aes = TRUE,
   show.legend = NA,
@@ -36,13 +34,13 @@ for major and minor glyph components.}
 
 \item{height, width}{The relative height and width of each glyph box.}
 
-\item{color}{The color of the outline of the glyph box.}
-
-\item{linetype}{The type of line to use for the outline of the glyph box.}
-
 \item{fill}{The color used to fill the glyph box.}
 
 \item{...}{Additional parameters.}
+
+\item{color}{The color of the outline of the glyph box.}
+
+\item{linetype}{The type of line to use for the outline of the glyph box.}
 }
 \value{
 A layer object that can be added to a ggplot.

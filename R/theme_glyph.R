@@ -41,14 +41,14 @@ theme_glyph <- function(font = "sans") {
       axis.title = element_text(
         family = font, size = 10
       ),
-      axis.text = element_text(
-        family = font, size = 9
-      ),
-      axis.text.x = element_text(
-        margin = margin(5, b = 10)
-      ),
-      panel.grid.major = element_line(
-        color = gray(.8), linetype = "dashed", size = 0.2
-      )
+      axis.text = element_blank(),
+      axis.text.x = element_blank(),
+      axis.ticks = element_blank(),
+      plot.background = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.background = element_rect(fill = "transparent",
+                                      color = NA),
+      panel.border = element_blank()
     )
 }

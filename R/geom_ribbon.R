@@ -237,7 +237,7 @@ GeomGlyphLine <- ggplot2::ggproto(
 )
 
 add_ribbon_legend <- function( mapping = NULL, data = NULL,
-                        stat = ggplot2::StatIdentity, position = ggplot2::PositionIdentity,
+                        stat = "identity", position = "identity",
                         na.rm = FALSE, show.legend = NA,
                         x_major = NULL, y_major = NULL,
                         x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
@@ -279,12 +279,12 @@ GeomGlyphLegend <- ggplot2::ggproto(
   },
 
   # Draw polygons
-  draw_panel = function(data, panel_params, coord, ...) {
+  draw_panel = function(data, panel_params, coord, params, ...) {
 
     grob <- glyph_setup_grob(data, panel_params)
-    sample_vp <- viewport(x = 0, y = 0,
-                          width = 0.25, height = 0.25,
-                          just = c("left", "bottom"))
+    sample_vp <- viewport(x = 0.13, y = 0.02,
+                          width = 0.23, height = 0.23,
+                          just = c("bottom"))
     pushViewport(sample_vp)
     grid.draw(grob)
     popViewport()
@@ -452,10 +452,9 @@ glyph_setup_grob <- function(data, panel_params){
 
 ############################# Testing
 
-# data |>
-#   group_by(year,id) |>
-#   ggplot(aes(x_major = long, y_major = lat, fill = interaction(year,id),
-#              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+# historical_temp |>
+#   ggplot(aes(x_major = long, y_major = lat, fill = factor(year), color = interaction(year),
+#              x_minor = month, ymin_minor = tmin, ymax_minor = tmax )) +
 #   geom_sf(data = ozmaps::abs_ste,
 #           fill = "grey95", color = "white",
 #           inherit.aes = FALSE) +
@@ -468,7 +467,7 @@ glyph_setup_grob <- function(data, panel_params){
 #        x = "Longtitude", y = "Latitude") +
 #   coord_sf(xlim = c(113, 154)) +
 #   theme_glyph() # custom theme
-#
+
 # #########################################
 # library(ggplot2)
 # library(sf)
