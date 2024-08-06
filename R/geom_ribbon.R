@@ -76,7 +76,11 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL,
 
 }
 
-# Define the ggproto object for the custom geom
+#' GeomGlyphRibbon
+#' @rdname ribbon
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomGlyphRibbon <- ggplot2::ggproto(
   "GeomGlyphRibbon", ggplot2::GeomRibbon,
   ## Aesthetic
@@ -109,8 +113,10 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 #'
 #'This function introduces a custom layer to a ggplot, employing 'glyph boxes'
 #'to visually represent individual glyph. Users can specify various aesthetics
-#'including alpha, height, width, color, linetype, and fill to customize the appearance.
-#'
+#'including alpha, height, width, color, line type, and fill to customize the appearance.
+
+#' @inheritParams ggplot2::layer
+#' @inheritParams ggplot2::geom_path
 #' @param data The data to be displayed in this layer. If \code{NULL}, the default, the data is
 #' inherited from the plot data as specified in the call to \code{ggplot()}.
 #' @param x_major,y_major,x_minor,ymin_minor,ymax_minor Aesthetics to map plot coordinates
@@ -125,8 +131,6 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 #' @return A layer object that can be added to a ggplot.
 #'
 #' @export
-
-
 add_glyph_boxes <- function( mapping = NULL, data = NULL,
                              stat = "identity", position = "identity",
                              x_major = NULL, y_major = NULL, x_minor = NULL,
@@ -151,7 +155,11 @@ add_glyph_boxes <- function( mapping = NULL, data = NULL,
 
 }
 
-
+#' GeomGlyphBox
+#' @rdname ribbon
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomGlyphBox <- ggplot2::ggproto(
   "GeomGlyphBox", ggplot2::Geom,
   ## Aesthetic
@@ -177,17 +185,18 @@ GeomGlyphBox <- ggplot2::ggproto(
 
 )
 
-#' Add Reference Lines to glyph plot
+#' Add reference lines to glyph plot
 #'
 #' This function draw reference lines that include both major and minor division markers.
 #'
+#' @inheritParams ggplot2::layer
+#' @inheritParams ggplot2::geom_path
 #' @param data The data to be displayed in this layer. If \code{NULL}, the default, the data is
 #' inherited from the plot data as specified in the call to \code{ggplot()}.
 #' @param x_major,y_major,x_minor,ymin_minor,ymax_minor Aesthetics to map plot coordinates
 #' for major and minor glyph components.
 #' @return A ggplot2 layer.
 #' @export
-
 add_ref_lines <- function( mapping = NULL, data = NULL,
                              stat = "identity", position = "identity",
                              show.legend = NA, x_major = NULL, y_major = NULL,
@@ -211,7 +220,11 @@ add_ref_lines <- function( mapping = NULL, data = NULL,
 
 }
 
-
+#' GeomGlyphLine
+#' @rdname ribbon
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomGlyphLine <- ggplot2::ggproto(
   "GeomGlyphLine", ggplot2::Geom,
   ## Aesthetic
@@ -236,6 +249,15 @@ GeomGlyphLine <- ggplot2::ggproto(
 
 )
 
+#' Add Ribbon Legend Layer to a ggplot
+#'
+#' This function adds a custom ribbon legend layer to a ggplot object using
+#' the specified aesthetics and parameters.
+#'
+#' @param x_minor,ymin_minor,ymax_minor Aesthetics to map plot coordinates
+#' for major and minor glyph components.
+#' @return A ggplot2 layer.
+#' @export
 add_ribbon_legend <- function( mapping = NULL, data = NULL,
                         stat = "identity", position = "identity",
                         na.rm = FALSE, show.legend = NA,
@@ -260,9 +282,13 @@ add_ribbon_legend <- function( mapping = NULL, data = NULL,
 
 }
 
-# Define the ggproto object for the custom geom
+#' GeomGlyphLegend
+#' @rdname ribbon
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomGlyphLegend <- ggplot2::ggproto(
-  "GeomGlyphLegend", ggplot2::GeomRibbon,
+  "GeomGlyphLegend", ggplot2::Geom,
   ## Aesthetic
   required_aes = c("x_minor", "ymin_minor", "ymax_minor"),
 

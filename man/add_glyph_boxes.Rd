@@ -24,8 +24,39 @@ add_glyph_boxes(
 )
 }
 \arguments{
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}}. If specified and
+\code{inherit.aes = TRUE} (the default), it is combined with the default mapping
+at the top level of the plot. You must supply \code{mapping} if there is no plot
+mapping.}
+
 \item{data}{The data to be displayed in this layer. If \code{NULL}, the default, the data is
 inherited from the plot data as specified in the call to \code{ggplot()}.}
+
+\item{stat}{The statistical transformation to use on the data for this layer.
+When using a \verb{geom_*()} function to construct a layer, the \code{stat}
+argument can be used the override the default coupling between geoms and
+stats. The \code{stat} argument accepts the following:
+\itemize{
+\item A \code{Stat} ggproto subclass, for example \code{StatCount}.
+\item A string naming the stat. To give the stat as a string, strip the
+function name of the \code{stat_} prefix. For example, to use \code{stat_count()},
+give the stat as \code{"count"}.
+\item For more information and other ways to specify the stat, see the
+\link[ggplot2:layer_stats]{layer stat} documentation.
+}}
+
+\item{position}{A position adjustment to use on the data for this layer. This
+can be used in various ways, including to prevent overplotting and
+improving the display. The \code{position} argument accepts the following:
+\itemize{
+\item The result of calling a position function, such as \code{position_jitter()}.
+This method allows for passing extra arguments to the position.
+\item A string naming the position adjustment. To give the position as a
+string, strip the function name of the \code{position_} prefix. For example,
+to use \code{position_jitter()}, give the position as \code{"jitter"}.
+\item For more information and other ways to specify the position, see the
+\link[ggplot2:layer_positions]{layer position} documentation.
+}}
 
 \item{x_major, y_major, x_minor, ymin_minor, ymax_minor}{Aesthetics to map plot coordinates
 for major and minor glyph components.}
@@ -35,6 +66,17 @@ for major and minor glyph components.}
 \item{height, width}{The relative height and width of each glyph box.}
 
 \item{fill}{The color used to fill the glyph box.}
+
+\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+rather than combining with them. This is most useful for helper functions
+that define both data and aesthetics and shouldn't inherit behaviour from
+the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+
+\item{show.legend}{logical. Should this layer be included in the legends?
+\code{NA}, the default, includes if any aesthetics are mapped.
+\code{FALSE} never includes, and \code{TRUE} always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.}
 
 \item{...}{Additional parameters.}
 
@@ -48,5 +90,5 @@ A layer object that can be added to a ggplot.
 \description{
 This function introduces a custom layer to a ggplot, employing 'glyph boxes'
 to visually represent individual glyph. Users can specify various aesthetics
-including alpha, height, width, color, linetype, and fill to customize the appearance.
+including alpha, height, width, color, line type, and fill to customize the appearance.
 }
