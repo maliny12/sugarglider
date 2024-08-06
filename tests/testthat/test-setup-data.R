@@ -20,7 +20,7 @@ params <- list(
 
 test_that("x_minor converts to numeric correctly", {
 
-  processed_data1 <- glyph_setup_data(data, params)
+  processed_data1 <- glyph_setup_data(data, params, legend = FALSE)
   expect_true(inherits(processed_data1$x_minor, "numeric"))
 })
 
@@ -30,7 +30,7 @@ test_that("scaling functions are applied correctly", {
   params$x_scale <- list(mock_scale_function)
   params$y_scale <- list(mock_scale_function)
   params$global_rescale <- FALSE
-  processed_data <- glyph_setup_data(data, params)
+  processed_data <- glyph_setup_data(data, params, legend = FALSE)
 
   # Check if ymin_minor and ymax_minor are scaled as expected
   df <- data |>
@@ -56,7 +56,7 @@ test_that("function can handle edge cases with non-numeric and empty data", {
   edge_case_data$x_minor[1:2] <- NA  # Introducing NAs
   edge_case_data$ymin_minor[1:2] <- c(NA, NA)
   expect_warning({
-    processed_data <- glyph_setup_data(edge_case_data, params)
+    processed_data <- glyph_setup_data(edge_case_data, params, legend = FALSE)
   }, "Removed rows containing missing values")
   expect_true(all(is.na(processed_data$ymin_minor[3:4])))
 })
@@ -84,7 +84,7 @@ test_that("glyph_setup_data processes data with extreme value correctly", {
   )
   combined_data <- dplyr::bind_rows(data, extreme_values)
 
-  processed_data <- glyph_setup_data(combined_data, params) |>
+  processed_data <- glyph_setup_data(combined_data, params, legend = FALSE) |>
     dplyr::mutate(x_scaled = rescale(x_minor),
            ymin_scaled = rescale(ymin_minor),
            ymax_scaled = rescale(ymax_minor))
