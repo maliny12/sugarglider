@@ -52,3 +52,6 @@ theme_glyph <- function(font = "sans") {
       panel.border = element_blank()
     )
 }
+
+utils::globalVariables(c(".data", "%+replace%", "theme_bw", "element_rect",
+                         "theme", "element_text", "element_blank"))

@@ -5,13 +5,15 @@
 #' `geom_glyph_ribbon()` displays a y interval defined by `ymin_minor` and `ymax_minor`.
 #'
 #' @inheritParams ggplot2::layer
-#' @inheritParams ggplot2::geom_path
+#' @inheritParams ggplot2::GeomRibbon
 #' @param x_major,y_major,x_minor,ymin_minor,ymax_minor Each combination of
 #' `x_major` and `y_major` forms a unique grid cell. `ymin_minor` and `ymax_minor` define
 #' the lower and upper bounds of the geom_ribbon.
 #' @param height,width The height and width of each glyph.
 #' @param x_scale,y_scale The scaling function applied to each set of minor
 #' values within a grid cell. Defaults to `identity`.
+#' @param global_rescale A setting that determines whether to perform rescaling globally or on individual glyphs.
+#' @param ... Additional arguments passed on to function.
 #' @return A ggplot object.
 #' @examples
 #'
@@ -47,11 +49,8 @@
 #   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
 #   theme_glyph()
 
-
-# Define a wrapper function
-geom_glyph_ribbon <- function( mapping = NULL, data = NULL,
+geom_glyph_ribbon <- function( mapping = NULL, data = NULL, show.legend = NA,
                                stat = "identity", position = "identity",
-                               na.rm = FALSE, show.legend = NA,
                                x_major = NULL, y_major = NULL,
                                x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
                                height = ggplot2::rel(2), width = ggplot2::rel(2.3),
@@ -77,7 +76,6 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL,
 }
 
 #' GeomGlyphRibbon
-#' @rdname ribbon
 #' @format NULL
 #' @usage NULL
 #' @export
@@ -114,19 +112,17 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 #'This function introduces a custom layer to a ggplot, employing 'glyph boxes'
 #'to visually represent individual glyph. Users can specify various aesthetics
 #'including alpha, height, width, color, line type, and fill to customize the appearance.
-
+#'
 #' @inheritParams ggplot2::layer
-#' @inheritParams ggplot2::geom_path
+#' @inheritParams ggplot2::GeomRect
 #' @param data The data to be displayed in this layer. If \code{NULL}, the default, the data is
 #' inherited from the plot data as specified in the call to \code{ggplot()}.
 #' @param x_major,y_major,x_minor,ymin_minor,ymax_minor Aesthetics to map plot coordinates
 #' for major and minor glyph components.
 #' @param alpha The transparency level of the glyph box (ranges between 0 and 1).
 #' @param height,width The relative height and width of each glyph box.
-#' @param color The color of the outline of the glyph box.
-#' @param linetype The type of line to use for the outline of the glyph box.
 #' @param fill The color used to fill the glyph box.
-#' @param ... Additional parameters.
+#' @param ... Additional arguments passed on to function.
 #'
 #' @return A layer object that can be added to a ggplot.
 #'
@@ -156,7 +152,6 @@ add_glyph_boxes <- function( mapping = NULL, data = NULL,
 }
 
 #' GeomGlyphBox
-#' @rdname ribbon
 #' @format NULL
 #' @usage NULL
 #' @export
@@ -190,11 +185,13 @@ GeomGlyphBox <- ggplot2::ggproto(
 #' This function draw reference lines that include both major and minor division markers.
 #'
 #' @inheritParams ggplot2::layer
-#' @inheritParams ggplot2::geom_path
+#' @inheritParams ggplot2::GeomPath
 #' @param data The data to be displayed in this layer. If \code{NULL}, the default, the data is
 #' inherited from the plot data as specified in the call to \code{ggplot()}.
 #' @param x_major,y_major,x_minor,ymin_minor,ymax_minor Aesthetics to map plot coordinates
 #' for major and minor glyph components.
+#' @param height,width he relative height and width of each glyph box.
+#' @param ... Additional arguments passed on to function.
 #' @return A ggplot2 layer.
 #' @export
 add_ref_lines <- function( mapping = NULL, data = NULL,
@@ -221,7 +218,6 @@ add_ref_lines <- function( mapping = NULL, data = NULL,
 }
 
 #' GeomGlyphLine
-#' @rdname ribbon
 #' @format NULL
 #' @usage NULL
 #' @export
@@ -254,14 +250,17 @@ GeomGlyphLine <- ggplot2::ggproto(
 #' This function adds a custom ribbon legend layer to a ggplot object using
 #' the specified aesthetics and parameters.
 #'
+#' @inheritParams ggplot2::layer
 #' @param x_minor,ymin_minor,ymax_minor Aesthetics to map plot coordinates
 #' for major and minor glyph components.
+#' @param x_scale,y_scale The scaling function applied to each set of minor
+#' values within a grid cell. Defaults to `identity`.
+#' @param global_rescale A setting that determines whether to perform rescaling globally or on individual glyphs.
+#' @param ... Additional arguments passed on to function.
 #' @return A ggplot2 layer.
 #' @export
 add_ribbon_legend <- function( mapping = NULL, data = NULL,
-                        stat = "identity", position = "identity",
-                        na.rm = FALSE, show.legend = NA,
-                        x_major = NULL, y_major = NULL,
+                        stat = "identity", position = "identity", show.legend = NA,
                         x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
                         x_scale = identity, y_scale = identity,
                         global_rescale = TRUE, inherit.aes = TRUE, ...) {
@@ -283,7 +282,6 @@ add_ribbon_legend <- function( mapping = NULL, data = NULL,
 }
 
 #' GeomGlyphLegend
-#' @rdname ribbon
 #' @format NULL
 #' @usage NULL
 #' @export
@@ -320,7 +318,8 @@ GeomGlyphLegend <- ggplot2::ggproto(
 )
 
 #######################################################
-# glyph_setup_data: prepare data for geom_glyph_ribbon
+#' Prepare data for geom_glyph_ribbon
+#' @keywords internal
 glyph_setup_data <- function(data, params,...) {
 
   arg <- list(...)
@@ -404,7 +403,8 @@ glyph_setup_data <- function(data, params,...) {
 
 }
 
-# glyph_box: Create reference boxes for glyph plot
+#' Create reference boxes for glyph plot
+#' @keywords internal
 glyph_box <- function(data, params) {
     data <- data |>
       dplyr::mutate(
@@ -416,7 +416,8 @@ glyph_box <- function(data, params) {
     data
 }
 
-# ref_line: Calculate reference lines for glyph plot
+#' Calculate reference lines for glyph plot
+#' @keywords internal
 ref_line <- function(data, params){
   data <- data |>
     tidyr::expand_grid(delta = c(-1, 1)) |>
@@ -428,7 +429,8 @@ ref_line <- function(data, params){
   data
 }
 
-# rescale : Adjust minor axes to to fit within an interval of [-1,1]
+#' Adjust minor axes to to fit within an interval of [-1,1]
+#' @keywords internal
 rescale <- function(dx) {
 
   stopifnot(!is.na(dx))
@@ -440,12 +442,14 @@ rescale <- function(dx) {
 }
 
 
-# glyph_mapping: Scaled positional adjustment
+#' Scaled positional adjustment
+#' @keywords internal
 glyph_mapping <- function(spatial, scaled_value, length) {
   spatial + scaled_value * (length / 2)
 }
 
-# get_scale: Retrieve function from global environment
+#' Retrieve function from global environment
+#' @keywords internal
 get_scale <- function(x) {
   fnc <- x[[1]]
   if (is.character(fnc)) {
@@ -454,7 +458,8 @@ get_scale <- function(x) {
   fnc
 }
 
-# custom_scale: Retrieve scaling function
+#' Retrieve scaling function
+#' @keywords internal
 custom_scale <- function(dx){
   if (is.null(dx)){
     return(FALSE)
@@ -465,6 +470,8 @@ custom_scale <- function(dx){
   }
 }
 
+#' Convert ggplot2 object into grob
+#' @keywords internal
 glyph_setup_grob <- function(data, panel_params){
 
   p_grob <- data |> ggplot2::ggplot(
@@ -475,6 +482,10 @@ glyph_setup_grob <- function(data, panel_params){
   ggplotify::as.grob(p_grob)
 }
 
+
+utils::globalVariables(c(".data", "na.omit", "value", "com", "x_minor",
+                         "ymin_minor", "ymax_minor", "geom_ribbon", "theme_bw",
+                         "theme", "margin", "element_blank"))
 
 ############################# Testing
 

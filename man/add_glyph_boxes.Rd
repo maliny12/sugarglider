@@ -78,11 +78,7 @@ the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 It can also be a named logical vector to finely select the aesthetics to
 display.}
 
-\item{...}{Additional parameters.}
-
-\item{color}{The color of the outline of the glyph box.}
-
-\item{linetype}{The type of line to use for the outline of the glyph box.}
+\item{...}{Additional arguments passed on to function.}
 }
 \value{
 A layer object that can be added to a ggplot.
