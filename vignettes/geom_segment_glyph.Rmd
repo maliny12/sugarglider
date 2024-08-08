@@ -1,0 +1,130 @@
+---
+title: "geom_segment_glyph"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{geom_segment_glyph}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(dplyr)
+library(ggplot2)
+```
+
+# GeomSegmentGlyph
+
+Glyph Maps allow data to be visualized across geographic regions and different periods of time (see [cubble](https://github.com/huizezhang-sherry/cubble) for more information). Line Segment Glyphs extend this by adding further options to visualize multivariate spatio-temporal data. The aesthetics are similar to that of geom_segment but with x and y major variables in order to designate glyph placement.
+
+# Monthly Temperatures Across the US
+
+The National Oceanica and Atmosphere Administration (NOAA) provides weather data from stations all over the US. The `stations` dataset contains climate variables such as prerciptation, temperature, and elevation from 10 different weather stations for every day from 2020 to 2023.
+
+```{r}
+stations
+```
+
+For this example, we are interesting in finding out the average minimum and maximum temperature per month across all days and all years per each station. We do this by using the dplyr functions `group_by` and `summarise`
+
+```{r}
+grouped <- stations |>
+  group_by(month, name, long, lat) |>
+  summarise(
+    avgmin = mean(tmin, na.rm = TRUE),
+    avgmax = mean(tmax, na.rm = TRUE)
+)
+```
+
+With the default rescaling parameters, this is the resulting geom segment glyph along with a geom_point to help illustrate the station location that each segment glyph corresponds to.
+
+```{r}
+ggplot(data = grouped) +
+  geom_sf(data = mainland_us, color = "white") +
+  ggthemes::theme_map() +
+  geom_point(aes(x = long, y = lat)) +
+  geom_segment_glyph(
+    width = 0.4,
+    height = 0.1,
+    aes(
+    x_major = long, 
+    y_major = lat, 
+    x_minor = month, 
+    y_minor = avgmin, 
+    yend_minor = avgmax)
+    ) 
+```
+
+GeomSegmentGlyph additionally offers ways to rescale the glyphs. Here, we can specify rescale11x as the preferred rescaling for x to center the glyph on the station.
+
+```{r}
+ggplot(data = grouped) +
+  geom_sf(data = mainland_us, color = "white") +
+  ggthemes::theme_map() +
+  geom_point(aes(x = long, y = lat)) +
+  geom_segment_glyph(
+    x_scale = rescale11x,
+    width = 2,
+    height = 0.1,
+    aes(
+    x_major = long, 
+    y_major = lat, 
+    x_minor = month, 
+    y_minor = avgmin, 
+    yend_minor = avgmax)
+    ) 
+```
+
+Furthermore, there are options for y-scaling that include centering the glyph vertically on the station location.
+
+```{r}
+ggplot(data = grouped) +
+  geom_sf(data = mainland_us, color = "white") +
+  ggthemes::theme_map() +
+  geom_point(aes(x = long, y = lat)) +
+  geom_segment_glyph(
+    x_scale = rescale11x,
+    y_scale = rescale01y,
+    width = 2,
+    height = 3,
+    aes(
+    x_major = long, 
+    y_major = lat, 
+    x_minor = month, 
+    y_minor = avgmin, 
+    yend_minor = avgmax)
+    ) 
+```
+
+These rescaling past examples have all been made with global rescaling enabled (default) which results in the glyphs being differently sized according to their values relative to each other. Turning off global rescaling allows all glpyhs to rescale within their own individual values and produce glyphs that sized more evenly.
+
+```{r}
+ggplot(data = grouped) +
+  geom_sf(data = mainland_us, color = "white") +
+  ggthemes::theme_map() +
+  geom_point(aes(x = long, y = lat)) +
+  geom_segment_glyph(
+    x_scale = rescale11x,
+    y_scale = rescale01y,
+    global_rescale = FALSE,
+    width = 2,
+    height = 3,
+    aes(
+    x_major = long, 
+    y_major = lat, 
+    x_minor = month, 
+    y_minor = avgmin, 
+    yend_minor = avgmax)
+    ) 
+```
+
+# Observations and Insights
+
+Line Segment Glyphs offer unique insights into seasonal temperature trends across the US. Turning off global rescaling shows that most stations generally followed the same curvature trends relative to their lowest temperatures. However factoring in global rescaling, certain locations show much less total variation in temperature such as California and Florida.
