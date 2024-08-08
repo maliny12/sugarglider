@@ -25,6 +25,12 @@ the combination of `x_major` and `y_major`. For each `x_minor` value,
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/Examples.html">Examples</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -51,10 +57,9 @@ the combination of `x_major` and `y_major`. For each `x_minor` value,
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">geom_glyph_ribbon</span><span class="op">(</span></span>
 <span>  mapping <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  show.legend <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  stat <span class="op">=</span> <span class="st">"identity"</span>,</span>
 <span>  position <span class="op">=</span> <span class="st">"identity"</span>,</span>
-<span>  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  show.legend <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  x_major <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  y_major <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  x_minor <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -93,6 +98,14 @@ will be used as the layer data. A <code>function</code> can be created
 from a <code>formula</code> (e.g. <code>~ head(.x, 10)</code>).</p></dd>
 
 
+<dt>show.legend</dt>
+<dd><p>logical. Should this layer be included in the legends?
+<code>NA</code>, the default, includes if any aesthetics are mapped.
+<code>FALSE</code> never includes, and <code>TRUE</code> always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.</p></dd>
+
+
 <dt>stat</dt>
 <dd><p>The statistical transformation to use on the data for this layer.
 When using a <code>geom_*()</code> function to construct a layer, the <code>stat</code>
@@ -119,19 +132,6 @@ to use <code><a href="https://ggplot2.tidyverse.org/reference/position_jitter.ht
 </ul></dd>
 
 
-<dt>na.rm</dt>
-<dd><p>If <code>FALSE</code>, the default, missing values are removed with
-a warning. If <code>TRUE</code>, missing values are silently removed.</p></dd>
-
-
-<dt>show.legend</dt>
-<dd><p>logical. Should this layer be included in the legends?
-<code>NA</code>, the default, includes if any aesthetics are mapped.
-<code>FALSE</code> never includes, and <code>TRUE</code> always includes.
-It can also be a named logical vector to finely select the aesthetics to
-display.</p></dd>
-
-
 <dt>x_major, y_major, x_minor, ymin_minor, ymax_minor</dt>
 <dd><p>Each combination of
 `x_major` and `y_major` forms a unique grid cell. `ymin_minor` and `ymax_minor` define
@@ -147,6 +147,10 @@ the lower and upper bounds of the geom_ribbon.</p></dd>
 values within a grid cell. Defaults to `identity`.</p></dd>
 
 
+<dt>global_rescale</dt>
+<dd><p>A setting that determines whether to perform rescaling globally or on individual glyphs.</p></dd>
+
+
 <dt>inherit.aes</dt>
 <dd><p>If <code>FALSE</code>, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
@@ -155,31 +159,7 @@ the default plot specification, e.g. <code><a href="https://ggplot2.tidyverse.or
 
 
 <dt>...</dt>
-<dd><p>Other arguments passed on to <code><a href="https://ggplot2.tidyverse.org/reference/layer.html" class="external-link">layer()</a></code>'s <code>params</code> argument. These
-arguments broadly fall into one of 4 categories below. Notably, further
-arguments to the <code>position</code> argument, or aesthetics that are required
-can <em>not</em> be passed through <code>...</code>. Unknown arguments that are not part
-of the 4 categories below are ignored.</p><ul><li><p>Static aesthetics that are not mapped to a scale, but are at a fixed
-value and apply to the layer as a whole. For example, <code>colour = "red"</code>
-or <code>linewidth = 3</code>. The geom's documentation has an <strong>Aesthetics</strong>
-section that lists the available options. The 'required' aesthetics
-cannot be passed on to the <code>params</code>. Please note that while passing
-unmapped aesthetics as vectors is technically possible, the order and
-required length is not guaranteed to be parallel to the input data.</p></li>
-<li><p>When constructing a layer using
-a <code>stat_*()</code> function, the <code>...</code> argument can be used to pass on
-parameters to the <code>geom</code> part of the layer. An example of this is
-<code>stat_density(geom = "area", outline.type = "both")</code>. The geom's
-documentation lists which parameters it can accept.</p></li>
-<li><p>Inversely, when constructing a layer using a
-<code>geom_*()</code> function, the <code>...</code> argument can be used to pass on parameters
-to the <code>stat</code> part of the layer. An example of this is
-<code>geom_area(stat = "density", adjust = 0.5)</code>. The stat's documentation
-lists which parameters it can accept.</p></li>
-<li><p>The <code>key_glyph</code> argument of <code><a href="https://ggplot2.tidyverse.org/reference/layer.html" class="external-link">layer()</a></code> may also be passed on through
-<code>...</code>. This can be one of the functions described as
-<a href="https://ggplot2.tidyverse.org/reference/draw_key.html" class="external-link">key glyphs</a>, to change the display of the layer in the legend.</p></li>
-</ul></dd>
+<dd><p>Additional arguments passed on to function.</p></dd>
 
 </dl></div>
     <div class="section level2">

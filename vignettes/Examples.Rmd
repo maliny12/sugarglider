@@ -1,0 +1,152 @@
+---
+title: "Examples"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ribbon)
+library(knitr)
+```
+
+### Overview
+
+ribbon provides ggplot2 extension to produce glyph plots with `geom_glyph_ribbon()` and 
+`geom_segment_glyph()`.
+
+These functions create a ribbon geometry designed to display glyphs
+based on the combination of `x_major` and `y_major`. For each `x_minor`
+value, `geom_glyph_ribbon()` displays a y interval defined by
+`ymin_minor` and `ymax_minor`. 
+
+### Installation
+
+```{r}
+# Download the development version from GitHub:
+devtools::install_github("maliny12/ribbon")
+```
+
+### Options
+
+Options allow us to change the behavior of ...
+
+|Option          | Default      | Description
+|--------------- | ------------ | ------------------------------------------------
+| `x_scale`         | `"identity"`         | The scaling function applied to each set of minor values within a grid cell.
+|`y_scale`      | `"identity"`          | The scaling function applied to each set of minor values within a grid cell.
+|`width`         | `0.1`          |  Width of the glyph.
+|`height`     | `0.1`     | Height of the glyph.
+|`global_rescale`      | `TRUE`        | A setting that determines whether to perform rescaling globally or on individual glyphs.
+
+### Aesthetics
+
+|Option          | Default      | Description
+|--------------- | ------------ | ------------------------------------------------
+| `colour`         | `"grey50"`         | Line segment and border color. 
+|`linewidth`      | `0.5`          | Line width for border.
+|`linetype`         | `1`          |  Line type for border.
+|`fill`     | `"grey40"`     | Color of the inside area of geoms.
+|`alpha`      | `1`        | Transparency of the glyph plot. 
+
+
+### Examples
+#### Global Rescale and Individaul Rescale 
+```{r}
+
+library(ggplot2)
+library(sf)
+library(tidyverse)
+library(grid)
+
+
+p1 <- aus_temp |>
+   ggplot(aes(x_major = long, y_major = lat,
+              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+  geom_sf(data = ozmaps::abs_ste,
+          fill = "grey95", color = "white",
+          inherit.aes = FALSE)  +
+   add_glyph_boxes() +
+   add_ref_lines() +
+  geom_glyph_ribbon(global_rescale = FALSE) +
+  theme_glyph() +
+  coord_sf(xlim = c(110,155)) +
+  labs(title = "Local Rescale") 
+
+p2 <- aus_temp |>
+   ggplot(aes(x_major = long, y_major = lat,
+              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+  geom_sf(data = ozmaps::abs_ste,
+          fill = "grey95", color = "white",
+          inherit.aes = FALSE)  +
+   add_glyph_boxes() +
+   add_ref_lines() +
+  geom_glyph_ribbon(global_rescale = TRUE) +
+  theme_glyph() +
+  coord_sf(xlim = c(110,155)) +
+  labs(title = "Global Rescale")
+
+gridExtra::grid.arrange(p1, p2, ncol = 2)
+
+```
+
+#### 
+
+```{r}
+
+aus_temp |>
+   group_by(id) |>
+   mutate(prcp = mean(prcp, na.rm = TRUE)) |>
+   ggplot(aes(x_major = long, y_major = lat, x_minor = month,
+              ymin_minor = tmin, ymax_minor = tmax,
+              fill = prcp, color = prcp)) +
+  geom_sf(data = ozmaps::abs_ste,
+           fill = "grey95", color = "white",
+           inherit.aes = FALSE)  +
+   add_glyph_boxes() +
+   add_ref_lines() +
+   geom_glyph_ribbon() +
+   coord_sf(xlim = c(110,155)) +
+  theme_bw()
+```
+
+#### 
+
+```{r}
+
+historical_temp |>
+  filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143")) |>
+   ggplot(aes(color = factor(year), fill = factor(year), group = interaction(year,id),
+              x_major = long, y_major = lat, x_minor = month, alpha = 0.5,
+              ymin_minor = tmin, ymax_minor = tmax)) +
+  geom_sf(data = ozmaps::abs_ste |> filter(NAME == "Victoria"),
+           fill = "grey95", color = "white",
+           inherit.aes = FALSE)  +
+   add_glyph_boxes() +
+   add_ref_lines() +
+   geom_glyph_ribbon() +
+   coord_sf(xlim = c(140,150)) +
+  theme_bw()
+
+```
+
+```{r}
+aus_temp |>
+   ggplot(aes(x_major = long, y_major = lat,
+              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+  geom_sf(data = ozmaps::abs_ste,
+          fill = "grey95", color = "white",
+          inherit.aes = FALSE)  +
+  geom_glyph_ribbon() +
+  add_ribbon_legend()
+```
+

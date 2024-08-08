@@ -6,3 +6,4 @@
 ribbon.Rproj
 .Rbuildignore
 
+inst/doc

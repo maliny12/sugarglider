@@ -18,5 +18,8 @@ Suggests:
     ggplotify,
     tidyr,
     grid,
-    lubridate
+    lubridate,
+    knitr,
+    rmarkdown
 Config/testthat/edition: 3
+VignetteBuilder: knitr

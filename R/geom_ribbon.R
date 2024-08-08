@@ -363,6 +363,7 @@ glyph_setup_data <- function(data, params,...) {
   }
 
   if (isTRUE(params$global_rescale)) { data <- data |> dplyr::ungroup() }
+
   data <- data |>
     tidyr::pivot_longer(cols = c("ymin_minor", "ymax_minor"),
                         names_to = "type", values_to = "value") |>
@@ -486,60 +487,6 @@ glyph_setup_grob <- function(data, panel_params){
 utils::globalVariables(c(".data", "na.omit", "value", "com", "x_minor",
                          "ymin_minor", "ymax_minor", "geom_ribbon", "theme_bw",
                          "theme", "margin", "element_blank"))
-
-############################# Testing
-
-# historical_temp |>
-#   ggplot(aes(x_major = long, y_major = lat, fill = factor(year), color = interaction(year),
-#              x_minor = month, ymin_minor = tmin, ymax_minor = tmax )) +
-#   geom_sf(data = ozmaps::abs_ste,
-#           fill = "grey95", color = "white",
-#           inherit.aes = FALSE) +
-#   add_glyph_boxes() +
-#   add_ref_lines() +
-#   geom_glyph_ribbon() +
-#   labs(title = "Australian daily temperature",
-#        subtitle = "Width of the ribbon is defined by the daily minimum and maximum temperature.",
-#        caption = "Data source: RNOAA ",
-#        x = "Longtitude", y = "Latitude") +
-#   coord_sf(xlim = c(113, 154)) +
-#   theme_glyph() # custom theme
-
-# #########################################
-# library(ggplot2)
-# library(sf)
-# library(tidyverse)
-# library(grid)
-# library(cubble)
-
-# aus_temp |>
-#   ggplot(aes(x_major = long, y_major = lat,
-#              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-#   geom_sf(data = ozmaps::abs_ste,
-#           fill = "grey95", color = "white",
-#           inherit.aes = FALSE)  +
-#   add_glyph_boxes() +
-#   add_ref_lines() +
-#   geom_glyph_ribbon() +
-#   theme_void() +
-#   add_ribbon_legend()
-
-#
-#  theme_void()
-# #
-# aus_temp |>
-#   group_by(id) |>
-#   mutate(prcp = sample(1:100, 1)) |>
-#   ggplot(aes(x_major = long, y_major = lat, fill = prcp, color = prcp,
-#              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-#   geom_sf(data = ozmaps::abs_ste,
-#           fill = "grey95", color = "white",
-#           inherit.aes = FALSE)  +
-#   add_glyph_boxes() +
-#   add_ref_lines() +
-#   geom_glyph_ribbon() +
-#   add_ribbon_legend() +
-#   theme_void()
 
 
 
