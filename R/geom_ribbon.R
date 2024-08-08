@@ -477,9 +477,7 @@ glyph_setup_grob <- function(data, panel_params){
 
   p_grob <- data |> ggplot2::ggplot(
               ggplot2::aes(x = x_minor, ymin = ymin_minor, ymax = ymax_minor)) +
-          geom_ribbon() + theme_bw()  + ggplot2::xlab("month") +
-    theme(panel.border = margin(0,0,0,0,"cm"),
-           panel.grid = element_blank())
+          geom_ribbon() + theme_bw()  + ggplot2::xlab("month")
   ggplotify::as.grob(p_grob)
 }
 

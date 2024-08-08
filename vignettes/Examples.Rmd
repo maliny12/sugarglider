@@ -10,15 +10,21 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  warning = FALSE,
+  message = FALSE
 )
 ```
 
-```{r setup}
+```{r setup, echo=FALSE}
 library(ribbon)
 library(knitr)
+library(ggplot2)
+library(sf)
+library(tidyverse)
+library(grid)
+library(viridis)
 ```
-
+  
 ### Overview
 
 ribbon provides ggplot2 extension to produce glyph plots with `geom_glyph_ribbon()` and 
@@ -31,43 +37,44 @@ value, `geom_glyph_ribbon()` displays a y interval defined by
 
 ### Installation
 
-```{r}
+```{r, eval=FALSE}
 # Download the development version from GitHub:
 devtools::install_github("maliny12/ribbon")
 ```
 
 ### Options
 
-Options allow us to change the behavior of ...
+Options allow you to modify how functions behave by altering parameters to meet specific needs. All of which are global options that affect all glyphs.
 
 |Option          | Default      | Description
 |--------------- | ------------ | ------------------------------------------------
-| `x_scale`         | `"identity"`         | The scaling function applied to each set of minor values within a grid cell.
-|`y_scale`      | `"identity"`          | The scaling function applied to each set of minor values within a grid cell.
-|`width`         | `0.1`          |  Width of the glyph.
-|`height`     | `0.1`     | Height of the glyph.
-|`global_rescale`      | `TRUE`        | A setting that determines whether to perform rescaling globally or on individual glyphs.
+| `x_scale`         | `"identity"`         | This function scales each set of minor values within a grid cell for the x-dimension.
+|`y_scale`      | `"identity"`          | This function scales each set of minor values within a grid cell for the y-dimension.
+|`width`         | `0.1`          |  Specifies the width of the glyph.
+|`height`     | `0.1`     | Specifies the height of the glyph.
+|`global_rescale`      | `TRUE`        | Determines whether rescaling is performed globally across all glyphs or individually for each glyph.
 
 ### Aesthetics
 
+Aesthetics are parameters that you can map to your data using geom_glyph_ribbon(mapping = aes(...)).
+
+`ribbon` provides the same aesthetics for geom_glyph_ribbon and geom_segment_glyph() as are available in geom_ribbon() or geom_segment(), but it also introduces additional unique options.
+
 |Option          | Default      | Description
 |--------------- | ------------ | ------------------------------------------------
-| `colour`         | `"grey50"`         | Line segment and border color. 
-|`linewidth`      | `0.5`          | Line width for border.
-|`linetype`         | `1`          |  Line type for border.
-|`fill`     | `"grey40"`     | Color of the inside area of geoms.
-|`alpha`      | `1`        | Transparency of the glyph plot. 
+| `colour`         | `"grey50"`         | Color for line segments and borders.
+|`linewidth`      | `0.5`          | Width of the line for borders.
+|`linetype`         | `1`          |  Style of the line for borders.
+|`fill`     | `"grey40"`     | Color of the interior area of the geometries.
+|`alpha`      | `1`        | Transparency level of the glyphs. 
 
 
 ### Examples
-#### Global Rescale and Individaul Rescale 
+#### Comparison between global rescale and local rescale
+
+(......)
+
 ```{r}
-
-library(ggplot2)
-library(sf)
-library(tidyverse)
-library(grid)
-
 
 p1 <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
@@ -78,9 +85,10 @@ p1 <- aus_temp |>
    add_glyph_boxes() +
    add_ref_lines() +
   geom_glyph_ribbon(global_rescale = FALSE) +
-  theme_glyph() +
+  theme_bw() +
   coord_sf(xlim = c(110,155)) +
-  labs(title = "Local Rescale") 
+  labs(title = "Local Rescale",
+       x = "Longitude", y = "Latitude") 
 
 p2 <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
@@ -91,15 +99,18 @@ p2 <- aus_temp |>
    add_glyph_boxes() +
    add_ref_lines() +
   geom_glyph_ribbon(global_rescale = TRUE) +
-  theme_glyph() +
+  theme_bw() +
   coord_sf(xlim = c(110,155)) +
-  labs(title = "Global Rescale")
+  labs(title = "Global Rescale",
+       x = "Longitude", y = "Latitude") 
 
-gridExtra::grid.arrange(p1, p2, ncol = 2)
+gridExtra::grid.arrange(p1, p2, ncol = 2) 
 
 ```
 
-#### 
+#### Mapping precipitation across Australia with glyphs
+
+(......)
 
 ```{r}
 
@@ -116,10 +127,14 @@ aus_temp |>
    add_ref_lines() +
    geom_glyph_ribbon() +
    coord_sf(xlim = c(110,155)) +
-  theme_bw()
+  theme_bw() +
+  labs(x = "Longitude", y = "Latitude")
+
 ```
 
-#### 
+#### Comparative visualization by factors across years
+
+(......)
 
 ```{r}
 
@@ -135,18 +150,26 @@ historical_temp |>
    add_ref_lines() +
    geom_glyph_ribbon() +
    coord_sf(xlim = c(140,150)) +
+  labs(x = "Longitude", y = "Latitude") +
   theme_bw()
 
 ```
 
-```{r}
+#### Integrating legends in map visualizations
+
+(......)
+
+```{r, asepx}
 aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
   geom_sf(data = ozmaps::abs_ste,
           fill = "grey95", color = "white",
           inherit.aes = FALSE)  +
-  geom_glyph_ribbon() +
-  add_ribbon_legend()
+  add_glyph_boxes() +
+  add_ref_lines() +
+  geom_glyph_ribbon() + 
+  add_ribbon_legend() + 
+  theme_glyph()
 ```
 
