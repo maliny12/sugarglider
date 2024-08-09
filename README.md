@@ -39,9 +39,9 @@ devtools::install_github("maliny12/ribbon")
 
 ### Usage
 
-See the [examples](#examples) page to learn more about how to use ribbon
-in your project. [examples](#examples):
-<https://maliny12.github.io/ribbon/articles/Examples.html>
+See the
+[examples](https://maliny12.github.io/ribbon/articles/Examples.html)
+page to learn more about how to use ribbon in your project.
 
 ### Examples
 
@@ -49,4 +49,16 @@ Click one of the images below to go to see the code example: <a
 href="https://maliny12.github.io/ribbon/articles/Examples.html#comparison-between-global-rescale-and-local-rescale"
 width="250px"><img
 src="docs/articles/Examples_files/figure-html/global_local_rescale.png"
-alt="rescale" /></a>
+alt="rescale" /></a> <a
+href="https://maliny12.github.io/ribbon/articles/Examples.html#mapping-precipitation-across-australia-with-glyphs"
+width="250px"><img
+src="docs/articles/Examples_files/figure-html/prcp_dist.png"
+alt="prcp" /></a> <a
+href="https://maliny12.github.io/ribbon/articles/Examples.html#comparative-visualization-by-factors-across-yearss"
+width="250px"><img
+src="docs/articles/Examples_files/figure-html/fct_year.png"
+alt="fct_year" /></a> <a
+href="https://maliny12.github.io/ribbon/articles/Examples.html#integrating-legends-in-map-visualizations"
+width="250px"><img
+src="docs/articles/Examples_files/figure-html/legend.png"
+alt="legend" /></a>
