@@ -1,8 +1,6 @@
 ---
 output: 
-  html_document: 
-    smart: false
-    keep_md: true
+  github_document
 ---
 
 # ribbon
