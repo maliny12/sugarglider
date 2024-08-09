@@ -317,7 +317,8 @@ GeomGlyphLegend <- ggplot2::ggproto(
 
 )
 
-#######################################################
+############################### Helper functions
+
 #' Prepare data for geom_glyph_ribbon
 #' @keywords internal
 glyph_setup_data <- function(data, params,...) {

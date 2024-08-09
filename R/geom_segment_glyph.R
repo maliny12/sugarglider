@@ -1,11 +1,15 @@
+#' GeomSegmentGlyph
+#'
+#' (Need description)
+#'
 #' @inheritParams cubble::geom_glyph
 #' @import ggplot2
 #' @import From dplyr mutate
-
-#' @param x_major,x_minor,y_major,y_minor,xend_minor,yend_minor The name of the
+#'
+#' @param x_major,x_minor,y_major,y_minor,yend_minor The name of the
 #' variable (as a string) for the major and minor x and y axes. \code{x_major}
 #' and \code{y_major} specify a longitude and latitude on a map while
-#' \code{x_minor}, \code{y_minor}, \code{xend_minor}, and \code{yend_minor}
+#' \code{x_minor}, \code{y_minor}, and \code{yend_minor}
 #' provide the structure for glyph.
 #' @param height,width The height and width of each glyph.
 #' @param y_scale,x_scale The scaling function to be applied to each set of
@@ -13,19 +17,17 @@
 #'  produces a result without scaling.
 #' @param global_rescale Determines whether or not the rescaling is performed
 #' globally or separately for each individual glyph.
-#' @export
-
-#' @title GeomSegmentGlyph
 #' @return a ggplot object
-
+#'
+#' (Need examples)
+#'
 #' @export
-#' @rdname glyph
 geom_segment_glyph <- function(mapping = NULL, data = NULL, stat = "identity",
                                position = "identity", ..., x_major = NULL,
                                x_minor = NULL, y_major = NULL, y_minor = NULL,
-                               yend_minor = NULL, width = 0.1,
+                               yend_minor = NULL, width = ggplot2::rel(2.3),
                                x_scale = identity, y_scale = identity,
-                               height = 0.1, global_rescale = TRUE,
+                               height = ggplot2::rel(2), global_rescale = TRUE,
                                show.legend = NA, inherit.aes = TRUE) {
   ggplot2::layer(
     data = data,
@@ -52,22 +54,19 @@ GeomSegmentGlyph <- ggplot2::ggproto(
 
   setup_data = function(data, params) {
     data <- glyph_data_setup(data, params)
-    return(data)
   },
 
   draw_panel = function(data, panel_params, coord, ...) {
-    print("Data in draw_panel:")
-    print(data)
     ggplot2:::GeomSegment$draw_panel(data, panel_params, coord, ...)
   },
 
   required_aes = c("x_major", "y_major", "x_minor", "y_minor", "yend_minor"),
   default_aes = ggplot2::aes(
-    colour = "black",
+    colour = "grey50",
     linewidth = 0.5,
     linetype = 1,
-    width = 0.1,
-    height = 0.1,
+    width = ggplot2::rel(2.3),
+    height = ggplot2::rel(2),
     alpha = 1,
     global_rescale = TRUE,
     x_scale = make_scale(identity),
@@ -75,48 +74,48 @@ GeomSegmentGlyph <- ggplot2::ggproto(
   )
 )
 
-rescale01x <- function(x, xlim=NULL) {
-  if (is.null(xlim)) {
-    rng <- range(x, na.rm = TRUE)
-  } else {
-    rng <- xlim
-  }
-  #browser()
-  x = (x - rng[1]) / (rng[2] - rng[1])
-  return(x)
-}
+############################### Helper functions
 
-
-rescale11x <- function(x, xlim=NULL) {
-  x = 2 * (rescale01x(x) - 0.5)
-  return(x)
-}
+# rescale01x <- function(x, xlim=NULL) {
+#   if (is.null(xlim)) {
+#     rng <- range(x, na.rm = TRUE)
+#   } else {
+#     rng <- xlim
+#   }
+#   x = (x - rng[1]) / (rng[2] - rng[1])
+#   return(x)
+# }
+#
+# rescale11x <- function(x, xlim=NULL) {
+#   x = 2 * (rescale01x(x) - 0.5)
+#   return(x)
+# }
 
 #I need a special case for y because I have y and yend that need to be scaled
 #the same way
-rescale01y <- function(y, yend, ylim=NULL) {
-  if (is.null(ylim)) {
-    rngy <- range(y, na.rm = TRUE)
-    rngyend <- range(yend, na.rm = TRUE)
-  } else {
-    rng <- ylim
-  }
-  #browser()
-  ymin = min(rngy[1], rngyend[1])
-  ymax = max(rngy[2], rngyend[2])
-  y = (y - ymin) / (ymax - ymin)
-  yend = (yend - ymin) / (ymax - ymin)
-
-  return(list(y, yend))
-}
-
-
-rescale11y <- function(y, yend, xlim=NULL) {
-  newy = 2 * (rescale01y(y, yend)[[1]] - 0.5)
-  newyend = 2 * (rescale01y(y, yend)[[2]] - 0.5)
-
-  return(list(newy, newyend))
-}
+# rescale01y <- function(y, yend, ylim=NULL) {
+#   if (is.null(ylim)) {
+#     rngy <- range(y, na.rm = TRUE)
+#     rngyend <- range(yend, na.rm = TRUE)
+#   } else {
+#     rng <- ylim
+#   }
+#
+#   ymin = min(rngy[1], rngyend[1])
+#   ymax = max(rngy[2], rngyend[2])
+#   y = (y - ymin) / (ymax - ymin)
+#   yend = (yend - ymin) / (ymax - ymin)
+#
+#   return(list(y, yend))
+# }
+#
+#
+# rescale11y <- function(y, yend, xlim=NULL) {
+#   newy = 2 * (rescale01y(y, yend)[[1]] - 0.5)
+#   newyend = 2 * (rescale01y(y, yend)[[2]] - 0.5)
+#
+#   return(list(newy, newyend))
+# }
 
 
 is.rel <- function(x) inherits(x, "rel")

@@ -15,10 +15,10 @@ geom_segment_glyph(
   y_major = NULL,
   y_minor = NULL,
   yend_minor = NULL,
-  width = 0.1,
+  width = ggplot2::rel(2.3),
   x_scale = identity,
   y_scale = identity,
-  height = 0.1,
+  height = ggplot2::rel(2),
   global_rescale = TRUE,
   show.legend = NA,
   inherit.aes = TRUE
@@ -60,10 +60,10 @@ often aesthetics, used to set an aesthetic to a fixed value, like
 \code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 
-\item{x_major, x_minor, y_major, y_minor, xend_minor, yend_minor}{The name of the
+\item{x_major, x_minor, y_major, y_minor, yend_minor}{The name of the
 variable (as a string) for the major and minor x and y axes. \code{x_major}
 and \code{y_major} specify a longitude and latitude on a map while
-\code{x_minor}, \code{y_minor}, \code{xend_minor}, and \code{yend_minor}
+\code{x_minor}, \code{y_minor}, and \code{yend_minor}
 provide the structure for glyph.}
 
 \item{y_scale, x_scale}{The scaling function to be applied to each set of
@@ -88,7 +88,9 @@ the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 }
 \value{
 a ggplot object
+
+(Need examples)
 }
 \description{
-GeomSegmentGlyph
+(Need description)
 }
