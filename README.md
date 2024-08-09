@@ -36,3 +36,17 @@ aus_temp |>
 # Download the development version from GitHub:
 devtools::install_github("maliny12/ribbon")
 ```
+
+### Usage
+
+See the [examples](#examples) page to learn more about how to use ribbon
+in your project. [examples](#examples):
+<https://maliny12.github.io/ribbon/articles/Examples.html>
+
+### Examples
+
+Click one of the images below to go to see the code example: <a
+href="https://maliny12.github.io/ribbon/articles/Examples.html#comparison-between-global-rescale-and-local-rescale"
+width="250px"><img
+src="docs/articles/Examples_files/figure-html/global_local_rescale.png"
+alt="rescale" /></a>
