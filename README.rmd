@@ -48,11 +48,20 @@ See the [examples](https://maliny12.github.io/ribbon/articles/Examples.html) pag
 
 ### Examples
 
+
+:::::::::::::: {.columns}
+::: {.column width="40%"}
 Click one of the images below to go to see the code example:
 [![rescale](docs/articles/Examples_files/figure-html/global_local_rescale.png)](https://maliny12.github.io/ribbon/articles/Examples.html#comparison-between-global-rescale-and-local-rescale){width=250px}
 [![prcp](docs/articles/Examples_files/figure-html/prcp_dist.png)](https://maliny12.github.io/ribbon/articles/Examples.html#mapping-precipitation-across-australia-with-glyphs){width=250px}
+:::
+::: {.column width="60%"}
 [![fct_year](docs/articles/Examples_files/figure-html/fct_year.png)](https://maliny12.github.io/ribbon/articles/Examples.html#comparative-visualization-by-factors-across-yearss){width=250px}
 [![legend](docs/articles/Examples_files/figure-html/legend.png)](https://maliny12.github.io/ribbon/articles/Examples.html#integrating-legends-in-map-visualizations){width=250px}
+:::
+::::::::::::::
+
+
 
 
 

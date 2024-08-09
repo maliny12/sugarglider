@@ -45,6 +45,10 @@ page to learn more about how to use ribbon in your project.
 
 ### Examples
 
+<div class="columns">
+
+<div class="column" width="40%">
+
 Click one of the images below to go to see the code example: <a
 href="https://maliny12.github.io/ribbon/articles/Examples.html#comparison-between-global-rescale-and-local-rescale"
 width="250px"><img
@@ -53,7 +57,13 @@ alt="rescale" /></a> <a
 href="https://maliny12.github.io/ribbon/articles/Examples.html#mapping-precipitation-across-australia-with-glyphs"
 width="250px"><img
 src="docs/articles/Examples_files/figure-html/prcp_dist.png"
-alt="prcp" /></a> <a
+alt="prcp" /></a>
+
+</div>
+
+<div class="column" width="60%">
+
+<a
 href="https://maliny12.github.io/ribbon/articles/Examples.html#comparative-visualization-by-factors-across-yearss"
 width="250px"><img
 src="docs/articles/Examples_files/figure-html/fct_year.png"
@@ -62,3 +72,7 @@ href="https://maliny12.github.io/ribbon/articles/Examples.html#integrating-legen
 width="250px"><img
 src="docs/articles/Examples_files/figure-html/legend.png"
 alt="legend" /></a>
+
+</div>
+
+</div>
