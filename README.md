@@ -49,8 +49,9 @@ page to learn more about how to use ribbon in your project.
 
 ### Examples
 
-Click one of the images below to go to see the code example: ::::
-{style=“display: flex;”}
+Click one of the images below to go to see the code example:
+
+<div style="display: flex;">
 
 <div>
 
@@ -80,4 +81,4 @@ alt="legend" /></a>
 
 </div>
 
-::::
+</div>

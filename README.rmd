@@ -53,6 +53,7 @@ See the [examples](https://maliny12.github.io/ribbon/articles/Examples.html) pag
 ### Examples
 
 Click one of the images below to go to see the code example:
+
 :::: {style="display: flex;"}
 
 ::: {}
