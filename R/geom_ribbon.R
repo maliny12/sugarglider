@@ -346,6 +346,7 @@ glyph_setup_data <- function(data, params,...) {
     data <- data |> na.omit()
   }
 
+
   if (custom_scale(params$x_scale)) {
       x_scale <- get_scale(params$x_scale)
       data <- data |>
@@ -372,7 +373,7 @@ glyph_setup_data <- function(data, params,...) {
     dplyr::select(-value) |>
     tidyr::pivot_wider(names_from = "type", values_from = "scaled_data")
 
-  if (isTRUE(arg[[1]])){
+  if (isTRUE(arg$legend)){
     # Skip the linear transformation for legend data
     data <- data |>
       dplyr::mutate(com = interaction(.data$x_major, .data$y_major)) |>
@@ -527,9 +528,6 @@ custom_scale <- function(dx){
 utils::globalVariables(c(".data", "na.omit", "value", "com", "x_minor",
                          "ymin_minor", "ymax_minor", "geom_ribbon", "theme_bw",
                          "theme", "margin", "element_blank"))
-
-
-
 
 
 

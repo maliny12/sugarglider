@@ -49,7 +49,6 @@ devtools::install_github("maliny12/ribbon")
 
 See the [examples](https://maliny12.github.io/ribbon/articles/Examples.html) page to learn more about how to use ribbon in your project.
 
-
 ### Examples
 
 Click one of the images below to go to see the code example:

@@ -6,10 +6,10 @@
 #' @import ggplot2
 #' @import From dplyr mutate
 #'
-#' @param x_major,x_minor,y_major,y_minor,yend_minor The name of the
+#' @param x_major,x_minor,y_major,ymin_minor,ymax_minor The name of the
 #' variable (as a string) for the major and minor x and y axes. \code{x_major}
 #' and \code{y_major} specify a longitude and latitude on a map while
-#' \code{x_minor}, \code{y_minor}, and \code{yend_minor}
+#' \code{x_minor}, \code{ymin_minor}, and \code{ymax_minor}
 #' provide the structure for glyph.
 #' @param height,width The height and width of each glyph.
 #' @param y_scale,x_scale The scaling function to be applied to each set of
@@ -24,8 +24,8 @@
 #' @export
 geom_segment_glyph <- function(mapping = NULL, data = NULL, stat = "identity",
                                position = "identity", ..., x_major = NULL,
-                               x_minor = NULL, y_major = NULL, y_minor = NULL,
-                               yend_minor = NULL, width = ggplot2::rel(2.3),
+                               x_minor = NULL, y_major = NULL, ymin_minor = NULL,
+                               ymax_minor = NULL, width = ggplot2::rel(2.3),
                                x_scale = identity, y_scale = identity,
                                height = ggplot2::rel(2), global_rescale = TRUE,
                                show.legend = NA, inherit.aes = TRUE) {
@@ -53,14 +53,14 @@ GeomSegmentGlyph <- ggplot2::ggproto(
   ggplot2::GeomSegment,
 
   setup_data = function(data, params) {
-    data <- glyph_data_setup(data, params)
+    data <- segment_setup_data(data, params, legend = FALSE)
   },
 
   draw_panel = function(data, panel_params, coord, ...) {
     ggplot2:::GeomSegment$draw_panel(data, panel_params, coord, ...)
   },
 
-  required_aes = c("x_major", "y_major", "x_minor", "y_minor", "yend_minor"),
+  required_aes = c("x_major", "y_major", "x_minor", "ymin_minor", "ymax_minor"),
   default_aes = ggplot2::aes(
     colour = "grey50",
     linewidth = 0.5,
@@ -77,13 +77,22 @@ GeomSegmentGlyph <- ggplot2::ggproto(
 ############################### Helper functions
 
 #'
-glyph_data_setup <- function(data, params){
-  #Group Aesthetic Needed? Uses and Functionality?
+segment_setup_data <- function(data, params, ...){
 
-  # x = s_x + a_x * w * t
-  # y1 = s_y + a_y * h * z1
-  # y2 = s_y + a_y * h * z2
-  # s_x and s_y are scaling factors
+  arg <- list(...)
+
+  datetime_class <- c( "Date", "yearmonth", "yearweek",
+                       "yearquarter","POSIXct", "POSIXlt")
+  if (any(class(data$x_minor) %in% datetime_class)){
+    data[["x_minor"]] <- as.numeric(data[["x_minor"]])
+  }
+
+  # Ensure geom draws each glyph as a distinct path
+  if (dplyr::n_distinct(data$group) == 1){
+    data$group <- as.integer(factor(paste(data$x_major, data$y_major)))
+    data <- data |>  dplyr::group_by(.data$group)
+  }
+
   if (params$global_rescale == TRUE) {
 
     if (custom_scale(params$x_scale)) {
@@ -132,12 +141,6 @@ glyph_data_setup <- function(data, params){
   data$xend <- xend
   data$y <- y
   data$yend <- yend
-
-  datetime_class <- c(
-    "Date", "yearmonth", "yearweek", "yearquarter","POSIXct", "POSIXlt")
-  if (any(class(data$x_minor) %in% datetime_class)){
-    data[["x_minor"]] <- as.numeric(data[["x_minor"]])
-  }
 
   return(data)
 }
