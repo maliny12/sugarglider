@@ -51,34 +51,7 @@ page to learn more about how to use ribbon in your project.
 
 Click one of the images below to go to see the code example:
 
-<div style="display: flex;">
-
-<div>
-
-<a
-href="https://maliny12.github.io/ribbon/articles/Examples.html#comparison-between-global-rescale-and-local-rescale"
-width="200px"><img
-src="docs/articles/Examples_files/figure-html/global_local_rescale.png"
-alt="rescale" /></a> <a
-href="https://maliny12.github.io/ribbon/articles/Examples.html#mapping-precipitation-across-australia-with-glyphs"
-width="200px"><img
-src="docs/articles/Examples_files/figure-html/prcp_dist.png"
-alt="prcp" /></a>
-
-</div>
-
-<div>
-
-<a
-href="https://maliny12.github.io/ribbon/articles/Examples.html#comparative-visualization-by-factors-across-yearss"
-width="200px"><img
-src="docs/articles/Examples_files/figure-html/fct_year.png"
-alt="fct_year" /></a> <a
-href="https://maliny12.github.io/ribbon/articles/Examples.html#integrating-legends-in-map-visualizations"
-width="200px"><img
-src="docs/articles/Examples_files/figure-html/legend.png"
-alt="legend" /></a>
-
-</div>
-
-</div>
+<a href="https://maliny12.github.io/ribbon/article s/Examples.html#comparison-between-global-rescale-and-local-rescale"><img width="300" src="https://maliny12.github.io/ribbon/articles/Examples_files/figure-html/unnamed-chunk-3-1.png" alt="Global vs. Local Rescale"></img></a>
+<a href="https://maliny12.github.io/ribbon/articles/Examples.html#mapping-precipitation-across-australia-with-glyphs"><img width="300" src="https://maliny12.github.io/ribbon/articles/Examples_files/figure-html/unnamed-chunk-4-1.png" alt="Mapping precipitation"></img></a>
+<a href="https://maliny12.github.io/ribbon/articles/Examples.html#comparative-visualization-by-factors-across-years"><img width="300" src="https://maliny12.github.io/ribbon/articles/Examples_files/figure-html/unnamed-chunk-5-1.png" alt="Factor across year"></img></a>
+<a href="https://maliny12.github.io/ribbon/articles/Examples.html#integrating-legends-in-map-visualizations"><img width="300" src="https://maliny12.github.io/ribbon/articles/Examples_files/figure-html/asepx-1.png" alt="Add legend"></img></a>
