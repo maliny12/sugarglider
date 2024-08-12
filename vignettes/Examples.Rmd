@@ -70,7 +70,8 @@ Aesthetics are parameters that you can map to your data using geom_glyph_ribbon(
 
 
 ### Examples
-#### Comparison between global rescale and local rescale
+#### GeomGlyphRibbon
+##### Comparison between global rescale and local rescale
 
 (......)
 
@@ -108,7 +109,7 @@ gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 ```
 
-#### Mapping precipitation across Australia with glyphs
+##### Mapping precipitation across Australia with glyphs
 
 (......)
 
@@ -132,7 +133,7 @@ aus_temp |>
 
 ```
 
-#### Comparative visualization by factors across years
+##### Comparative visualization by factors across years
 
 (......)
 
@@ -155,7 +156,7 @@ historical_temp |>
 
 ```
 
-#### Integrating legends in map visualizations
+##### Integrating legends in map visualizations
 
 (......)
 
@@ -171,5 +172,18 @@ aus_temp |>
   geom_glyph_ribbon() + 
   add_ribbon_legend() + 
   theme_glyph()
+```
+
+#### GeomSegmentGlyph
+
+```{r}
+aus_temp |>
+  filter(id %in% sample(id, 10)) |>
+  ggplot(aes(x_major = long, y_major = lat, 
+                      x_minor = month, y_minor = tmin, 
+                      yend_minor = tmax)) +
+  cubble::geom_glyph_box(width = 5, height = 3) +
+  geom_segment_glyph(width = 5, height = 3, x_scale = rescale, y_scale = rescale11y) 
+  
 ```
 

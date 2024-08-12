@@ -41,8 +41,8 @@ geom_segment_glyph <- function(mapping = NULL, data = NULL, stat = "identity",
       width = width,
       height = height,
       global_rescale = global_rescale,
-      x_scale = make_scale(x_scale),
-      y_scale = make_scale(y_scale),
+      x_scale = list(x_scale),
+      y_scale = list(y_scale),
       ...
     )
   )
@@ -69,92 +69,14 @@ GeomSegmentGlyph <- ggplot2::ggproto(
     height = ggplot2::rel(2),
     alpha = 1,
     global_rescale = TRUE,
-    x_scale = make_scale(identity),
-    y_scale = make_scale(identity)
+    x_scale = list(identity),
+    y_scale = list(identity)
   )
 )
 
 ############################### Helper functions
 
-# rescale01x <- function(x, xlim=NULL) {
-#   if (is.null(xlim)) {
-#     rng <- range(x, na.rm = TRUE)
-#   } else {
-#     rng <- xlim
-#   }
-#   x = (x - rng[1]) / (rng[2] - rng[1])
-#   return(x)
-# }
-#
-# rescale11x <- function(x, xlim=NULL) {
-#   x = 2 * (rescale01x(x) - 0.5)
-#   return(x)
-# }
-
-#I need a special case for y because I have y and yend that need to be scaled
-#the same way
-rescale01y <- function(y, yend, ylim=NULL) {
-  if (is.null(ylim)) {
-    rngy <- range(y, na.rm = TRUE)
-    rngyend <- range(yend, na.rm = TRUE)
-  } else {
-    rng <- ylim
-  }
-
-  ymin = min(rngy[1], rngyend[1])
-  ymax = max(rngy[2], rngyend[2])
-  y = (y - ymin) / (ymax - ymin)
-  yend = (yend - ymin) / (ymax - ymin)
-
-  return(list(y, yend))
-}
-
-
-rescale11y <- function(y, yend, xlim=NULL) {
-  newy = 2 * (rescale01y(y, yend)[[1]] - 0.5)
-  newyend = 2 * (rescale01y(y, yend)[[2]] - 0.5)
-
-  return(list(newy, newyend))
-}
-
-
-is.rel <- function(x) inherits(x, "rel")
-
-
-has_scale <- function(x) {
-  #browser()
-  if (is.null(x)) {
-    return(FALSE)
-  }
-
-  # Unwrap the list structure so that it can be stored in a tbl
-  stopifnot(is.list(x))
-  x <- x[[1]]
-  !is.null(x) &&
-    !(
-      identical(x, "identity") ||
-        identical(x, identity)
-    )
-}
-
-make_scale <- function(x) {
-  # Wrap the list structure so that it can be stored in a tbl
-  list(x)
-}
-
-get_scale <- function(x) {
-  stopifnot(is.list(x))
-  # Unwrap the list structure so that it can be stored in a tbl
-  fn <- x[[1]]
-  if (is.character(fn)) {
-    # Legacy support for `"identity"`
-    fn <- get(unique(x)[1], envir = globalenv(), mode = "function")
-  }
-  stopifnot(is.function(fn))
-  fn
-}
-
-
+#'
 glyph_data_setup <- function(data, params){
   #Group Aesthetic Needed? Uses and Functionality?
 
@@ -164,7 +86,7 @@ glyph_data_setup <- function(data, params){
   # s_x and s_y are scaling factors
   if (params$global_rescale == TRUE) {
 
-    if (has_scale(params$x_scale)) {
+    if (custom_scale(params$x_scale)) {
       x_scale <- get_scale(params$x_scale)
       data <- data |>
         dplyr::mutate(
@@ -172,7 +94,7 @@ glyph_data_setup <- function(data, params){
         )
     }
 
-    if (has_scale(params$y_scale)) {
+    if (custom_scale(params$y_scale)) {
       y_scale <- get_scale(params$y_scale)
 
       #Use the same function for both y and yend and produces a list of 2 vectors
@@ -182,7 +104,7 @@ glyph_data_setup <- function(data, params){
     }
 
   } else {
-    if (has_scale(params$x_scale)) {
+    if (custom_scale(params$x_scale)) {
       x_scale <- get_scale(params$x_scale)
       data <- data |>
         group_by(x_major, y_major) |>
@@ -190,7 +112,7 @@ glyph_data_setup <- function(data, params){
           x_minor = x_scale(x_minor)
         )
     }
-    if (has_scale(params$y_scale)) {
+    if (custom_scale(params$y_scale)) {
       y_scale <- get_scale(params$y_scale)
       data <- data |>
         group_by(x_major, y_major) |>

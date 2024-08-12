@@ -2,11 +2,18 @@
 % Please edit documentation in R/geom_ribbon.R
 \name{rescale}
 \alias{rescale}
-\title{Adjust minor axes to to fit within an interval of [-1,1]}
+\alias{rescale01y}
+\alias{rescale11y}
+\title{Rescaling Functions}
 \usage{
 rescale(dx)
+
+rescale01y(y, yend, ylim = NULL)
+
+rescale11y(y, yend, xlim = NULL)
 }
 \description{
 Adjust minor axes to to fit within an interval of [-1,1]
+#' @param x numeric vector
 }
 \keyword{internal}

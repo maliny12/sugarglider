@@ -317,7 +317,7 @@ GeomGlyphLegend <- ggplot2::ggproto(
 
 )
 
-############################### Helper functions
+# Helper functions -------------------------------------------------------------
 
 #' Prepare data for geom_glyph_ribbon
 #' @keywords internal
@@ -431,8 +431,33 @@ ref_line <- function(data, params){
   data
 }
 
-#' Adjust minor axes to to fit within an interval of [-1,1]
+#' Scaled positional adjustment
 #' @keywords internal
+glyph_mapping <- function(spatial, scaled_value, length) {
+  spatial + scaled_value * (length / 2)
+}
+
+#' Convert ggplot2 object into grob
+#' @keywords internal
+glyph_setup_grob <- function(data, panel_params){
+
+  p_grob <- data |> ggplot2::ggplot(
+    ggplot2::aes(x = x_minor, ymin = ymin_minor, ymax = ymax_minor)) +
+    geom_ribbon() + theme_bw()  + ggplot2::xlab("month")
+  ggplotify::as.grob(p_grob)
+}
+
+# Rescaling Functions ----------------------------------------------------------
+
+#' Rescaling Functions
+#'
+#' Adjust minor axes to to fit within an interval of [-1,1]
+#' #' @param x numeric vector
+#' @name rescale
+
+
+#' @keywords internal
+#' @rdname rescale
 rescale <- function(dx) {
 
   stopifnot(!is.na(dx))
@@ -444,21 +469,46 @@ rescale <- function(dx) {
 }
 
 
-#' Scaled positional adjustment
 #' @keywords internal
-glyph_mapping <- function(spatial, scaled_value, length) {
-  spatial + scaled_value * (length / 2)
+#' @rdname rescale
+rescale01y <- function(y, yend, ylim=NULL) {
+  if (is.null(ylim)) {
+    rngy <- range(y, na.rm = TRUE)
+    rngyend <- range(yend, na.rm = TRUE)
+  } else {
+    rng <- ylim
+  }
+
+  ymin = min(rngy[1], rngyend[1])
+  ymax = max(rngy[2], rngyend[2])
+  y = (y - ymin) / (ymax - ymin)
+  yend = (yend - ymin) / (ymax - ymin)
+
+  return(list(y, yend))
+}
+
+
+#' @keywords internal
+#' @rdname rescale
+rescale11y <- function(y, yend, xlim=NULL) {
+  newy = 2 * (rescale01y(y, yend)[[1]] - 0.5)
+  newyend = 2 * (rescale01y(y, yend)[[2]] - 0.5)
+
+  return(list(newy, newyend))
 }
 
 #' Retrieve function from global environment
 #' @keywords internal
 get_scale <- function(x) {
+  stopifnot(is.list(x))
   fnc <- x[[1]]
   if (is.character(fnc)) {
     fnc <- get(unique(x)[1], envir = globalenv(), mode = "function")
   }
+  stopifnot(is.function(fnc))
   fnc
 }
+
 
 #' Retrieve scaling function
 #' @keywords internal
@@ -472,17 +522,8 @@ custom_scale <- function(dx){
   }
 }
 
-#' Convert ggplot2 object into grob
-#' @keywords internal
-glyph_setup_grob <- function(data, panel_params){
 
-  p_grob <- data |> ggplot2::ggplot(
-              ggplot2::aes(x = x_minor, ymin = ymin_minor, ymax = ymax_minor)) +
-          geom_ribbon() + theme_bw()  + ggplot2::xlab("month")
-  ggplotify::as.grob(p_grob)
-}
-
-
+# Global variables declaration -------------------------------------------------
 utils::globalVariables(c(".data", "na.omit", "value", "com", "x_minor",
                          "ymin_minor", "ymax_minor", "geom_ribbon", "theme_bw",
                          "theme", "margin", "element_blank"))
