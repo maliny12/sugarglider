@@ -93,29 +93,29 @@ GeomSegmentGlyph <- ggplot2::ggproto(
 
 #I need a special case for y because I have y and yend that need to be scaled
 #the same way
-# rescale01y <- function(y, yend, ylim=NULL) {
-#   if (is.null(ylim)) {
-#     rngy <- range(y, na.rm = TRUE)
-#     rngyend <- range(yend, na.rm = TRUE)
-#   } else {
-#     rng <- ylim
-#   }
-#
-#   ymin = min(rngy[1], rngyend[1])
-#   ymax = max(rngy[2], rngyend[2])
-#   y = (y - ymin) / (ymax - ymin)
-#   yend = (yend - ymin) / (ymax - ymin)
-#
-#   return(list(y, yend))
-# }
-#
-#
-# rescale11y <- function(y, yend, xlim=NULL) {
-#   newy = 2 * (rescale01y(y, yend)[[1]] - 0.5)
-#   newyend = 2 * (rescale01y(y, yend)[[2]] - 0.5)
-#
-#   return(list(newy, newyend))
-# }
+rescale01y <- function(y, yend, ylim=NULL) {
+  if (is.null(ylim)) {
+    rngy <- range(y, na.rm = TRUE)
+    rngyend <- range(yend, na.rm = TRUE)
+  } else {
+    rng <- ylim
+  }
+
+  ymin = min(rngy[1], rngyend[1])
+  ymax = max(rngy[2], rngyend[2])
+  y = (y - ymin) / (ymax - ymin)
+  yend = (yend - ymin) / (ymax - ymin)
+
+  return(list(y, yend))
+}
+
+
+rescale11y <- function(y, yend, xlim=NULL) {
+  newy = 2 * (rescale01y(y, yend)[[1]] - 0.5)
+  newyend = 2 * (rescale01y(y, yend)[[2]] - 0.5)
+
+  return(list(newy, newyend))
+}
 
 
 is.rel <- function(x) inherits(x, "rel")
@@ -201,10 +201,10 @@ glyph_data_setup <- function(data, params){
     }
   }
 
-  x <- data$x_major + params$width * data$x_minor
+  x <- data$x_major + (params$width/2) * data$x_minor
   xend <- x
-  y <- data$y_major + params$height * data$y_minor
-  yend <- data$y_major + params$height * data$yend_minor
+  y <- data$y_major + (params$height/2) * data$y_minor
+  yend <- data$y_major + (params$height/2) * data$yend_minor
 
   data$x <- x
   data$xend <- xend
