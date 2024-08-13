@@ -96,7 +96,7 @@ GeomGlyphRibbon <- ggplot2::ggproto(
     ),
 
   setup_data = function(data, params) {
-    data <- glyph_setup_data(data, params, legend = FALSE)
+    data <- glyph_setup_data(data, params)
   },
 
 
@@ -169,7 +169,7 @@ GeomGlyphBox <- ggplot2::ggproto(
   ),
 
   setup_data = function(data, params) {
-    data <- glyph_setup_data(data, params, legend = FALSE)
+    data <- glyph_setup_data(data, params)
     glyph_box(data, params)
   },
 
@@ -235,7 +235,7 @@ GeomGlyphLine <- ggplot2::ggproto(
   ),
 
   setup_data = function(data, params) {
-    data <- glyph_setup_data(data, params, legend = FALSE)
+    data <- glyph_setup_data(data, params)
     ref_line(data, params)
   },
 
@@ -346,7 +346,6 @@ glyph_setup_data <- function(data, params,...) {
     data <- data |> na.omit()
   }
 
-
   if (custom_scale(params$x_scale)) {
       x_scale <- get_scale(params$x_scale)
       data <- data |>
@@ -366,12 +365,20 @@ glyph_setup_data <- function(data, params,...) {
 
   if (isTRUE(params$global_rescale)) { data <- data |> dplyr::ungroup() }
 
-  data <- data |>
-    tidyr::pivot_longer(cols = c("ymin_minor", "ymax_minor"),
-                        names_to = "type", values_to = "value") |>
-    dplyr::mutate(scaled_data = rescale(value)) |>
-    dplyr::select(-value) |>
-    tidyr::pivot_wider(names_from = "type", values_from = "scaled_data")
+  if (isTRUE(arg$segment)){
+    data <- data |>
+      dplyr::mutate(
+        ymin_minor = rescale11y(ymin_minor, ymax_minor)[[1]],
+        ymax_minor = rescale11y(ymin_minor, ymax_minor)[[2]]
+      )
+  } else {
+    data <- data |>
+      tidyr::pivot_longer(cols = c("ymin_minor", "ymax_minor"),
+                          names_to = "type", values_to = "value") |>
+      dplyr::mutate(scaled_data = rescale(value)) |>
+      dplyr::select(-value) |>
+      tidyr::pivot_wider(names_from = "type", values_from = "scaled_data")
+  }
 
   if (isTRUE(arg$legend)){
     # Skip the linear transformation for legend data
@@ -381,19 +388,39 @@ glyph_setup_data <- function(data, params,...) {
       dplyr::select(-com)
 
   } else {
-
-    # Linear transformation using scaled positional adjustment
-    data <- data |>
-      dplyr::mutate(
-        x = glyph_mapping(.data$x_major,
-                          rescale(.data$x_minor),
-                          params$width),
-        ymin = glyph_mapping(.data$y_major,
+    ## Linear transformation using scaled positional adjustment
+    if (isTRUE(arg$segment)){
+      # For geom_segment_glyph
+      data <- data |>
+        dplyr::mutate(
+          x = glyph_mapping(.data$x_major,
+                            rescale(.data$x_minor),
+                            params$width),
+          xend =  glyph_mapping(.data$x_major,
+                                rescale(.data$x_minor),
+                                params$width),
+          y =  glyph_mapping(.data$y_major,
                              .data$ymin_minor,
                              params$height),
-        ymax = glyph_mapping(.data$y_major,
-                             .data$ymax_minor,
-                             params$height))
+         yend = glyph_mapping(.data$y_major,
+                              .data$ymax_minor,
+                               params$height)
+        )
+
+    } else {
+      # For geom_ribbon_glyph
+      data <- data |>
+        dplyr::mutate(
+          x = glyph_mapping(.data$x_major,
+                            rescale(.data$x_minor),
+                            params$width),
+          ymin = glyph_mapping(.data$y_major,
+                            .data$ymin_minor,
+                               params$height),
+          ymax = glyph_mapping(.data$y_major,
+                            .data$ymax_minor,
+                               params$height))
+    }
   }
 
 
@@ -448,9 +475,9 @@ glyph_setup_grob <- function(data, panel_params){
   ggplotify::as.grob(p_grob)
 }
 
-# Rescaling Functions ----------------------------------------------------------
+# Rescale Functions ----------------------------------------------------------
 
-#' Rescaling Functions
+#' Rescale Functions
 #'
 #' Adjust minor axes to to fit within an interval of [-1,1]
 #' #' @param x numeric vector

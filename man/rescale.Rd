@@ -4,7 +4,7 @@
 \alias{rescale}
 \alias{rescale01y}
 \alias{rescale11y}
-\title{Rescaling Functions}
+\title{Rescale Functions}
 \usage{
 rescale(dx)
 

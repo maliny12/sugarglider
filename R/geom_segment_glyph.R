@@ -48,12 +48,16 @@ geom_segment_glyph <- function(mapping = NULL, data = NULL, stat = "identity",
   )
 }
 
+#' GeomSegmentGlyph
+#' @format NULL
+#' @usage NULL
+#' @export
 GeomSegmentGlyph <- ggplot2::ggproto(
   "GeomSegmentGlyph",
   ggplot2::GeomSegment,
 
   setup_data = function(data, params) {
-    data <- segment_setup_data(data, params, legend = FALSE)
+    data <- glyph_setup_data(data, params, segment = TRUE)
   },
 
   draw_panel = function(data, panel_params, coord, ...) {
@@ -73,75 +77,3 @@ GeomSegmentGlyph <- ggplot2::ggproto(
     y_scale = list(identity)
   )
 )
-
-############################### Helper functions
-
-#'
-segment_setup_data <- function(data, params, ...){
-
-  arg <- list(...)
-
-  datetime_class <- c( "Date", "yearmonth", "yearweek",
-                       "yearquarter","POSIXct", "POSIXlt")
-  if (any(class(data$x_minor) %in% datetime_class)){
-    data[["x_minor"]] <- as.numeric(data[["x_minor"]])
-  }
-
-  # Ensure geom draws each glyph as a distinct path
-  if (dplyr::n_distinct(data$group) == 1){
-    data$group <- as.integer(factor(paste(data$x_major, data$y_major)))
-    data <- data |>  dplyr::group_by(.data$group)
-  }
-
-  if (params$global_rescale == TRUE) {
-
-    if (custom_scale(params$x_scale)) {
-      x_scale <- get_scale(params$x_scale)
-      data <- data |>
-        dplyr::mutate(
-          x_minor = x_scale(.data$x_minor)
-        )
-    }
-
-    if (custom_scale(params$y_scale)) {
-      y_scale <- get_scale(params$y_scale)
-
-      #Use the same function for both y and yend and produces a list of 2 vectors
-      y_res <- y_scale(data$y_minor, data$yend_minor)
-      data$y_minor <- y_res[[1]]
-      data$yend_minor <- y_res[[2]]
-    }
-
-  } else {
-    if (custom_scale(params$x_scale)) {
-      x_scale <- get_scale(params$x_scale)
-      data <- data |>
-        group_by(x_major, y_major) |>
-        dplyr::mutate(
-          x_minor = x_scale(x_minor)
-        )
-    }
-    if (custom_scale(params$y_scale)) {
-      y_scale <- get_scale(params$y_scale)
-      data <- data |>
-        group_by(x_major, y_major) |>
-        dplyr::mutate(
-          y_minor = y_scale(y_minor, yend_minor)[[1]],
-          yend_minor = y_scale(y_minor, yend_minor)[[2]]
-        )
-    }
-  }
-
-  x <- data$x_major + (params$width/2) * data$x_minor
-  xend <- x
-  y <- data$y_major + (params$height/2) * data$y_minor
-  yend <- data$y_major + (params$height/2) * data$yend_minor
-
-  data$x <- x
-  data$xend <- xend
-  data$y <- y
-  data$yend <- yend
-
-  return(data)
-}
-

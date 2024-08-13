@@ -23,6 +23,8 @@ library(sf)
 library(tidyverse)
 library(grid)
 library(viridis)
+library(gridExtra)
+library(ozmaps)
 ```
   
 ### Overview
@@ -80,7 +82,7 @@ Aesthetics are parameters that you can map to your data using geom_glyph_ribbon(
 p1 <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = ozmaps::abs_ste,
+  geom_sf(data = abs_ste,
           fill = "grey95", color = "white",
           inherit.aes = FALSE)  +
    add_glyph_boxes() +
@@ -94,7 +96,7 @@ p1 <- aus_temp |>
 p2 <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = ozmaps::abs_ste,
+  geom_sf(data = abs_ste,
           fill = "grey95", color = "white",
           inherit.aes = FALSE)  +
    add_glyph_boxes() +
@@ -105,7 +107,7 @@ p2 <- aus_temp |>
   labs(title = "Global Rescale",
        x = "Longitude", y = "Latitude") 
 
-gridExtra::grid.arrange(p1, p2, ncol = 2) 
+grid.arrange(p1, p2, ncol = 2) 
 
 ```
 
@@ -121,7 +123,7 @@ aus_temp |>
    ggplot(aes(x_major = long, y_major = lat, x_minor = month,
               ymin_minor = tmin, ymax_minor = tmax,
               fill = prcp, color = prcp)) +
-  geom_sf(data = ozmaps::abs_ste,
+  geom_sf(data = abs_ste,
            fill = "grey95", color = "white",
            inherit.aes = FALSE)  +
    add_glyph_boxes() +
@@ -144,7 +146,7 @@ historical_temp |>
    ggplot(aes(color = factor(year), fill = factor(year), group = interaction(year,id),
               x_major = long, y_major = lat, x_minor = month, alpha = 0.5,
               ymin_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = ozmaps::abs_ste |> filter(NAME == "Victoria"),
+  geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
            fill = "grey95", color = "white",
            inherit.aes = FALSE)  +
    add_glyph_boxes() +
@@ -164,7 +166,7 @@ historical_temp |>
 aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = ozmaps::abs_ste,
+  geom_sf(data = abs_ste,
           fill = "grey95", color = "white",
           inherit.aes = FALSE)  +
   add_glyph_boxes() +
@@ -176,14 +178,20 @@ aus_temp |>
 
 #### GeomSegmentGlyph
 
-```{r}
+```{r, eval = FALSE}
 aus_temp |>
-  filter(id %in% sample(id, 10)) |>
+  filter(id %in% sample(id, 18)) |>
   ggplot(aes(x_major = long, y_major = lat, 
-                      x_minor = month, y_minor = tmin, 
-                      yend_minor = tmax)) +
-  cubble::geom_glyph_box(width = 5, height = 3) +
-  geom_segment_glyph(width = 5, height = 3, x_scale = rescale, y_scale = rescale11y) 
+                      x_minor = month, ymin_minor = tmin, 
+                      ymax_minor = tmax)) +
+  geom_sf(data = abs_ste,
+          fill = "grey95", color = "white",
+          inherit.aes = FALSE)  +
+  add_glyph_boxes(width = 4, height = 3) +
+  add_ref_lines(width = 4, height = 3) +
+  geom_segment_glyph(width = 4, height = 3) +
+  coord_sf(xlim = c(110,155)) +
+  theme_bw()
   
 ```
 
