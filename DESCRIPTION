@@ -25,6 +25,11 @@ Suggests:
     grid,
     lubridate,
     knitr,
-    rmarkdown
+    rmarkdown,
+    gridExtra,
+    ozmaps,
+    sf,
+    tidyverse,
+    viridis
 Config/testthat/edition: 3
 VignetteBuilder: knitr
