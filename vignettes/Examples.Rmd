@@ -25,6 +25,7 @@ library(grid)
 library(viridis)
 library(gridExtra)
 library(ozmaps)
+library(ggthemes)
 ```
   
 ### Overview
@@ -79,35 +80,45 @@ Aesthetics are parameters that you can map to your data using geom_glyph_ribbon(
 
 ```{r}
 
+aus_map <- map_data("world", region = "Australia")
+
 p1 <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = abs_ste,
-          fill = "grey95", color = "white",
+  geom_sf(data = abs_ste, color = grey(0.7), fill = NA,
           inherit.aes = FALSE)  +
-   add_glyph_boxes() +
-   add_ref_lines() +
-  geom_glyph_ribbon(global_rescale = FALSE) +
-  theme_bw() +
+  add_glyph_boxes(color = "dodgerblue4") +
+  add_ref_lines(color = "dodgerblue4") +
+  geom_glyph_ribbon(global_rescale = FALSE, color = "dodgerblue4", fill = "dodgerblue4") +
+  theme_map() +
   coord_sf(xlim = c(110,155)) +
-  labs(title = "Local Rescale",
-       x = "Longitude", y = "Latitude") 
+  labs(title = "Local Rescale") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 p2 <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = abs_ste,
-          fill = "grey95", color = "white",
+  geom_sf(data = abs_ste, color = grey(0.7), fill = NA,
           inherit.aes = FALSE)  +
-   add_glyph_boxes() +
-   add_ref_lines() +
-  geom_glyph_ribbon(global_rescale = TRUE) +
-  theme_bw() +
+   add_glyph_boxes(color = "dodgerblue4") +
+   add_ref_lines(color = "dodgerblue4") +
+  geom_glyph_ribbon(global_rescale = TRUE, color = "dodgerblue4", fill = "dodgerblue4") +
+  theme_map() +
   coord_sf(xlim = c(110,155)) +
-  labs(title = "Global Rescale",
-       x = "Longitude", y = "Latitude") 
+  labs(title = "Global Rescale") +
+  theme(plot.title = element_text(hjust = 0.5))
 
+# Using gridExtra and grid packages to add neatline to the plot
 grid.arrange(p1, p2, ncol = 2) 
+grid.rect(
+    width = 0.98,
+    height = 0.98,
+    gp = grid::gpar(
+      lwd = 0.25,
+      col = "black",
+      fill = NA
+    )
+  )
 
 ```
 
@@ -117,22 +128,36 @@ grid.arrange(p1, p2, ncol = 2)
 
 ```{r}
 
-aus_temp |>
+prcp <- aus_temp |>
    group_by(id) |>
    mutate(prcp = mean(prcp, na.rm = TRUE)) |>
    ggplot(aes(x_major = long, y_major = lat, x_minor = month,
               ymin_minor = tmin, ymax_minor = tmax,
               fill = prcp, color = prcp)) +
-  geom_sf(data = abs_ste,
-           fill = "grey95", color = "white",
-           inherit.aes = FALSE)  +
+  geom_sf(data = abs_ste, color = grey(0.7), fill = NA,
+          inherit.aes = FALSE)  +
    add_glyph_boxes() +
    add_ref_lines() +
    geom_glyph_ribbon() +
-   coord_sf(xlim = c(110,155)) +
-  theme_bw() +
-  labs(x = "Longitude", y = "Latitude")
+   coord_sf(xlim = c(112,155)) +
+  theme_map() +
+  theme(legend.position.inside = c(.3,0), 
+        legend.direction = "horizontal") +
+  scale_fill_gradientn(colors = c("#EF8080","#ADD8E6", "#2b5e82", "dodgerblue4")) +
+  scale_color_gradientn(colors = c( "#EF8080","#ADD8E6", "#2b5e82", "dodgerblue4")) 
+  
 
+# Using gridExtra and grid packages to add neat line to the plot
+grid.arrange(prcp, ncol = 1) 
+grid.rect(
+    width = 0.98,
+    height = 0.98,
+    gp = grid::gpar(
+      lwd = 0.25,
+      col = "black",
+      fill = NA
+    )
+  )
 ```
 
 ##### Comparative visualization by factors across years
@@ -141,21 +166,35 @@ aus_temp |>
 
 ```{r}
 
-historical_temp |>
+fact <- historical_temp |>
   filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143")) |>
    ggplot(aes(color = factor(year), fill = factor(year), group = interaction(year,id),
-              x_major = long, y_major = lat, x_minor = month, alpha = 0.5,
+              x_major = long, y_major = lat, x_minor = month, 
               ymin_minor = tmin, ymax_minor = tmax)) +
   geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
-           fill = "grey95", color = "white",
+           fill = NA, color = grey(0.7),
            inherit.aes = FALSE)  +
    add_glyph_boxes() +
    add_ref_lines() +
-   geom_glyph_ribbon() +
+   geom_glyph_ribbon(alpha = 0.5) +
    coord_sf(xlim = c(140,150)) +
   labs(x = "Longitude", y = "Latitude") +
-  theme_bw()
+  theme_map() +
+  theme(legend.position.inside = c(.3,0.9), 
+        legend.direction = "horizontal") 
 
+
+# Using gridExtra and grid packages to add neat line to the plot
+grid.arrange(fact, ncol = 1) 
+grid.rect(
+    width = 0.98,
+    height = 0.98,
+    gp = grid::gpar(
+      lwd = 0.25,
+      col = "black",
+      fill = NA
+    )
+  )
 ```
 
 ##### Integrating legends in map visualizations
@@ -163,17 +202,29 @@ historical_temp |>
 (......)
 
 ```{r, asepx}
-aus_temp |>
+legend <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = abs_ste,
-          fill = "grey95", color = "white",
-          inherit.aes = FALSE)  +
+  geom_sf(data = abs_ste ,
+           fill = NA, color = grey(0.7),
+           inherit.aes = FALSE)  +
   add_glyph_boxes() +
   add_ref_lines() +
   geom_glyph_ribbon() + 
   add_ribbon_legend() + 
-  theme_glyph()
+  theme_map()
+
+# Using gridExtra and grid packages to add neat line to the plot
+grid.arrange(legend, ncol = 1) 
+grid.rect(
+    width = 0.98,
+    height = 0.98,
+    gp = grid::gpar(
+      lwd = 0.25,
+      col = "black",
+      fill = NA
+    )
+  )
 ```
 
 #### GeomSegmentGlyph
@@ -184,14 +235,15 @@ aus_temp |>
   ggplot(aes(x_major = long, y_major = lat, 
                       x_minor = month, ymin_minor = tmin, 
                       ymax_minor = tmax)) +
-  geom_sf(data = abs_ste,
-          fill = "grey95", color = "white",
-          inherit.aes = FALSE)  +
+  geom_sf(data = abs_ste ,
+           fill = NA, color = grey(0.7),
+           inherit.aes = FALSE)  +
   add_glyph_boxes(width = 4, height = 3) +
   add_ref_lines(width = 4, height = 3) +
   geom_glyph_segment(width = 4, height = 3) +
   coord_sf(xlim = c(110,155)) +
-  theme_bw()
+  theme_map()
   
 ```
+
 
