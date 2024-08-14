@@ -82,8 +82,6 @@ Aesthetics are parameters that you can map to your data using geom_glyph_ribbon(
 
 ```{r}
 
-aus_map <- map_data("world", region = "Australia")
-
 p1 <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
@@ -95,7 +93,9 @@ p1 <- aus_temp |>
   theme_map() +
   coord_sf(xlim = c(110,155)) +
   labs(title = "Local Rescale") +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.background = element_rect(fill = "white", color = NA),
+        plot.background = element_rect(fill = "white", color = NA))
 
 p2 <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
@@ -108,7 +108,9 @@ p2 <- aus_temp |>
   theme_map() +
   coord_sf(xlim = c(110,155)) +
   labs(title = "Global Rescale") +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.background = element_rect(fill = "white", color = NA),
+        plot.background = element_rect(fill = "white", color = NA))
 
 # Using gridExtra and grid packages to add neatline to the plot
 grid.arrange(p1, p2, ncol = 2) 
@@ -121,6 +123,7 @@ grid.rect(
       fill = NA
     )
   )
+
 
 ```
 
@@ -144,7 +147,9 @@ prcp <- aus_temp |>
    coord_sf(xlim = c(112,155)) +
   theme_map() +
   theme(legend.position.inside = c(.3,0), 
-        legend.direction = "horizontal") +
+        legend.direction = "horizontal",
+        panel.background = element_rect(fill = "white", color = NA),
+        plot.background = element_rect(fill = "white", color = NA)) +
   scale_fill_gradientn(colors = c("#ADD8E6", "#2b5e82", "dodgerblue4")) +
   scale_color_gradientn(colors = c( "#ADD8E6", "#2b5e82", "dodgerblue4")) 
   
@@ -183,7 +188,11 @@ fact <- historical_temp |>
   labs(x = "Longitude", y = "Latitude") +
   theme_map() +
   theme(legend.position.inside = c(.3,0.9), 
-        legend.direction = "horizontal") 
+        legend.direction = "horizontal",
+        panel.background = element_rect(fill = "white", color = NA),
+        plot.background = element_rect(fill = "white", color = NA)) +
+  scale_colour_wsj("colors6") +
+  scale_fill_wsj("colors6")
 
 
 # Using gridExtra and grid packages to add neat line to the plot
@@ -214,7 +223,7 @@ legend <- aus_temp |>
   add_ref_lines() +
   geom_glyph_ribbon() + 
   add_ribbon_legend() + 
-  theme_map()
+  theme_map() 
 
 # Using gridExtra and grid packages to add neat line to the plot
 grid.arrange(legend, ncol = 1) 

@@ -5,5 +5,5 @@
 .DS_Store
 ribbon.Rproj
 .Rbuildignore
-
+.Renviron
 inst/doc
