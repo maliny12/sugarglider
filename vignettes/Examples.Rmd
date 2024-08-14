@@ -30,7 +30,7 @@ library(ozmaps)
 ### Overview
 
 ribbon provides ggplot2 extension to produce glyph plots with `geom_glyph_ribbon()` and 
-`geom_segment_glyph()`.
+`geom_glyph_segment()`.
 
 These functions create a ribbon geometry designed to display glyphs
 based on the combination of `x_major` and `y_major`. For each `x_minor`
@@ -60,7 +60,7 @@ Options allow you to modify how functions behave by altering parameters to meet 
 
 Aesthetics are parameters that you can map to your data using geom_glyph_ribbon(mapping = aes(...)).
 
-`ribbon` provides the same aesthetics for geom_glyph_ribbon and geom_segment_glyph() as are available in geom_ribbon() or geom_segment(), but it also introduces additional unique options.
+`ribbon` provides the same aesthetics for geom_glyph_ribbon and geom_glyph_segment() as are available in geom_ribbon() or geom_segment(), but it also introduces additional unique options.
 
 |Option          | Default      | Description
 |--------------- | ------------ | ------------------------------------------------
@@ -189,7 +189,7 @@ aus_temp |>
           inherit.aes = FALSE)  +
   add_glyph_boxes(width = 4, height = 3) +
   add_ref_lines(width = 4, height = 3) +
-  geom_segment_glyph(width = 4, height = 3) +
+  geom_glyph_segment(width = 4, height = 3) +
   coord_sf(xlim = c(110,155)) +
   theme_bw()
   

@@ -3,7 +3,7 @@
 #' (Need description)
 #'
 #' @inheritParams cubble::geom_glyph
-#' @import ggplot2
+#' @import ggplot2a
 #' @import From dplyr mutate
 #'
 #' @param x_major,x_minor,y_major,ymin_minor,ymax_minor The name of the
@@ -22,7 +22,7 @@
 #' (Need examples)
 #'
 #' @export
-geom_segment_glyph <- function(mapping = NULL, data = NULL, stat = "identity",
+geom_glyph_segment <- function(mapping = NULL, data = NULL, stat = "identity",
                                position = "identity", ..., x_major = NULL,
                                x_minor = NULL, y_major = NULL, ymin_minor = NULL,
                                ymax_minor = NULL, width = ggplot2::rel(2.3),

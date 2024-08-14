@@ -1,8 +1,8 @@
 ---
-title: "geom_segment_glyph"
+title: "geom_glyph_segment"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{geom_segment_glyph}
+  %\VignetteIndexEntry{geom_glyph_segment}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -50,7 +50,7 @@ ggplot(data = grouped) +
   geom_sf(data = mainland_us, color = "white") +
   ggthemes::theme_map() +
   geom_point(aes(x = long, y = lat)) +
-  geom_segment_glyph(
+  geom_glyph_segment(
     width = 0.4,
     height = 0.1,
     aes(
@@ -69,7 +69,7 @@ ggplot(data = grouped) +
   geom_sf(data = mainland_us, color = "white") +
   ggthemes::theme_map() +
   geom_point(aes(x = long, y = lat)) +
-  geom_segment_glyph(
+  geom_glyph_segment(
     x_scale = rescale11x,
     width = 2,
     height = 0.1,
@@ -89,7 +89,7 @@ ggplot(data = grouped) +
   geom_sf(data = mainland_us, color = "white") +
   ggthemes::theme_map() +
   geom_point(aes(x = long, y = lat)) +
-  geom_segment_glyph(
+  geom_glyph_segment(
     x_scale = rescale11x,
     y_scale = rescale01y,
     width = 2,
@@ -110,7 +110,7 @@ ggplot(data = grouped) +
   geom_sf(data = mainland_us, color = "white") +
   ggthemes::theme_map() +
   geom_point(aes(x = long, y = lat)) +
-  geom_segment_glyph(
+  geom_glyph_segment(
     x_scale = rescale11x,
     y_scale = rescale01y,
     global_rescale = FALSE,
