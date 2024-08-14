@@ -26,6 +26,8 @@ library(viridis)
 library(gridExtra)
 library(ozmaps)
 library(ggthemes)
+
+
 ```
   
 ### Overview
@@ -87,9 +89,9 @@ p1 <- aus_temp |>
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
   geom_sf(data = abs_ste, color = grey(0.7), fill = NA,
           inherit.aes = FALSE)  +
-  add_glyph_boxes(color = "dodgerblue4") +
-  add_ref_lines(color = "dodgerblue4") +
-  geom_glyph_ribbon(global_rescale = FALSE, color = "dodgerblue4", fill = "dodgerblue4") +
+  add_glyph_boxes(color = "dodgerblue3") +
+  add_ref_lines(color = "dodgerblue3") +
+  geom_glyph_ribbon(global_rescale = FALSE, color = "dodgerblue3", fill = "dodgerblue3") +
   theme_map() +
   coord_sf(xlim = c(110,155)) +
   labs(title = "Local Rescale") +
@@ -100,9 +102,9 @@ p2 <- aus_temp |>
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
   geom_sf(data = abs_ste, color = grey(0.7), fill = NA,
           inherit.aes = FALSE)  +
-   add_glyph_boxes(color = "dodgerblue4") +
-   add_ref_lines(color = "dodgerblue4") +
-  geom_glyph_ribbon(global_rescale = TRUE, color = "dodgerblue4", fill = "dodgerblue4") +
+   add_glyph_boxes(color = "dodgerblue3") +
+   add_ref_lines(color = "dodgerblue3") +
+  geom_glyph_ribbon(global_rescale = TRUE, color = "dodgerblue3", fill = "dodgerblue3") +
   theme_map() +
   coord_sf(xlim = c(110,155)) +
   labs(title = "Global Rescale") +
@@ -143,8 +145,8 @@ prcp <- aus_temp |>
   theme_map() +
   theme(legend.position.inside = c(.3,0), 
         legend.direction = "horizontal") +
-  scale_fill_gradientn(colors = c("#EF8080","#ADD8E6", "#2b5e82", "dodgerblue4")) +
-  scale_color_gradientn(colors = c( "#EF8080","#ADD8E6", "#2b5e82", "dodgerblue4")) 
+  scale_fill_gradientn(colors = c("#ADD8E6", "#2b5e82", "dodgerblue4")) +
+  scale_color_gradientn(colors = c( "#ADD8E6", "#2b5e82", "dodgerblue4")) 
   
 
 # Using gridExtra and grid packages to add neat line to the plot
