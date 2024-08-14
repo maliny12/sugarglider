@@ -20,34 +20,34 @@
 #' library(ggplot2)
 #'
 #' # Basic glyph map with base map and custom theme
-# aus_temp |>
-#   ggplot(aes(x_major = long, y_major = lat,
-#          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-#   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-#           color = "white",inherit.aes = FALSE) +
-#   geom_glyph_ribbon() +
-#   theme_glyph()
+#' aus_temp |>
+#'   ggplot(aes(x_major = long, y_major = lat,
+#'          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+#'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
+#'           color = "white",inherit.aes = FALSE) +
+#'   geom_glyph_ribbon() +
+#'   theme_glyph()
 #'
 #'
 #' # Adjust width and height of the glyph
-# aus_temp |>
-#   ggplot(aes(x_major = long, y_major = lat,
-#          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-#   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-#           color = "white",inherit.aes = FALSE) +
-#   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
-#   theme_glyph()
+#' aus_temp |>
+#'   ggplot(aes(x_major = long, y_major = lat,
+#'          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+#'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
+#'           color = "white",inherit.aes = FALSE) +
+#'   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
+#'  theme_glyph()
 #'
-#' # Extend glyph map with reference box
-# library(cubble)
-# aus_temp |>
-#   ggplot(aes(x_major = long, y_major = lat,
-#          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-#   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-#           color = "white",inherit.aes = FALSE) +
-#   geom_glyph_box(width = rel(4.5), height = rel(3)) +
-#   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
-#   theme_glyph()
+#' # Extend glyph map with reference box and line
+#' aus_temp |>
+#'  ggplot(aes(x_major = long, y_major = lat,
+#'          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+#'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
+#'           color = "white",inherit.aes = FALSE) +
+#'   add_glyph_boxes(width = rel(4.5), height = rel(3)) +
+#'   add_ref_line(width = rel(4.5), height = rel(3)) +
+#'   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
+#'   theme_glyph()
 
 geom_glyph_ribbon <- function( mapping = NULL, data = NULL, show.legend = NA,
                                stat = "identity", position = "identity",

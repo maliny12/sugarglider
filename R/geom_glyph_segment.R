@@ -19,8 +19,6 @@
 #' globally or separately for each individual glyph.
 #' @return a ggplot object
 #'
-#' (Need examples)
-#'
 #' @export
 geom_glyph_segment <- function(mapping = NULL, data = NULL, stat = "identity",
                                position = "identity", ..., x_major = NULL,

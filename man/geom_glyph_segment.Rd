@@ -88,8 +88,6 @@ the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 }
 \value{
 a ggplot object
-
-(Need examples)
 }
 \description{
 (Need description)
