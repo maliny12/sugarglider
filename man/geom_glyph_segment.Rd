@@ -2,7 +2,7 @@
 % Please edit documentation in R/geom_glyph_segment.R
 \name{geom_glyph_segment}
 \alias{geom_glyph_segment}
-\title{GeomSegmentGlyph}
+\title{Create a Glyph Segment plot using ggplot2}
 \usage{
 geom_glyph_segment(
   mapping = NULL,
@@ -90,5 +90,42 @@ the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 a ggplot object
 }
 \description{
-(Need description)
+This function enables the creation of segment glyphs by defining major
+coordinates (longitude and latitude) and minor segment structures within
+a grid cell. Each glyph's appearance can be customized by specifying its
+height, width, and scaling, allowing for flexible data representation in a visual context.
+}
+\examples{
+library(ggplot2)
+
+# Basic glyph map with base map and custom theme
+aus_temp |>
+  ggplot(aes(x_major = long, y_major = lat,
+         x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+  geom_sf(data = ozmaps::abs_ste, fill = "grey95",
+          color = "white",inherit.aes = FALSE) +
+  geom_glyph_segment() +
+  theme_glyph()
+
+
+# Adjust width and height of the glyph
+aus_temp |>
+  ggplot(aes(x_major = long, y_major = lat,
+         x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+  geom_sf(data = ozmaps::abs_ste, fill = "grey95",
+          color = "white",inherit.aes = FALSE) +
+  geom_glyph_segment(width = rel(4.5), height = rel(3)) +
+ theme_glyph()
+
+# Extend glyph map with reference box and line
+aus_temp |>
+ ggplot(aes(x_major = long, y_major = lat,
+         x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+  geom_sf(data = ozmaps::abs_ste, fill = "grey95",
+          color = "white",inherit.aes = FALSE) +
+  add_glyph_boxes(width = rel(4.5), height = rel(3)) +
+  add_ref_lines(width = rel(4.5), height = rel(3)) +
+  geom_glyph_segment(width = rel(4.5), height = rel(3)) +
+  theme_glyph()
+
 }

@@ -45,7 +45,7 @@
 #'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
 #'           color = "white",inherit.aes = FALSE) +
 #'   add_glyph_boxes(width = rel(4.5), height = rel(3)) +
-#'   add_ref_line(width = rel(4.5), height = rel(3)) +
+#'   add_ref_lines(width = rel(4.5), height = rel(3)) +
 #'   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
 #'   theme_glyph()
 
