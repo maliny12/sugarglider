@@ -78,7 +78,13 @@ Aesthetics are parameters that you can map to your data using geom_glyph_ribbon(
 #### GeomGlyphRibbon
 ##### Comparison between global rescale and local rescale
 
-(......)
+This example compares the effects of global and local rescaling using the geom_glyph_ribbon() function.
+
+- Local Rescale: With global_rescale = FALSE, ribbon widths are based on the local temperature range within each region, highlighting regional differences.
+
+- Global Rescale: With global_rescale = TRUE, ribbon widths are based on the local temperature range within each region, highlighting regional differences.
+
+The comparison shows how rescaling choices impact the visualization of temperature data on the map.
 
 ```{r}
 
@@ -129,7 +135,7 @@ grid.rect(
 
 ##### Mapping precipitation across Australia with glyphs
 
-(......)
+Building on the temperature analysis, this section maps precipitation across Australia using glyphs. Average rainfall is calculated for each region and visualized with geom_glyph_ribbon(). The glyphs are color-coded to show different rainfall levels. Reference lines and glyph boxes, similar to the previous section, enhance readability and provide a clear comparison of precipitation patterns across the country.
 
 ```{r}
 
@@ -169,7 +175,7 @@ grid.rect(
 
 ##### Comparative visualization by factors across years
 
-(......)
+Say you want to compares temperature data across different years for selected regions in Victoria. Using geom_glyph_ribbon(), the visualization shows how temperatures have changed over time, with each year highlighted in different colors for easy comparison. Reference lines and glyph boxes help clarify the data, making it simple to spot trends and patterns across the years.
 
 ```{r}
 
@@ -210,9 +216,11 @@ grid.rect(
 
 ##### Integrating legends in map visualizations
 
-(......)
+The `add_geom_legend()` function enhances map visualizations by adding an enlarged version of one of the glyphs in the bottom left corner of the plot. This makes it easier to understand the symbols used in the map.
 
-```{r, asepx}
+In this example, a map of Australia is created with geom_glyph_ribbon() to display temperature data. The legend is integrated directly into the plot using add_ribbon_legend(), providing a clear reference for interpreting the glyphs without cluttering the map. This approach ensures that the visualization remains both informative and visually clean.
+
+```{r, eval = FALSE}
 legend <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
@@ -241,7 +249,8 @@ grid.rect(
 #### GeomSegmentGlyph
 
 ```{r, eval = FALSE}
-aus_temp |>
+
+segment <- aus_temp |>
   filter(id %in% sample(id, 18)) |>
   ggplot(aes(x_major = long, y_major = lat, 
                       x_minor = month, ymin_minor = tmin, 
@@ -254,7 +263,41 @@ aus_temp |>
   geom_glyph_segment(width = 4, height = 3) +
   coord_sf(xlim = c(110,155)) +
   theme_map()
+
+# Using gridExtra and grid packages to add neat line to the plot
+grid.arrange(segment, ncol = 1) 
+grid.rect(
+    width = 0.98,
+    height = 0.98,
+    gp = grid::gpar(
+      lwd = 0.25,
+      col = "black",
+      fill = NA
+    )
+  )
   
 ```
+
+```{r}
+set.seed(32425)
+historical_temp |>
+  filter(id %in% sample(id, 10)) |>
+  ggplot(aes(x_major = long, y_major = lat,  color = factor(year), group = interaction(year,id),
+                      x_minor = month, ymin_minor = tmin, 
+                      ymax_minor = tmax)) +
+  geom_sf(data = abs_ste |> filter(NAME == "Western Australia"),
+           fill = NA, color = grey(0.7),
+           inherit.aes = FALSE)  +
+  add_glyph_boxes(width = 4, height = 3) +
+  add_ref_lines(width = 4, height = 3) +
+  geom_glyph_segment(width = 4, height = 3) +
+  coord_sf(xlim = c(110,130), ylim = c(-40,-10)) +
+  theme_map() +
+  theme(legend.position.inside = c(.3,0.9), 
+        legend.direction = "horizontal",
+        panel.background = element_rect(fill = "white", color = NA),
+        plot.background = element_rect(fill = "white", color = NA))
+```
+
 
 

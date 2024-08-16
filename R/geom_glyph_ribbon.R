@@ -303,7 +303,7 @@ GeomGlyphLegend <- ggplot2::ggproto(
   },
 
   # Draw polygons
-  draw_panel = function(data, panel_params, coord, params, ...) {
+  draw_panel = function(data, panel_params, coord, ...) {
 
     grob <- glyph_setup_grob(data, panel_params)
     sample_vp <- viewport(x = 0.13, y = 0.02,
@@ -468,10 +468,9 @@ glyph_mapping <- function(spatial, scaled_value, length) {
 #' Convert ggplot2 object into grob
 #' @keywords internal
 glyph_setup_grob <- function(data, panel_params){
-
   p_grob <- data |> ggplot2::ggplot(
     ggplot2::aes(x = x_minor, ymin = ymin_minor, ymax = ymax_minor)) +
-    geom_ribbon() + theme_bw()  + ggplot2::xlab("month")
+    geom_ribbon() + theme_bw() + labs(title = "month") +
   ggplotify::as.grob(p_grob)
 }
 
