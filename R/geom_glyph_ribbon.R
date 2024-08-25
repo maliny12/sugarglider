@@ -355,12 +355,21 @@ glyph_setup_data <- function(data, params,...) {
     }
 
   if (custom_scale(params$y_scale)) {
-    y_scale <- get_scale(params$y_scale)
-    data <- data |>
-      dplyr::mutate(
-        ymin_minor = y_scale(.data$ymin_minor),
-        ymax_minor = y_scale(.data$ymax_minor)
-      )
+    if (isTRUE(arg$segment)){
+      y_scale <- get_scale(params$y_scale)
+      data <- data |>
+        dplyr::mutate(
+          y_minor = y_scale(.data$y_minor),
+          yend_minor = y_scale(.data$yend_minor)
+        )
+    } else {
+      y_scale <- get_scale(params$y_scale)
+      data <- data |>
+        dplyr::mutate(
+          ymin_minor = y_scale(.data$ymin_minor),
+          ymax_minor = y_scale(.data$ymax_minor)
+        )
+    }
   }
 
   if (isTRUE(params$global_rescale)) { data <- data |> dplyr::ungroup() }
@@ -368,8 +377,8 @@ glyph_setup_data <- function(data, params,...) {
   if (isTRUE(arg$segment)){
     data <- data |>
       dplyr::mutate(
-        ymin_minor = rescale11y(ymin_minor, ymax_minor)[[1]],
-        ymax_minor = rescale11y(ymin_minor, ymax_minor)[[2]]
+        y_minor = rescale11y(y_minor, yend_minor)[[1]],
+        yend_minor = rescale11y(y_minor, yend_minor)[[2]]
       )
   } else {
     data <- data |>
@@ -400,10 +409,10 @@ glyph_setup_data <- function(data, params,...) {
                                 rescale(.data$x_minor),
                                 params$width),
           y =  glyph_mapping(.data$y_major,
-                             .data$ymin_minor,
+                             .data$y_minor,
                              params$height),
          yend = glyph_mapping(.data$y_major,
-                              .data$ymax_minor,
+                              .data$yend_minor,
                                params$height)
         )
 

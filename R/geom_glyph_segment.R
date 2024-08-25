@@ -28,7 +28,7 @@
 #' # Basic glyph map with base map and custom theme
 #' aus_temp |>
 #'   ggplot(aes(x_major = long, y_major = lat,
-#'          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+#'          x_minor = month, y_minor = tmin, yend_minor = tmax)) +
 #'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
 #'           color = "white",inherit.aes = FALSE) +
 #'   geom_glyph_segment() +
@@ -38,7 +38,7 @@
 #' # Adjust width and height of the glyph
 #' aus_temp |>
 #'   ggplot(aes(x_major = long, y_major = lat,
-#'          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+#'          x_minor = month, y_minor = tmin, yend_minor = tmax)) +
 #'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
 #'           color = "white",inherit.aes = FALSE) +
 #'   geom_glyph_segment(width = rel(4.5), height = rel(3)) +
@@ -47,19 +47,15 @@
 #' # Extend glyph map with reference box and line
 #' aus_temp |>
 #'  ggplot(aes(x_major = long, y_major = lat,
-#'          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+#'          x_minor = month, y_minor = tmin, yend_minor = tmax)) +
 #'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-#'           color = "white",inherit.aes = FALSE) +
-#'   add_glyph_boxes(width = rel(4.5), height = rel(3)) +
-#'   add_ref_lines(width = rel(4.5), height = rel(3)) +
-#'   geom_glyph_segment(width = rel(4.5), height = rel(3)) +
-#'   theme_glyph()
+#'           color = "white",inherit.aes = FALSE)
 #'
 #' @export
 geom_glyph_segment <- function(mapping = NULL, data = NULL, stat = "identity",
                                position = "identity", ..., x_major = NULL,
-                               x_minor = NULL, y_major = NULL, ymin_minor = NULL,
-                               ymax_minor = NULL, width = ggplot2::rel(2.3),
+                               x_minor = NULL, y_major = NULL, y_minor = NULL,
+                               yend_minor = NULL, width = ggplot2::rel(2.3),
                                x_scale = identity, y_scale = identity,
                                height = ggplot2::rel(2), global_rescale = TRUE,
                                show.legend = NA, inherit.aes = TRUE) {
@@ -98,7 +94,7 @@ GeomSegmentGlyph <- ggplot2::ggproto(
     ggplot2:::GeomSegment$draw_panel(data, panel_params, coord, ...)
   },
 
-  required_aes = c("x_major", "y_major", "x_minor", "ymin_minor", "ymax_minor"),
+  required_aes = c("x_major", "y_major", "x_minor", "y_minor", "yend_minor"),
   default_aes = ggplot2::aes(
     colour = "grey50",
     linewidth = 0.5,

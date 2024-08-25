@@ -248,18 +248,18 @@ grid.rect(
 
 #### GeomSegmentGlyph
 
-```{r, eval = FALSE}
+```{r}
 
 segment <- aus_temp |>
   filter(id %in% sample(id, 18)) |>
   ggplot(aes(x_major = long, y_major = lat, 
-                      x_minor = month, ymin_minor = tmin, 
-                      ymax_minor = tmax)) +
+                      x_minor = month, y_minor = tmin, 
+                      yend_minor = tmax)) +
   geom_sf(data = abs_ste ,
            fill = NA, color = grey(0.7),
            inherit.aes = FALSE)  +
-  add_glyph_boxes(width = 4, height = 3) +
-  add_ref_lines(width = 4, height = 3) +
+  # add_glyph_boxes(width = 4, height = 3) +
+  #add_ref_lines(width = 4, height = 3) +
   geom_glyph_segment(width = 4, height = 3) +
   coord_sf(xlim = c(110,155)) +
   theme_map()
@@ -278,7 +278,7 @@ grid.rect(
   
 ```
 
-```{r}
+```{r, eval=FALSE}
 set.seed(32425)
 historical_temp |>
   filter(id %in% sample(id, 10)) |>

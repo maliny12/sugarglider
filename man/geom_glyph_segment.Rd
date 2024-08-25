@@ -13,8 +13,8 @@ geom_glyph_segment(
   x_major = NULL,
   x_minor = NULL,
   y_major = NULL,
-  ymin_minor = NULL,
-  ymax_minor = NULL,
+  y_minor = NULL,
+  yend_minor = NULL,
   width = ggplot2::rel(2.3),
   x_scale = identity,
   y_scale = identity,
@@ -101,7 +101,7 @@ library(ggplot2)
 # Basic glyph map with base map and custom theme
 aus_temp |>
   ggplot(aes(x_major = long, y_major = lat,
-         x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+         x_minor = month, y_minor = tmin, yend_minor = tmax)) +
   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
           color = "white",inherit.aes = FALSE) +
   geom_glyph_segment() +
@@ -111,7 +111,7 @@ aus_temp |>
 # Adjust width and height of the glyph
 aus_temp |>
   ggplot(aes(x_major = long, y_major = lat,
-         x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+         x_minor = month, y_minor = tmin, yend_minor = tmax)) +
   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
           color = "white",inherit.aes = FALSE) +
   geom_glyph_segment(width = rel(4.5), height = rel(3)) +
@@ -120,12 +120,8 @@ aus_temp |>
 # Extend glyph map with reference box and line
 aus_temp |>
  ggplot(aes(x_major = long, y_major = lat,
-         x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+         x_minor = month, y_minor = tmin, yend_minor = tmax)) +
   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-          color = "white",inherit.aes = FALSE) +
-  add_glyph_boxes(width = rel(4.5), height = rel(3)) +
-  add_ref_lines(width = rel(4.5), height = rel(3)) +
-  geom_glyph_segment(width = rel(4.5), height = rel(3)) +
-  theme_glyph()
+          color = "white",inherit.aes = FALSE)
 
 }
