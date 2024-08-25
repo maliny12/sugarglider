@@ -117,7 +117,7 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 #' @inheritParams ggplot2::GeomRect
 #' @param data The data to be displayed in this layer. If \code{NULL}, the default, the data is
 #' inherited from the plot data as specified in the call to \code{ggplot()}.
-#' @param x_major,y_major,x_minor,ymin_minor,ymax_minor Aesthetics to map plot coordinates
+#' @param x_major,y_major Aesthetics to map plot coordinates
 #' for major and minor glyph components.
 #' @param alpha The transparency level of the glyph box (ranges between 0 and 1).
 #' @param height,width The relative height and width of each glyph box.
@@ -129,8 +129,7 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 #' @export
 add_glyph_boxes <- function( mapping = NULL, data = NULL,
                              stat = "identity", position = "identity",
-                             x_major = NULL, y_major = NULL, x_minor = NULL,
-                             ymin_minor = NULL, ymax_minor = NULL, alpha = 1,
+                             x_major = NULL, y_major = NULL, alpha = 1,
                              height = ggplot2::rel(2), width = ggplot2::rel(2.3),
                              fill = "white", inherit.aes = TRUE, show.legend = NA, ...) {
   ggplot2::layer(
@@ -158,8 +157,7 @@ add_glyph_boxes <- function( mapping = NULL, data = NULL,
 GeomGlyphBox <- ggplot2::ggproto(
   "GeomGlyphBox", ggplot2::Geom,
   ## Aesthetic
-  required_aes = c("x_major", "y_major",
-                   "x_minor", "ymin_minor", "ymax_minor"),
+  required_aes = c("x_major", "y_major"),
 
   default_aes = ggplot2::aes(
     linetype = "solid", fill = "white", color = "grey85",
@@ -188,7 +186,7 @@ GeomGlyphBox <- ggplot2::ggproto(
 #' @inheritParams ggplot2::GeomPath
 #' @param data The data to be displayed in this layer. If \code{NULL}, the default, the data is
 #' inherited from the plot data as specified in the call to \code{ggplot()}.
-#' @param x_major,y_major,x_minor,ymin_minor,ymax_minor Aesthetics to map plot coordinates
+#' @param x_major,y_major Aesthetics to map plot coordinates
 #' for major and minor glyph components.
 #' @param height,width he relative height and width of each glyph box.
 #' @param ... Additional arguments passed on to function.
@@ -197,7 +195,6 @@ GeomGlyphBox <- ggplot2::ggproto(
 add_ref_lines <- function( mapping = NULL, data = NULL,
                              stat = "identity", position = "identity",
                              show.legend = NA, x_major = NULL, y_major = NULL,
-                             x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
                              height = ggplot2::rel(2), width = ggplot2::rel(2.3),
                              inherit.aes = TRUE, ...) {
   ggplot2::layer(
@@ -224,8 +221,7 @@ add_ref_lines <- function( mapping = NULL, data = NULL,
 GeomGlyphLine <- ggplot2::ggproto(
   "GeomGlyphLine", ggplot2::Geom,
   ## Aesthetic
-  required_aes = c("x_major", "y_major",
-                   "x_minor", "ymin_minor", "ymax_minor"),
+  required_aes = c("x_major", "y_major"),
 
   default_aes = ggplot2::aes(
     linetype = "solid", color = "grey85",
@@ -452,6 +448,7 @@ glyph_box <- function(data, params) {
         ymin = data$y_major - params$height/2,
         ymax = data$y_major + params$height/2,
       )
+
     data
 }
 
@@ -477,9 +474,13 @@ glyph_mapping <- function(spatial, scaled_value, length) {
 #' Convert ggplot2 object into grob
 #' @keywords internal
 glyph_setup_grob <- function(data, panel_params){
-  p_grob <- data |> ggplot2::ggplot(
-    ggplot2::aes(x = x_minor, ymin = ymin_minor, ymax = ymax_minor)) +
-    geom_ribbon() + theme_bw() + labs(title = "month") +
+  p_grob <- data |>
+    ggplot2::ggplot(
+      ggplot2::aes(x = x_minor,
+                   ymin = ymin_minor,
+                   ymax = ymax_minor)) +
+    geom_ribbon() + theme_bw()
+
   ggplotify::as.grob(p_grob)
 }
 
@@ -562,7 +563,7 @@ custom_scale <- function(dx){
 # Global variables declaration -------------------------------------------------
 utils::globalVariables(c(".data", "na.omit", "value", "com", "x_minor",
                          "ymin_minor", "ymax_minor", "geom_ribbon", "theme_bw",
-                         "theme", "margin", "element_blank"))
+                         "theme", "margin", "element_blank", "y_minor", "yend_minor"))
 
 
 

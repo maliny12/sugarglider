@@ -9,10 +9,10 @@
 #' @import ggplot2a
 #' @import From dplyr mutate
 #'
-#' @param x_major,x_minor,y_major,ymin_minor,ymax_minor The name of the
+#' @param x_major,x_minor,y_major,y_minor,yend_minor The name of the
 #' variable (as a string) for the major and minor x and y axes. \code{x_major}
 #' and \code{y_major} specify a longitude and latitude on a map while
-#' \code{x_minor}, \code{ymin_minor}, and \code{ymax_minor}
+#' \code{x_minor}, \code{y_minor}, and \code{yend_minor}
 #' provide the structure for glyph.
 #' @param height,width The height and width of each glyph.
 #' @param y_scale,x_scale The scaling function to be applied to each set of
@@ -49,7 +49,11 @@
 #'  ggplot(aes(x_major = long, y_major = lat,
 #'          x_minor = month, y_minor = tmin, yend_minor = tmax)) +
 #'   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-#'           color = "white",inherit.aes = FALSE)
+#'           color = "white",inherit.aes = FALSE) +
+#'   add_glyph_boxes(width = rel(4.5), height = rel(3)) +
+#'   add_ref_lines(width = rel(4.5), height = rel(3)) +
+#'   geom_glyph_segment(width = rel(4.5), height = rel(3)) +
+#'   theme_glyph()
 #'
 #' @export
 geom_glyph_segment <- function(mapping = NULL, data = NULL, stat = "identity",

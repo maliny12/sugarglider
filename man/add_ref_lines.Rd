@@ -12,9 +12,6 @@ add_ref_lines(
   show.legend = NA,
   x_major = NULL,
   y_major = NULL,
-  x_minor = NULL,
-  ymin_minor = NULL,
-  ymax_minor = NULL,
   height = ggplot2::rel(2),
   width = ggplot2::rel(2.3),
   inherit.aes = TRUE,
@@ -62,7 +59,7 @@ to use \code{position_jitter()}, give the position as \code{"jitter"}.
 It can also be a named logical vector to finely select the aesthetics to
 display.}
 
-\item{x_major, y_major, x_minor, ymin_minor, ymax_minor}{Aesthetics to map plot coordinates
+\item{x_major, y_major}{Aesthetics to map plot coordinates
 for major and minor glyph components.}
 
 \item{height, width}{he relative height and width of each glyph box.}

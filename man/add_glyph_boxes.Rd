@@ -11,9 +11,6 @@ add_glyph_boxes(
   position = "identity",
   x_major = NULL,
   y_major = NULL,
-  x_minor = NULL,
-  ymin_minor = NULL,
-  ymax_minor = NULL,
   alpha = 1,
   height = ggplot2::rel(2),
   width = ggplot2::rel(2.3),
@@ -58,7 +55,7 @@ to use \code{position_jitter()}, give the position as \code{"jitter"}.
 \link[ggplot2:layer_positions]{layer position} documentation.
 }}
 
-\item{x_major, y_major, x_minor, ymin_minor, ymax_minor}{Aesthetics to map plot coordinates
+\item{x_major, y_major}{Aesthetics to map plot coordinates
 for major and minor glyph components.}
 
 \item{alpha}{The transparency level of the glyph box (ranges between 0 and 1).}

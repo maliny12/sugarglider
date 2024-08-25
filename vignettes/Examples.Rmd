@@ -259,7 +259,7 @@ segment <- aus_temp |>
            fill = NA, color = grey(0.7),
            inherit.aes = FALSE)  +
   # add_glyph_boxes(width = 4, height = 3) +
-  #add_ref_lines(width = 4, height = 3) +
+  # add_ref_lines(width = 4, height = 3) +
   geom_glyph_segment(width = 4, height = 3) +
   coord_sf(xlim = c(110,155)) +
   theme_map()
