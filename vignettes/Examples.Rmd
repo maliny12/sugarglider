@@ -220,7 +220,7 @@ The `add_geom_legend()` function enhances map visualizations by adding an enlarg
 
 In this example, a map of Australia is created with geom_glyph_ribbon() to display temperature data. The legend is integrated directly into the plot using add_ribbon_legend(), providing a clear reference for interpreting the glyphs without cluttering the map. This approach ensures that the visualization remains both informative and visually clean.
 
-```{r, eval = FALSE}
+```{r}
 legend <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
@@ -229,8 +229,8 @@ legend <- aus_temp |>
            inherit.aes = FALSE)  +
   add_glyph_boxes() +
   add_ref_lines() +
-  geom_glyph_ribbon() + 
   add_ribbon_legend() + 
+  geom_glyph_ribbon() + 
   theme_map() 
 
 # Using gridExtra and grid packages to add neat line to the plot

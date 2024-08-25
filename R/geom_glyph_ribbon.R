@@ -479,7 +479,9 @@ glyph_setup_grob <- function(data, panel_params){
       ggplot2::aes(x = x_minor,
                    ymin = ymin_minor,
                    ymax = ymax_minor)) +
-    geom_ribbon() + theme_bw()
+    geom_ribbon() +
+    theme_bw()  +
+    labs(x = "")
 
   ggplotify::as.grob(p_grob)
 }
