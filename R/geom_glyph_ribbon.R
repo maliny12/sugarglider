@@ -241,13 +241,13 @@ GeomGlyphLine <- ggplot2::ggproto(
 
 )
 
-#' Add Ribbon Legend Layer to a ggplot
+#' Add Legend Layer to a ggplot
 #'
-#' This function adds a custom ribbon legend layer to a ggplot object using
+#' This function adds a custom legend layer to a ggplot object using
 #' the specified aesthetics and parameters.
 #'
 #' @inheritParams ggplot2::layer
-#' @param x_minor,ymin_minor,ymax_minor Aesthetics to map plot coordinates
+#' @param x_minor Aesthetics to map plot coordinates
 #' for major and minor glyph components.
 #' @param x_scale,y_scale The scaling function applied to each set of minor
 #' values within a grid cell. Defaults to `identity`.
@@ -255,10 +255,9 @@ GeomGlyphLine <- ggplot2::ggproto(
 #' @param ... Additional arguments passed on to function.
 #' @return A ggplot2 layer.
 #' @export
-add_ribbon_legend <- function( mapping = NULL, data = NULL,
+add_glyph_legend <- function( mapping = NULL, data = NULL,
                         stat = "identity", position = "identity", show.legend = NA,
-                        x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
-                        x_scale = identity, y_scale = identity,
+                        x_minor = NULL,x_scale = identity, y_scale = identity,
                         global_rescale = TRUE, inherit.aes = TRUE, ...) {
   ggplot2::layer(
     geom = GeomGlyphLegend,
@@ -284,7 +283,7 @@ add_ribbon_legend <- function( mapping = NULL, data = NULL,
 GeomGlyphLegend <- ggplot2::ggproto(
   "GeomGlyphLegend", ggplot2::Geom,
   ## Aesthetic
-  required_aes = c("x_minor", "ymin_minor", "ymax_minor"),
+  required_aes = c("x_minor"),
 
   default_aes = ggplot2::aes(
     linetype = 1, fill = "grey40", color = "grey50",
@@ -295,7 +294,7 @@ GeomGlyphLegend <- ggplot2::ggproto(
   ),
 
   setup_data = function(data, params){
-    data <- glyph_setup_data(data, params, legend = TRUE)
+    data <- configure_glyph_data(data, params, legend = TRUE)
   },
 
   # Draw polygons
@@ -474,21 +473,38 @@ glyph_mapping <- function(spatial, scaled_value, length) {
 #' Convert ggplot2 object into grob
 #' @keywords internal
 glyph_setup_grob <- function(data, panel_params){
-  p_grob <- data |>
-    ggplot2::ggplot(
-      ggplot2::aes(x = x_minor,
-                   ymin = ymin_minor,
-                   ymax = ymax_minor)) +
-    geom_ribbon() +
-    theme_bw()  +
-    labs(x = "")
+
+  stopifnot(
+    ("ymin_minor" %in% names(data) && "ymax_minor" %in% names(data)) ||
+      ("y_minor" %in% names(data) && "yend_minor" %in% names(data))
+  )
+
+  if ("ymin_minor" %in% names(data)) {
+    p_grob <- data |>
+      ggplot2::ggplot(
+        ggplot2::aes(x = x_minor,
+                     ymin = ymin_minor,
+                     ymax = ymax_minor)) +
+      geom_ribbon() +
+      theme_bw()  +
+      labs(x = "")
+  } else {
+    p_grob <- data |>
+      ggplot2::ggplot(
+        ggplot2::aes(x = x_minor,
+                     y = y_minor,
+                     yend = yend_minor)) +
+      geom_segment() +
+      theme_bw()  +
+      labs(x = "", y = "")
+  }
 
   ggplotify::as.grob(p_grob)
 }
 
 #' Setup Glyph Data Based on Geometric Plot Type
 #' @keywords internal
-configure_glyph_data <- function(data, params){
+configure_glyph_data <- function(data, params,...){
   stopifnot(
     ("ymin_minor" %in% names(data) && "ymax_minor" %in% names(data)) ||
     ("y_minor" %in% names(data) && "yend_minor" %in% names(data))
@@ -496,9 +512,9 @@ configure_glyph_data <- function(data, params){
 
   # If "y_minor" is provided
   if ("y_minor" %in% names(data)) {
-    data <- glyph_setup_data(data, params, segment = TRUE)
+    data <- glyph_setup_data(data, params, segment = TRUE, ...)
   } else {
-    data <- glyph_setup_data(data, params)
+    data <- glyph_setup_data(data, params, ...)
   }
 }
 
@@ -579,8 +595,8 @@ custom_scale <- function(dx){
 
 
 # Global variables declaration -------------------------------------------------
-utils::globalVariables(c(".data", "na.omit", "value", "com", "x_minor",
-                         "ymin_minor", "ymax_minor", "geom_ribbon", "theme_bw",
+utils::globalVariables(c(".data", "na.omit", "value", "com", "x_minor", "geom_segment",
+                         "ymin_minor", "ymax_minor", "geom_ribbon", "theme_bw", "labs",
                          "theme", "margin", "element_blank", "y_minor", "yend_minor"))
 
 

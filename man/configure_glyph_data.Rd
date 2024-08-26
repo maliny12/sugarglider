@@ -4,7 +4,7 @@
 \alias{configure_glyph_data}
 \title{Setup Glyph Data Based on Geometric Plot Type}
 \usage{
-configure_glyph_data(data, params)
+configure_glyph_data(data, params, ...)
 }
 \description{
 Setup Glyph Data Based on Geometric Plot Type

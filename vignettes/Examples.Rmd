@@ -218,7 +218,7 @@ grid.rect(
 
 The `add_geom_legend()` function enhances map visualizations by adding an enlarged version of one of the glyphs in the bottom left corner of the plot. This makes it easier to understand the symbols used in the map.
 
-In this example, a map of Australia is created with geom_glyph_ribbon() to display temperature data. The legend is integrated directly into the plot using add_ribbon_legend(), providing a clear reference for interpreting the glyphs without cluttering the map. This approach ensures that the visualization remains both informative and visually clean.
+In this example, a map of Australia is created with geom_glyph_ribbon() to display temperature data. The legend is integrated directly into the plot using add_glyph_legend(), providing a clear reference for interpreting the glyphs without cluttering the map. This approach ensures that the visualization remains both informative and visually clean.
 
 ```{r}
 legend <- aus_temp |>
@@ -229,7 +229,7 @@ legend <- aus_temp |>
            inherit.aes = FALSE)  +
   add_glyph_boxes() +
   add_ref_lines() +
-  add_ribbon_legend() + 
+  add_glyph_legend() + 
   geom_glyph_ribbon() + 
   theme(legend.position.inside = c(.3,0.9), 
         legend.direction = "horizontal",
@@ -266,6 +266,7 @@ segment <- aus_temp |>
   add_glyph_boxes(width = 4, height = 3) +
   add_ref_lines(width = 4, height = 3) +
   geom_glyph_segment(width = 4, height = 3) +
+  add_glyph_legend() +
   coord_sf(xlim = c(110,155)) +
   theme_map()
 
