@@ -231,7 +231,12 @@ legend <- aus_temp |>
   add_ref_lines() +
   add_ribbon_legend() + 
   geom_glyph_ribbon() + 
+  theme(legend.position.inside = c(.3,0.9), 
+        legend.direction = "horizontal",
+        panel.background = element_rect(fill = "white", color = NA),
+        plot.background = element_rect(fill = "white", color = NA)) +
   theme_map() 
+
 
 # Using gridExtra and grid packages to add neat line to the plot
 grid.arrange(legend, ncol = 1) 
@@ -258,8 +263,8 @@ segment <- aus_temp |>
   geom_sf(data = abs_ste ,
            fill = NA, color = grey(0.7),
            inherit.aes = FALSE)  +
-  # add_glyph_boxes(width = 4, height = 3) +
-  # add_ref_lines(width = 4, height = 3) +
+  add_glyph_boxes(width = 4, height = 3) +
+  add_ref_lines(width = 4, height = 3) +
   geom_glyph_segment(width = 4, height = 3) +
   coord_sf(xlim = c(110,155)) +
   theme_map()
@@ -283,8 +288,8 @@ set.seed(32425)
 historical_temp |>
   filter(id %in% sample(id, 10)) |>
   ggplot(aes(x_major = long, y_major = lat,  color = factor(year), group = interaction(year,id),
-                      x_minor = month, ymin_minor = tmin, 
-                      ymax_minor = tmax)) +
+                      x_minor = month, y_minor = tmin, 
+                      yend_minor = tmax)) +
   geom_sf(data = abs_ste |> filter(NAME == "Western Australia"),
            fill = NA, color = grey(0.7),
            inherit.aes = FALSE)  +

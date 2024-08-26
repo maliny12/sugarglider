@@ -167,7 +167,7 @@ GeomGlyphBox <- ggplot2::ggproto(
   ),
 
   setup_data = function(data, params) {
-    data <- glyph_setup_data(data, params)
+    data <- configure_glyph_data(data, params)
     glyph_box(data, params)
   },
 
@@ -231,7 +231,7 @@ GeomGlyphLine <- ggplot2::ggproto(
   ),
 
   setup_data = function(data, params) {
-    data <- glyph_setup_data(data, params)
+    data <- configure_glyph_data(data, params)
     ref_line(data, params)
   },
 
@@ -484,6 +484,22 @@ glyph_setup_grob <- function(data, panel_params){
     labs(x = "")
 
   ggplotify::as.grob(p_grob)
+}
+
+#' Setup Glyph Data Based on Geometric Plot Type
+#' @keywords internal
+configure_glyph_data <- function(data, params){
+  stopifnot(
+    ("ymin_minor" %in% names(data) && "ymax_minor" %in% names(data)) ||
+    ("y_minor" %in% names(data) && "yend_minor" %in% names(data))
+  )
+
+  # If "y_minor" is provided
+  if ("y_minor" %in% names(data)) {
+    data <- glyph_setup_data(data, params, segment = TRUE)
+  } else {
+    data <- glyph_setup_data(data, params)
+  }
 }
 
 # Rescale Functions ----------------------------------------------------------
