@@ -25,7 +25,4 @@ wa_dpird <- get_stations_metadata() |>
 
 
 
-
-
-
 usethis::use_data(rain, overwrite = TRUE)
