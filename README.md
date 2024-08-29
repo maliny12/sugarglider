@@ -13,9 +13,9 @@ ribbon provides ggplot2 extension to produce glyph plots with
 These functions create a ribbon or segment geometry designed to display glyphs
 based on the combination of `x_major` and `y_major`. For each `x_minor`
 value, `geom_glyph_ribbon()` displays a y interval defined by
-`ymin_minor` and `ymax_minor`. For `geom_glyph_segment()`, the length of the line 
-is defined by `y_minor` and `yend_minor`. 
-
+`ymin_minor` and `ymax_minor`. Meanwhile, `geom_glyph_segment()` draw a straight
+line between `y_minor` and `yend_minor` with respect to `x_minor`.
+ 
 ``` r
 library(ribbon)
 library(sf)
@@ -34,6 +34,7 @@ aus_temp |>
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
 
 ### Installation
 

@@ -299,7 +299,6 @@ GeomGlyphLegend <- ggplot2::ggproto(
 
   # Draw polygons
   draw_panel = function(data, panel_params, coord, ...) {
-
     grob <- glyph_setup_grob(data, panel_params)
     sample_vp <- viewport(x = 0.13, y = 0.02,
                           width = 0.23, height = 0.23,
@@ -505,6 +504,7 @@ glyph_setup_grob <- function(data, panel_params){
 #' Setup Glyph Data Based on Geometric Plot Type
 #' @keywords internal
 configure_glyph_data <- function(data, params,...){
+
   stopifnot(
     ("ymin_minor" %in% names(data) && "ymax_minor" %in% names(data)) ||
     ("y_minor" %in% names(data) && "yend_minor" %in% names(data))

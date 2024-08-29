@@ -40,6 +40,42 @@ based on the combination of `x_major` and `y_major`. For each `x_minor`
 value, `geom_glyph_ribbon()` displays a y interval defined by
 `ymin_minor` and `ymax_minor`. 
 
+Let's compare `geom_glyph_ribbon()` amd `geom_glyph_segment()`:
+
+```{r}
+
+vic_temp <- aus_temp |>
+  filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143"))
+
+p1 <- vic_temp |>
+   ggplot(aes(x_major = long, y_major = lat,
+              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+  geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
+         color = grey(0.7), fill = NA, inherit.aes = FALSE)  +
+  add_glyph_boxes() +
+  add_ref_lines() +
+  geom_glyph_ribbon() +
+  theme_map() +
+  labs(title = "geom_glyph_ribbon()") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+p2 <- vic_temp |>
+   ggplot(aes(x_major = long, y_major = lat,
+              x_minor = month, y_minor = tmin, yend_minor = tmax)) +
+  geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
+          color = grey(0.7), fill = NA, inherit.aes = FALSE)  +
+   add_glyph_boxes() +
+   add_ref_lines() +
+  geom_glyph_segment() +
+  theme_map() +
+  labs(title = "geom_glyph_segment()") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+# Using gridExtra and grid packages to add neatline to the plot
+grid.arrange(p1, p2, ncol = 2) 
+
+```
+
 ### Installation
 
 ```{r, eval=FALSE}
@@ -85,6 +121,8 @@ This example compares the effects of global and local rescaling using the geom_g
 - Global Rescale: With global_rescale = TRUE, ribbon widths are based on the local temperature range within each region, highlighting regional differences.
 
 The comparison shows how rescaling choices impact the visualization of temperature data on the map.
+
+
 
 ```{r}
 
@@ -190,15 +228,15 @@ fact <- historical_temp |>
    add_glyph_boxes() +
    add_ref_lines() +
    geom_glyph_ribbon(alpha = 0.5) +
-   coord_sf(xlim = c(140,150)) +
-  labs(x = "Longitude", y = "Latitude") +
+  labs(x = "Longitude", y = "Latitude",
+       color = "year", fill = "year") +
   theme_map() +
   theme(legend.position.inside = c(.3,0.9), 
         legend.direction = "horizontal",
         panel.background = element_rect(fill = "white", color = NA),
         plot.background = element_rect(fill = "white", color = NA)) +
   scale_colour_wsj("colors6") +
-  scale_fill_wsj("colors6")
+  scale_fill_wsj("colors6") 
 
 
 # Using gridExtra and grid packages to add neat line to the plot
