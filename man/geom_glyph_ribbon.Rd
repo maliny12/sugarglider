@@ -114,7 +114,7 @@ aus_temp |>
   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
           color = "white",inherit.aes = FALSE) +
   geom_glyph_ribbon() +
-  theme_glyph()
+  ggthemes::theme_map()
 
 
 # Adjust width and height of the glyph
@@ -124,7 +124,7 @@ aus_temp |>
   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
           color = "white",inherit.aes = FALSE) +
   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
- theme_glyph()
+ ggthemes::theme_map()
 
 # Extend glyph map with reference box and line
 aus_temp |>
@@ -132,8 +132,8 @@ aus_temp |>
          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
           color = "white",inherit.aes = FALSE) +
-  add_glyph_boxes(width = rel(4.5), height = rel(3)) +
-  add_ref_lines(width = rel(4.5), height = rel(3)) +
-  geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
-  theme_glyph()
+  add_glyph_boxes() +
+  add_ref_lines() +
+  geom_glyph_ribbon() +
+  ggthemes::theme_map()
 }

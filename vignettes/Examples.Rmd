@@ -28,7 +28,7 @@ library(ozmaps)
 library(ggthemes)
 ```
   
-### Overview
+## Overview
 
 ribbon provides a ggplot2 extension for producing glyph plots with `geom_glyph_ribbon()` and 
 `geom_glyph_segment()`.
@@ -38,7 +38,7 @@ based on the combination of `x_major` and `y_major`. For each `x_minor`
 value, `geom_glyph_ribbon()` displays a y interval defined by
 `ymin_minor` and `ymax_minor`. 
 
-Let's compare `geom_glyph_ribbon()` amd `geom_glyph_segment()`:
+Let's compare `geom_glyph_ribbon()` and `geom_glyph_segment()`:
 
 ```{r}
 vic_temp <- aus_temp |>
@@ -77,14 +77,14 @@ p2 <- vic_temp |>
 grid.arrange(p1, p2, ncol = 2) 
 ```
 
-### Installation
+## Installation
 
 ```{r, eval=FALSE}
 # Download the development version from GitHub:
 devtools::install_github("maliny12/ribbon")
 ```
 
-### Options
+## Options
 
 Options allow you to modify the behavior of `ribbon` to fit the specific needs of your figure. These are all global options that affect every glyph.
 
@@ -92,11 +92,11 @@ Options allow you to modify the behavior of `ribbon` to fit the specific needs o
 |--------------- | ------------ | ------------------------------------------------
 | `x_scale`         | `"identity"`         | This function scales each set of minor values within a grid cell along the x-dimension.
 |`y_scale`      | `"identity"`          | This function scales each set of minor values within a grid cell along the y-dimension.
-|`width`         | `ggplot2::rel(3)`          |  Width of the glyph.
-|`height`     | `ggplot2::rel(2)`     | Height of the glyph.
+|`width`         | `ggplot2::rel(4)`          |  Width of the glyph.
+|`height`     | `ggplot2::rel(2.5)`     | Height of the glyph.
 |`global_rescale`      | `TRUE`        | Determines whether rescaling is applied globally across all glyphs or individually for each glyph
 
-### Aesthetics
+## Aesthetics
 
 `ribbon` provides the same aesthetics for `geom_glyph_ribbon()` and `geom_glyph_segment()` as those available in `geom_ribbon()` or `geom_segment()`, while also introducing additional unique options.
 
@@ -109,11 +109,11 @@ Options allow you to modify the behavior of `ribbon` to fit the specific needs o
 |`alpha`      | `1`        | Transparency level of the glyphs. 
 
 
-### Examples
+## Examples
 
-##### Monthly temperature across Australia 
+### Monthly temperature across Australia 
 
-The National Oceanica and Atmosphere Administration (NOAA) provides weather data from stations all over Australia. The `aus_temp` dataset contains climate variables such as precipitation, and temperature from 29 different weather stations in the year 2020. For this example, we are interested in finding out the 
+The National Oceanica and Atmosphere Administration (NOAA) provides weather data from stations all over Australia. The `aus_temp` dataset contains climate variables such as precipitation, and temperature from 29 different weather stations in the year 2020. 
 
 ```{r}
 aus_temp
@@ -212,7 +212,7 @@ p2 <- aus_temp |>
 grid.arrange(p1, p2, ncol = 2) 
 ```
 
-###### Highlighting Temperature Changes with Color-Coded Glyph
+#### Highlighting Temperature Changes with Color-Coded Glyph
 
 Building on the temperature analysis, this section maps precipitation across Australia using glyphs. Average rainfall is calculated for each region and visualized with `geom_glyph_ribbon()`. The glyphs are color-coded to show different rainfall levels. Reference lines and glyph boxes, similar to the previous section, enhance readability and provide a clear comparison of precipitation patterns across the country.
 
@@ -231,32 +231,39 @@ prcp <- aus_temp |>
    geom_glyph_ribbon() +
    coord_sf(xlim = c(112,155)) +
   theme_map() +
-  theme(legend.position.inside = c(.3,0), 
+  theme(legend.position.inside = c(.2,0), 
         legend.direction = "horizontal",
         panel.background = element_rect(fill = "white", color = NA),
         plot.background = element_rect(fill = "white", color = NA)) +
   scale_fill_gradientn(colors = c("#ADD8E6", "#2b5e82", "dodgerblue4")) +
-  scale_color_gradientn(colors = c( "#ADD8E6", "#2b5e82", "dodgerblue4")) 
+  scale_color_gradientn(colors = c( "#ADD8E6", "#2b5e82", "dodgerblue4")) +
+  labs(fill = "Percepitation", color = "Percepitation")
   
 
 grid.arrange(prcp, ncol = 1) 
 ```
 
-Say you want to compares temperature data across different years for selected regions in Victoria. Using geom_glyph_ribbon(), the visualization shows how temperatures have changed over time, with each year highlighted in different colors for easy comparison. Reference lines and glyph boxes help clarify the data, making it simple to spot trends and patterns across the years.
+Say you want to compares temperature data across different years for selected regions in Victoria. Using `geom_glyph_ribbon()`, the visualization shows how temperatures have changed over time, with each year highlighted in different colors for easy comparison. Reference lines and glyph boxes help clarify the data, making it simple to spot trends and patterns across the years.
 
 ```{r}
 
 fact <- historical_temp |> 
   filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143")) |>
-   ggplot(aes(color = factor(year), fill = factor(year), group = interaction(year,id),
-              x_major = long, y_major = lat, x_minor = month, 
-              ymin_minor = tmin, ymax_minor = tmax)) +
+   ggplot(aes(color = factor(year), fill = factor(year),
+              group = interaction(year,id),
+              x_major = long, y_major = lat,
+              x_minor = month, ymin_minor = tmin,
+              ymax_minor = tmax)) +
   geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
            fill = NA, color = grey(0.7),
-           inherit.aes = FALSE)  +
-   add_glyph_boxes() +
-   add_ref_lines() +
-   geom_glyph_ribbon(alpha = 0.5) +
+          inherit.aes = FALSE)  +
+   add_glyph_boxes(width = rel(2),
+                   height = rel(1.5)) +
+   add_ref_lines(width = rel(2),
+                 height = rel(1.5)) +
+   geom_glyph_ribbon(alpha = 0.5,
+                     width = rel(2),
+                     height = rel(1.5)) +
   labs(x = "Longitude", y = "Latitude",
        color = "year", fill = "year") +
   theme_map() +
@@ -271,7 +278,7 @@ fact <- historical_temp |>
 grid.arrange(fact, ncol = 1) 
 ```
 
-###### Integrating Glyph Legends
+#### Integrating Glyph Legends
 
 The `add_geom_legend()` function enhances map visualizations by adding an enlarged version of one of the glyphs in the bottom left corner of the plot. This makes it easier to understand the symbols used in the map.
 
@@ -280,7 +287,8 @@ In this example, a map of Australia is created with geom_glyph_ribbon() to displ
 ```{r}
 legend <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
-              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
+              x_minor = month, ymin_minor = tmin,
+              ymax_minor = tmax)) +
   geom_sf(data = abs_ste ,
            fill = NA, color = grey(0.7),
            inherit.aes = FALSE)  +
@@ -298,54 +306,9 @@ legend <- aus_temp |>
 grid.arrange(legend, ncol = 1) 
 ```
 
-###### Observations and Insights
+#### Observations and Insights
 
 Geom Segment Glyphs offer unique insights into seasonal temperature trends across Australia. Turning off global rescaling shows that most stations generally followed the same curvature trends relative to their lowest temperatures. However factoring in global rescaling, coastal regions show much less total variation in temperature.
-
-
-##### Flights data
-
-```{r}
-
-segment <- aus_temp |>
-  filter(id %in% sample(id, 18)) |>
-  ggplot(aes(x_major = long, y_major = lat, 
-                      x_minor = month, y_minor = tmin, 
-                      yend_minor = tmax)) +
-  geom_sf(data = abs_ste ,
-           fill = NA, color = grey(0.7),
-           inherit.aes = FALSE)  +
-  add_glyph_boxes(width = 4, height = 3) +
-  add_ref_lines(width = 4, height = 3) +
-  geom_glyph_segment(width = 4, height = 3) +
-  add_glyph_legend() +
-  coord_sf(xlim = c(110,155)) +
-  theme_map()
-
-grid.arrange(segment, ncol = 1) 
-  
-```
-
-```{r, eval=FALSE}
-set.seed(32425)
-historical_temp |>
-  filter(id %in% sample(id, 10)) |>
-  ggplot(aes(x_major = long, y_major = lat,  color = factor(year), group = interaction(year,id),
-                      x_minor = month, y_minor = tmin, 
-                      yend_minor = tmax)) +
-  geom_sf(data = abs_ste |> filter(NAME == "Western Australia"),
-           fill = NA, color = grey(0.7),
-           inherit.aes = FALSE)  +
-  add_glyph_boxes(width = 4, height = 3) +
-  add_ref_lines(width = 4, height = 3) +
-  geom_glyph_segment(width = 4, height = 3) +
-  coord_sf(xlim = c(110,130), ylim = c(-40,-10)) +
-  theme_map() +
-  theme(legend.position.inside = c(.3,0.9), 
-        legend.direction = "horizontal",
-        panel.background = element_rect(fill = "white", color = NA),
-        plot.background = element_rect(fill = "white", color = NA))
-```
 
 
 

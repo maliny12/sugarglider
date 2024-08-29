@@ -106,8 +106,7 @@ test_that("geom_glyph_ribbon() works", {
   skip_if_not_installed("vdiffr")
 
   p <- ggplot2::ggplot(data = aus_temp) +
-    ggplot2::geom_sf(data = ozmaps::abs_ste, color = "white") +
-    ggthemes::theme_map()
+    ggplot2::geom_sf(data = ozmaps::abs_ste, color = "white")
 
   P1 <- p + geom_glyph_ribbon(
     width = 0.4,
