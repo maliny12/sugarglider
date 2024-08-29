@@ -53,7 +53,7 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL, show.legend = NA,
                                stat = "identity", position = "identity",
                                x_major = NULL, y_major = NULL,
                                x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
-                               height = ggplot2::rel(2), width = ggplot2::rel(2.3),
+                               height = ggplot2::rel(2.5), width = ggplot2::rel(4),
                                x_scale = identity, y_scale = identity,
                                global_rescale = TRUE, inherit.aes = TRUE, ...) {
   ggplot2::layer(
@@ -88,8 +88,8 @@ GeomGlyphRibbon <- ggplot2::ggproto(
   default_aes = ggplot2::aes(
     linetype = 1, fill = "grey40", color = "grey50",
     linewidth = 0.5, alpha = 0.8,
-    width = ggplot2::rel(2.3),
-    height = ggplot2::rel(2),
+    width = ggplot2::rel(4),
+    height = ggplot2::rel(2.5),
     x_scale = list(identity),
     y_scale = list(identity),
     global_rescale = TRUE
@@ -130,7 +130,7 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 add_glyph_boxes <- function( mapping = NULL, data = NULL,
                              stat = "identity", position = "identity",
                              x_major = NULL, y_major = NULL, alpha = 1,
-                             height = ggplot2::rel(2), width = ggplot2::rel(2.3),
+                             height = ggplot2::rel(2.5), width = ggplot2::rel(4),
                              fill = "white", inherit.aes = TRUE, show.legend = NA, ...) {
   ggplot2::layer(
     geom = GeomGlyphBox,
@@ -162,8 +162,8 @@ GeomGlyphBox <- ggplot2::ggproto(
   default_aes = ggplot2::aes(
     linetype = "solid", fill = "white", color = "grey85",
     linewidth = 0.5, alpha = 0.5,
-    width = ggplot2::rel(2.3),
-    height = ggplot2::rel(2)
+    width = ggplot2::rel(4),
+    height = ggplot2::rel(2.5)
   ),
 
   setup_data = function(data, params) {
@@ -195,7 +195,7 @@ GeomGlyphBox <- ggplot2::ggproto(
 add_ref_lines <- function( mapping = NULL, data = NULL,
                              stat = "identity", position = "identity",
                              show.legend = NA, x_major = NULL, y_major = NULL,
-                             height = ggplot2::rel(2), width = ggplot2::rel(2.3),
+                             height = ggplot2::rel(2.5), width = ggplot2::rel(4),
                              inherit.aes = TRUE, ...) {
   ggplot2::layer(
     geom = GeomGlyphLine,
@@ -226,8 +226,8 @@ GeomGlyphLine <- ggplot2::ggproto(
   default_aes = ggplot2::aes(
     linetype = "solid", color = "grey85",
     linewidth = 0.5, alpha = 1,
-    width = ggplot2::rel(2.3),
-    height = ggplot2::rel(2)
+    width = ggplot2::rel(4),
+    height = ggplot2::rel(2.5)
   ),
 
   setup_data = function(data, params) {

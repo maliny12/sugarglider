@@ -30,7 +30,7 @@ library(ggthemes)
   
 ### Overview
 
-ribbon provides ggplot2 extension to produce glyph plots with `geom_glyph_ribbon()` and 
+ribbon provides a ggplot2 extension for producing glyph plots with `geom_glyph_ribbon()` and 
 `geom_glyph_segment()`.
 
 These functions create a ribbon geometry designed to display glyphs
@@ -41,7 +41,6 @@ value, `geom_glyph_ribbon()` displays a y interval defined by
 Let's compare `geom_glyph_ribbon()` amd `geom_glyph_segment()`:
 
 ```{r}
-
 vic_temp <- aus_temp |>
   filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143"))
 
@@ -50,9 +49,10 @@ p1 <- vic_temp |>
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
   geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
          color = grey(0.7), fill = NA, inherit.aes = FALSE)  +
-  add_glyph_boxes() +
-  add_ref_lines() +
-  geom_glyph_ribbon() +
+  # Customize the size of each glyph box using the width and height parameters.
+  add_glyph_boxes(width = rel(2.5), height = rel(1.5)) +
+  add_ref_lines(width = rel(2.5), height = rel(1.5)) +
+  geom_glyph_ribbon(width = rel(2.5), height = rel(1.5)) +
   theme_map() +
   labs(title = "geom_glyph_ribbon()") +
   theme(plot.title = element_text(hjust = 0.5),
@@ -64,9 +64,10 @@ p2 <- vic_temp |>
               x_minor = month, y_minor = tmin, yend_minor = tmax)) +
   geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
           color = grey(0.7), fill = NA, inherit.aes = FALSE)  +
-   add_glyph_boxes() +
-   add_ref_lines() +
-  geom_glyph_segment() +
+  # Customize the size of each glyph box using the width and height parameters.
+   add_glyph_boxes(width = rel(2.5), height = rel(1.5)) +
+   add_ref_lines(width = rel(2.5), height = rel(1.5)) +
+  geom_glyph_segment(width = rel(2.5), height = rel(1.5)) +
   theme_map() +
   labs(title = "geom_glyph_segment()") +
   theme(plot.title = element_text(hjust = 0.5),
@@ -85,21 +86,19 @@ devtools::install_github("maliny12/ribbon")
 
 ### Options
 
-Options allow you to modify how functions behave by altering parameters to meet specific needs. All of which are global options that affect all glyphs.
+Options allow you to modify the behavior of `ribbon` to fit the specific needs of your figure. These are all global options that affect every glyph.
 
 |Option          | Default      | Description
 |--------------- | ------------ | ------------------------------------------------
-| `x_scale`         | `"identity"`         | This function scales each set of minor values within a grid cell for the x-dimension.
-|`y_scale`      | `"identity"`          | This function scales each set of minor values within a grid cell for the y-dimension.
-|`width`         | `0.1`          |  Specifies the width of the glyph.
-|`height`     | `0.1`     | Specifies the height of the glyph.
-|`global_rescale`      | `TRUE`        | Determines whether rescaling is performed globally across all glyphs or individually for each glyph.
+| `x_scale`         | `"identity"`         | This function scales each set of minor values within a grid cell along the x-dimension.
+|`y_scale`      | `"identity"`          | This function scales each set of minor values within a grid cell along the y-dimension.
+|`width`         | `ggplot2::rel(3)`          |  Width of the glyph.
+|`height`     | `ggplot2::rel(2)`     | Height of the glyph.
+|`global_rescale`      | `TRUE`        | Determines whether rescaling is applied globally across all glyphs or individually for each glyph
 
 ### Aesthetics
 
-Aesthetics are parameters that you can map to your data using geom_glyph_ribbon(mapping = aes(...)).
-
-`ribbon` provides the same aesthetics for geom_glyph_ribbon and geom_glyph_segment() as are available in geom_ribbon() or geom_segment(), but it also introduces additional unique options.
+`ribbon` provides the same aesthetics for `geom_glyph_ribbon()` and `geom_glyph_segment()` as those available in `geom_ribbon()` or `geom_segment()`, while also introducing additional unique options.
 
 |Option          | Default      | Description
 |--------------- | ------------ | ------------------------------------------------
@@ -111,47 +110,101 @@ Aesthetics are parameters that you can map to your data using geom_glyph_ribbon(
 
 
 ### Examples
-#### GeomGlyphRibbon
-##### Comparison between global rescale and local rescale
 
-This example compares the effects of global and local rescaling using the geom_glyph_ribbon() function.
+##### Monthly temperature across Australia 
 
-- Local Rescale: With global_rescale = FALSE, ribbon widths are based on the local temperature range within each region, highlighting regional differences.
-
-- Global Rescale: With global_rescale = TRUE, ribbon widths are based on the local temperature range within each region, highlighting regional differences.
-
-The comparison shows how rescaling choices impact the visualization of temperature data on the map.
-
-
+The National Oceanica and Atmosphere Administration (NOAA) provides weather data from stations all over Australia. The `aus_temp` dataset contains climate variables such as precipitation, and temperature from 29 different weather stations in the year 2020. For this example, we are interested in finding out the 
 
 ```{r}
+aus_temp
+```
 
-p1 <- aus_temp |>
-   ggplot(aes(x_major = long, y_major = lat,
-              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = abs_ste, color = grey(0.7), fill = NA,
-          inherit.aes = FALSE)  +
-  add_glyph_boxes(color = "dodgerblue4") +
-  add_ref_lines(color = "dodgerblue4") +
-  geom_glyph_ribbon(global_rescale = FALSE, color = "dodgerblue4", fill = "dodgerblue4") +
-  theme_map() +
+
+With the default rescaling parameters, this is the resulting geom segment glyph along with a geom_point to help illustrate the station location that each segment glyph corresponds to.
+
+The default `identity` scaling function is applied to all applied to each set of minor values within a grid cell. It centers the glyph both vertically and horizontally based on the station's location and adjusts the minor axes to fit within the interval [-1, 1]. This ensures the glyph fits the desired width and height.
+
+```{r}
+aus_temp |>
+  ggplot(aes(
+    x_major = long, 
+    y_major = lat, 
+    x_minor = month, 
+    y_minor = tmin, 
+    yend_minor = tmax)) +
+  geom_sf(data = abs_ste, color = grey(0.7),
+          fill = NA, inherit.aes = FALSE) +
   coord_sf(xlim = c(110,155)) +
-  labs(title = "Local Rescale") +
+  # Add glyph box to each glyph
+  add_glyph_boxes(
+    width = 4,
+    height = 3) +
+  geom_point(aes(x = long, y = lat,
+                 color = "Weather Station")) +
+  geom_glyph_segment(
+    # Customize the size of each glyph box using the width and height parameters.
+    width = 4, 
+    height = 3,
+    aes(color = "Temperature")) +
+  ggthemes::theme_map() +
+  scale_color_manual(
+    values = c("Weather Station" = "firebrick",
+               "Temperature" = "black")) +
+  labs(color = "Data")  +
+  theme(legend.position  = "bottom",
+        legend.direction = "horizontal")
+
+```
+
+All previous examples have been made with global rescaling enabled (default), resulting in glyphs being sized differently according to their values relative to each other. Turning off global rescaling allows each glyph to be rescaled based on its own individual values, producing more evenly sized glyphs.
+
+Local Rescale: With global_rescale = FALSE, the length of each line segment is based on the local temperature range within each region, highlighting regional differences.
+
+Global Rescale: With global_rescale = TRUE, the length of each line segment is based on the global temperature range, ensuring consistency in glyph size across regions.
+
+The following plot compares the two rescaling options.
+
+```{r}
+# Global rescale
+p1 <- aus_temp |>
+  ggplot(aes(
+    x_major = long, 
+    y_major = lat, 
+    x_minor = month, 
+    y_minor = tmin, 
+    yend_minor = tmax)) +
+  geom_sf(data = abs_ste, color = grey(0.7),
+          fill = NA, inherit.aes = FALSE) +
+  coord_sf(xlim = c(110,155)) +
+  # Add glyph box to each glyph
+  add_glyph_boxes() +
+  # Add reference lines to each glyph
+  add_ref_lines() +
+  geom_glyph_segment(global_rescale = TRUE) +
+  ggthemes::theme_map() +
+  labs(title = "Global Rescale") +
   theme(plot.title = element_text(hjust = 0.5),
         panel.background = element_rect(fill = "white", color = NA),
         plot.background = element_rect(fill = "white", color = NA))
-
+  
+# Local Rescale
 p2 <- aus_temp |>
-   ggplot(aes(x_major = long, y_major = lat,
-              x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = abs_ste, color = grey(0.7), fill = NA,
-          inherit.aes = FALSE)  +
-   add_glyph_boxes(color = "dodgerblue4") +
-   add_ref_lines(color = "dodgerblue4") +
-  geom_glyph_ribbon(global_rescale = TRUE, color = "dodgerblue4", fill = "dodgerblue4") +
-  theme_map() +
+  ggplot(aes(
+    x_major = long, 
+    y_major = lat, 
+    x_minor = month, 
+    y_minor = tmin, 
+    yend_minor = tmax)) +
+  geom_sf(data = abs_ste, color = grey(0.7),
+          fill = NA, inherit.aes = FALSE) +
   coord_sf(xlim = c(110,155)) +
-  labs(title = "Global Rescale") +
+  # Add glyph box to each glyph
+  add_glyph_boxes() +
+  # Add reference lines to each glyph
+  add_ref_lines() +
+  geom_glyph_segment(global_rescale = FALSE) +
+  ggthemes::theme_map() +
+  labs(title = "Local Rescale") +
   theme(plot.title = element_text(hjust = 0.5),
         panel.background = element_rect(fill = "white", color = NA),
         plot.background = element_rect(fill = "white", color = NA))
@@ -159,9 +212,9 @@ p2 <- aus_temp |>
 grid.arrange(p1, p2, ncol = 2) 
 ```
 
-##### Mapping precipitation across Australia with glyphs
+###### Highlighting Temperature Changes with Color-Coded Glyph
 
-Building on the temperature analysis, this section maps precipitation across Australia using glyphs. Average rainfall is calculated for each region and visualized with geom_glyph_ribbon(). The glyphs are color-coded to show different rainfall levels. Reference lines and glyph boxes, similar to the previous section, enhance readability and provide a clear comparison of precipitation patterns across the country.
+Building on the temperature analysis, this section maps precipitation across Australia using glyphs. Average rainfall is calculated for each region and visualized with `geom_glyph_ribbon()`. The glyphs are color-coded to show different rainfall levels. Reference lines and glyph boxes, similar to the previous section, enhance readability and provide a clear comparison of precipitation patterns across the country.
 
 ```{r}
 
@@ -189,13 +242,11 @@ prcp <- aus_temp |>
 grid.arrange(prcp, ncol = 1) 
 ```
 
-##### Comparative visualization by factors across years
-
 Say you want to compares temperature data across different years for selected regions in Victoria. Using geom_glyph_ribbon(), the visualization shows how temperatures have changed over time, with each year highlighted in different colors for easy comparison. Reference lines and glyph boxes help clarify the data, making it simple to spot trends and patterns across the years.
 
 ```{r}
 
-fact <- historical_temp |>
+fact <- historical_temp |> 
   filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143")) |>
    ggplot(aes(color = factor(year), fill = factor(year), group = interaction(year,id),
               x_major = long, y_major = lat, x_minor = month, 
@@ -220,7 +271,7 @@ fact <- historical_temp |>
 grid.arrange(fact, ncol = 1) 
 ```
 
-##### Integrating legends in map visualizations
+###### Integrating Glyph Legends
 
 The `add_geom_legend()` function enhances map visualizations by adding an enlarged version of one of the glyphs in the bottom left corner of the plot. This makes it easier to understand the symbols used in the map.
 
@@ -247,7 +298,12 @@ legend <- aus_temp |>
 grid.arrange(legend, ncol = 1) 
 ```
 
-#### GeomSegmentGlyph
+###### Observations and Insights
+
+Geom Segment Glyphs offer unique insights into seasonal temperature trends across Australia. Turning off global rescaling shows that most stations generally followed the same curvature trends relative to their lowest temperatures. However factoring in global rescaling, coastal regions show much less total variation in temperature.
+
+
+##### Flights data
 
 ```{r}
 

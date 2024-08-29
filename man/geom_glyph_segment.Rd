@@ -15,10 +15,10 @@ geom_glyph_segment(
   y_major = NULL,
   y_minor = NULL,
   yend_minor = NULL,
-  width = ggplot2::rel(2.3),
+  width = ggplot2::rel(4),
   x_scale = identity,
   y_scale = identity,
-  height = ggplot2::rel(2),
+  height = ggplot2::rel(2.5),
   global_rescale = TRUE,
   show.legend = NA,
   inherit.aes = TRUE

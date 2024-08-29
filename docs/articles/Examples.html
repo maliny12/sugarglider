@@ -74,7 +74,7 @@
 <div class="section level3">
 <h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h3>
-<p>ribbon provides ggplot2 extension to produce glyph plots with
+<p>ribbon provides a ggplot2 extension for producing glyph plots with
 <code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> and
 <code><a href="../reference/geom_glyph_segment.html">geom_glyph_segment()</a></code>.</p>
 <p>These functions create a ribbon geometry designed to display glyphs
@@ -117,7 +117,6 @@ based on the combination of <code>x_major</code> and
 <span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
 <span>        plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Using gridExtra and grid packages to add neatline to the plot</span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="Examples_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
@@ -131,9 +130,9 @@ based on the combination of <code>x_major</code> and
 <div class="section level3">
 <h3 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a>
 </h3>
-<p>Options allow you to modify how functions behave by altering
-parameters to meet specific needs. All of which are global options that
-affect all glyphs.</p>
+<p>Options allow you to modify the behavior of <code>ribbon</code> to
+fit the specific needs of your figure. These are all global options that
+affect every glyph.</p>
 <table class="table">
 <colgroup>
 <col width="20%">
@@ -149,30 +148,30 @@ affect all glyphs.</p>
 <tr class="odd">
 <td><code>x_scale</code></td>
 <td><code>"identity"</code></td>
-<td>This function scales each set of minor values within a grid cell for
-the x-dimension.</td>
+<td>This function scales each set of minor values within a grid cell
+along the x-dimension.</td>
 </tr>
 <tr class="even">
 <td><code>y_scale</code></td>
 <td><code>"identity"</code></td>
-<td>This function scales each set of minor values within a grid cell for
-the y-dimension.</td>
+<td>This function scales each set of minor values within a grid cell
+along the y-dimension.</td>
 </tr>
 <tr class="odd">
 <td><code>width</code></td>
 <td><code>0.1</code></td>
-<td>Specifies the width of the glyph.</td>
+<td>Width of the glyph.</td>
 </tr>
 <tr class="even">
 <td><code>height</code></td>
 <td><code>0.1</code></td>
-<td>Specifies the height of the glyph.</td>
+<td>Height of the glyph.</td>
 </tr>
 <tr class="odd">
 <td><code>global_rescale</code></td>
 <td><code>TRUE</code></td>
-<td>Determines whether rescaling is performed globally across all glyphs
-or individually for each glyph.</td>
+<td>Determines whether rescaling is applied globally across all glyphs
+or individually for each glyph</td>
 </tr>
 </tbody>
 </table>
@@ -180,12 +179,11 @@ or individually for each glyph.</td>
 <div class="section level3">
 <h3 id="aesthetics">Aesthetics<a class="anchor" aria-label="anchor" href="#aesthetics"></a>
 </h3>
-<p>Aesthetics are parameters that you can map to your data using
-geom_glyph_ribbon(mapping = aes(…)).</p>
 <p><code>ribbon</code> provides the same aesthetics for
-geom_glyph_ribbon and geom_glyph_segment() as are available in
-geom_ribbon() or geom_segment(), but it also introduces additional
-unique options.</p>
+<code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> and <code><a href="../reference/geom_glyph_segment.html">geom_glyph_segment()</a></code>
+as those available in <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon()</a></code> or
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment()</a></code>, while also introducing additional unique
+options.</p>
 <table class="table">
 <colgroup>
 <col width="20%">
@@ -230,7 +228,7 @@ unique options.</p>
 <h3 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h3>
 <div class="section level4">
-<h4 id="geomglyphribbon">GeomGlyphRibbon<a class="anchor" aria-label="anchor" href="#geomglyphribbon"></a>
+<h4 id="geom_glyph_ribbon">geom_glyph_ribbon()<a class="anchor" aria-label="anchor" href="#geom_glyph_ribbon"></a>
 </h4>
 <div class="section level5">
 <h5 id="comparison-between-global-rescale-and-local-rescale">Comparison between global rescale and local rescale<a class="anchor" aria-label="anchor" href="#comparison-between-global-rescale-and-local-rescale"></a>
@@ -279,7 +277,6 @@ of temperature data on the map.</p>
 <span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
 <span>        plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Using gridExtra and grid packages to add neatline to the plot</span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="Examples_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </div>
@@ -315,7 +312,6 @@ a clear comparison of precipitation patterns across the country.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"#ADD8E6"</span>, <span class="st">"#2b5e82"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span><span class="op">)</span> </span>
 <span>  </span>
 <span></span>
-<span><span class="co"># Using gridExtra and grid packages to add neat line to the plot</span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">prcp</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="Examples_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
@@ -352,7 +348,6 @@ trends and patterns across the years.</p>
 <span>  <span class="fu">scale_fill_wsj</span><span class="op">(</span><span class="st">"colors6"</span><span class="op">)</span> </span>
 <span></span>
 <span></span>
-<span><span class="co"># Using gridExtra and grid packages to add neat line to the plot</span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">fact</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="Examples_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
@@ -387,7 +382,6 @@ and visually clean.</p>
 <span>  <span class="fu">theme_map</span><span class="op">(</span><span class="op">)</span> </span>
 <span></span>
 <span></span>
-<span><span class="co"># Using gridExtra and grid packages to add neat line to the plot</span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">legend</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="Examples_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
@@ -412,7 +406,6 @@ and visually clean.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">110</span>,<span class="fl">155</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">theme_map</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Using gridExtra and grid packages to add neat line to the plot</span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">segment</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="Examples_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">

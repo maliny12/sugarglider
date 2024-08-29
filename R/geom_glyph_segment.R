@@ -55,9 +55,9 @@
 geom_glyph_segment <- function(mapping = NULL, data = NULL, stat = "identity",
                                position = "identity", ..., x_major = NULL,
                                x_minor = NULL, y_major = NULL, y_minor = NULL,
-                               yend_minor = NULL, width = ggplot2::rel(2.3),
+                               yend_minor = NULL, width = ggplot2::rel(4),
                                x_scale = identity, y_scale = identity,
-                               height = ggplot2::rel(2), global_rescale = TRUE,
+                               height = ggplot2::rel(2.5), global_rescale = TRUE,
                                show.legend = NA, inherit.aes = TRUE) {
   ggplot2::layer(
     data = data,
@@ -99,8 +99,8 @@ GeomSegmentGlyph <- ggplot2::ggproto(
     colour = "grey50",
     linewidth = 0.5,
     linetype = 1,
-    width = ggplot2::rel(2.3),
-    height = ggplot2::rel(2),
+    width = ggplot2::rel(4),
+    height = ggplot2::rel(2.5),
     alpha = 1,
     global_rescale = TRUE,
     x_scale = list(identity),

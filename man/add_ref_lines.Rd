@@ -12,8 +12,8 @@ add_ref_lines(
   show.legend = NA,
   x_major = NULL,
   y_major = NULL,
-  height = ggplot2::rel(2),
-  width = ggplot2::rel(2.3),
+  height = ggplot2::rel(2.5),
+  width = ggplot2::rel(4),
   inherit.aes = TRUE,
   ...
 )
