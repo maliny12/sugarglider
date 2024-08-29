@@ -57,7 +57,9 @@ p1 <- vic_temp |>
   geom_glyph_ribbon() +
   theme_map() +
   labs(title = "geom_glyph_ribbon()") +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.background = element_rect(fill = "white", color = NA),
+        plot.background = element_rect(fill = "white", color = NA))
 
 p2 <- vic_temp |>
    ggplot(aes(x_major = long, y_major = lat,
@@ -69,7 +71,9 @@ p2 <- vic_temp |>
   geom_glyph_segment() +
   theme_map() +
   labs(title = "geom_glyph_segment()") +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.background = element_rect(fill = "white", color = NA),
+        plot.background = element_rect(fill = "white", color = NA))
 
 # Using gridExtra and grid packages to add neatline to the plot
 grid.arrange(p1, p2, ncol = 2) 

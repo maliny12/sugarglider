@@ -33,7 +33,7 @@ aus_temp |>
   theme_glyph()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](docs/articles/Example_files/figure-html/)<!-- -->
 
 
 ### Installation
