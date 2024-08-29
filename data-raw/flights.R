@@ -39,28 +39,8 @@ top_10_airports <- flights_data_raw |>
 
 sample_airports <- top_10_airports$ORIGIN
 
-sample_flights <- flights_data_raw |>
+monthly_flight <- flights_data_raw |>
   filter(ORIGIN %in% sample_airports)
-
-
-flights_by_monthyear <- flights_data_raw |>
-  filter(ORIGIN %in% sample_airports) |>
-  mutate(
-    month = month(FL_DATE),
-    year = year(FL_DATE)
-  ) |>
-  group_by(ORIGIN, month, year) |>
-  summarise(
-    total_flights = n()
-  )
-
-flights_by_month <- flights_by_monthyear |>
-  group_by(ORIGIN, month) |>
-  summarise(
-    max = max(total_flights),
-    min = min(total_flights),
-  )
-
 
 base_url = "https://data.opendatasoft.com/api/explore/v2.1/catalog/datasets/airports-code@public/records?"
 or_clause = "%20or%20"
@@ -77,13 +57,20 @@ airport_coordinates = fromJSON(rawToChar(GET(paste0(base_url, extension))$conten
   select(column_1, airport_name, latitude, longitude) |>
   rename(code = column_1)
 
-flights <- left_join(sample_flights, airport_coordinates,
+flights <- left_join(monthly_flight, airport_coordinates,
                      by = c("ORIGIN" = "code")) |>
-  mutate(month = month(FL_DATE),
-         year = year(FL_DATE)) |>
-  filter(year == 2022) |>
-  select(FL_DATE, month, AIRLINE_CODE,
-         ORIGIN, longitude, latitude, DEST, DEP_TIME, DEP_DELAY, ARR_TIME, ARR_DELAY,
-         CANCELLED, AIR_TIME, DISTANCE)
+  filter(CANCELLED != 1) |>
+  mutate(
+    month = month(FL_DATE),
+    year = year(FL_DATE)) |>
+  group_by(ORIGIN, month, year, longitude, latitude) |>
+  summarise(
+    total_flights = n()) |>
+  group_by(ORIGIN, month, longitude, latitude) |>
+  summarise(
+    min_flights = min(total_flights),
+    max_flights = max(total_flights)) |>
+  rename("origin" = "ORIGIN")
 
 usethis::use_data(flights, overwrite = TRUE)
+

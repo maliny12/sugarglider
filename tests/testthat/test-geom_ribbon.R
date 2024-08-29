@@ -102,21 +102,62 @@ test_that("geom_ribbon interacts correctly with other geoms", {
   expect_s3_class(p, "ggplot")
 })
 
-# test_that("vdiff", {
-#   p <- data |>
-#     ggplot2::ggplot(
-#       ggplot2::aes(x_major = long, y_major = lat,
-#                    x_minor = date, ymin_minor = min, ymax_minor = max)) +
-#     geom_glyph_ribbon()
-#
-#   disp_hist_base <- function() hist(mtcars$disp)
-#   disp_hist_ggplot <- ggplot(mtcars, aes(disp)) + geom_histogram()
-#
-#   vdiffr::expect_doppelganger("Base graphics histogram", disp_hist_base)
-#   vdiffr::expect_doppelganger("ggplot2 histogram", disp_hist_ggplot)
-#
-# })
-#
+test_that("geom_glyph_ribbon() works", {
+  skip_if_not_installed("vdiffr")
+
+  p <- ggplot2::ggplot(data = aus_temp) +
+    ggplot2::geom_sf(data = ozmaps::abs_ste, color = "white") +
+    ggthemes::theme_map()
+
+  P1 <- p + geom_glyph_ribbon(
+    width = 0.4,
+    height = 0.1,
+    ggplot2::aes(
+      x_major = long,
+      y_major = lat,
+      x_minor = month,
+      ymin_minor = tmin,
+      ymax_minor = tmax)
+  )
+
+  P2 <- p + geom_glyph_ribbon(
+    global_rescale = FALSE,
+    ggplot2::aes(
+      x_major = long,
+      y_major = lat,
+      x_minor = month,
+      ymin_minor = tmin,
+      ymax_minor = tmax)
+  )
+
+  P3 <- p + geom_glyph_ribbon(
+    global_rescale = TRUE,
+    ggplot2::aes(
+      x_major = long,
+      y_major = lat,
+      x_minor = month,
+      ymin_minor = tmin,
+      ymax_minor = tmax)
+  )
+
+  P4 <- aus_temp |> ggplot2::ggplot(
+    ggplot2::aes(x_major = long,
+                 y_major = lat,
+                 x_minor = month,
+                 ymin_minor = tmin,
+                 ymax_minor = tmax)) +
+    ggplot2::geom_sf(data = ozmaps::abs_ste, color = "white", inherit.aes = FALSE) +
+    add_glyph_boxes() +
+    add_ref_lines() +
+    geom_glyph_ribbon() +
+    ggthemes::theme_map()
+
+  vdiffr::expect_doppelganger("geom_glyph_ribbon_identity", P1)
+  vdiffr::expect_doppelganger("geom_glyph_ribbon_local_rescale", P2)
+  vdiffr::expect_doppelganger("geom_glyph_ribbon_global_rescale", P3)
+  vdiffr::expect_doppelganger("geom_glyph_ribbon_all", P4)
+
+})
 
 
 

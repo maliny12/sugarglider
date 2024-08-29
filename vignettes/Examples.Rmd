@@ -26,8 +26,6 @@ library(viridis)
 library(gridExtra)
 library(ozmaps)
 library(ggthemes)
-
-
 ```
   
 ### Overview
@@ -75,9 +73,7 @@ p2 <- vic_temp |>
         panel.background = element_rect(fill = "white", color = NA),
         plot.background = element_rect(fill = "white", color = NA))
 
-# Using gridExtra and grid packages to add neatline to the plot
 grid.arrange(p1, p2, ncol = 2) 
-
 ```
 
 ### Installation
@@ -160,19 +156,7 @@ p2 <- aus_temp |>
         panel.background = element_rect(fill = "white", color = NA),
         plot.background = element_rect(fill = "white", color = NA))
 
-# Using gridExtra and grid packages to add neatline to the plot
 grid.arrange(p1, p2, ncol = 2) 
-grid.rect(
-    width = 0.98,
-    height = 0.98,
-    gp = grid::gpar(
-      lwd = 0.25,
-      col = "black",
-      fill = NA
-    )
-  )
-
-
 ```
 
 ##### Mapping precipitation across Australia with glyphs
@@ -202,17 +186,7 @@ prcp <- aus_temp |>
   scale_color_gradientn(colors = c( "#ADD8E6", "#2b5e82", "dodgerblue4")) 
   
 
-# Using gridExtra and grid packages to add neat line to the plot
 grid.arrange(prcp, ncol = 1) 
-grid.rect(
-    width = 0.98,
-    height = 0.98,
-    gp = grid::gpar(
-      lwd = 0.25,
-      col = "black",
-      fill = NA
-    )
-  )
 ```
 
 ##### Comparative visualization by factors across years
@@ -243,17 +217,7 @@ fact <- historical_temp |>
   scale_fill_wsj("colors6") 
 
 
-# Using gridExtra and grid packages to add neat line to the plot
 grid.arrange(fact, ncol = 1) 
-grid.rect(
-    width = 0.98,
-    height = 0.98,
-    gp = grid::gpar(
-      lwd = 0.25,
-      col = "black",
-      fill = NA
-    )
-  )
 ```
 
 ##### Integrating legends in map visualizations
@@ -280,17 +244,7 @@ legend <- aus_temp |>
   theme_map() 
 
 
-# Using gridExtra and grid packages to add neat line to the plot
 grid.arrange(legend, ncol = 1) 
-grid.rect(
-    width = 0.98,
-    height = 0.98,
-    gp = grid::gpar(
-      lwd = 0.25,
-      col = "black",
-      fill = NA
-    )
-  )
 ```
 
 #### GeomSegmentGlyph
@@ -312,17 +266,7 @@ segment <- aus_temp |>
   coord_sf(xlim = c(110,155)) +
   theme_map()
 
-# Using gridExtra and grid packages to add neat line to the plot
 grid.arrange(segment, ncol = 1) 
-grid.rect(
-    width = 0.98,
-    height = 0.98,
-    gp = grid::gpar(
-      lwd = 0.25,
-      col = "black",
-      fill = NA
-    )
-  )
   
 ```
 
