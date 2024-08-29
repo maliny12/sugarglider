@@ -16,24 +16,7 @@ value, `geom_glyph_ribbon()` displays a y interval defined by
 `ymin_minor` and `ymax_minor`. Meanwhile, `geom_glyph_segment()` draw a straight
 line between `y_minor` and `yend_minor` with respect to `x_minor`.
  
-``` r
-library(ribbon)
-library(sf)
-library(ggplot2)
-
-aus_temp |>
-  ggplot(aes(x_major = long, y_major = lat,
-            x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
-  geom_sf(data = ozmaps::abs_ste, fill = "grey95",
-          color = "white", inherit.aes = FALSE) +
-  add_glyph_boxes() +
-  add_ref_lines() +
-  geom_glyph_ribbon() +
-  coord_sf(xlim = c(113, 154)) +
-  theme_glyph()
-```
-
-![](docs/articles/Example_files/figure-html/)<!-- -->
+<a href="https://maliny12.github.io/ribbon/articles/Examples.html#overview"><img width="500" src="https://maliny12.github.io/ribbon/articles/Examples_files/figure-html/unnamed-chunk-2-1.png" alt="Global vs. Local Rescale"></img></a>
 
 
 ### Installation
