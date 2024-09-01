@@ -151,7 +151,7 @@ aus_temp |>
     values = c("Weather Station" = "firebrick",
                "Temperature" = "black")) +
   labs(color = "Data")  +
-  theme(legend.position  = "bottom",
+  theme(legend.position.inside = c(.2,0), 
         legend.direction = "horizontal")
 
 ```
@@ -310,5 +310,5 @@ grid.arrange(legend, ncol = 1)
 
 Geom Segment Glyphs offer unique insights into seasonal temperature trends across Australia. Turning off global rescaling shows that most stations generally followed the same curvature trends relative to their lowest temperatures. However factoring in global rescaling, coastal regions show much less total variation in temperature.
 
-
+### Flight 
 

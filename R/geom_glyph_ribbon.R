@@ -340,6 +340,7 @@ glyph_setup_data <- function(data, params,...) {
     data <- data |> na.omit()
   }
 
+
   if (custom_scale(params$x_scale)) {
       x_scale <- get_scale(params$x_scale)
       data <- data |>
@@ -368,29 +369,32 @@ glyph_setup_data <- function(data, params,...) {
 
   if (isTRUE(params$global_rescale)) { data <- data |> dplyr::ungroup() }
 
-  if (isTRUE(arg$segment)){
-    data <- data |>
-      dplyr::mutate(
-        y_minor = rescale11y(y_minor, yend_minor)[[1]],
-        yend_minor = rescale11y(y_minor, yend_minor)[[2]]
-      )
-  } else {
-    data <- data |>
-      tidyr::pivot_longer(cols = c("ymin_minor", "ymax_minor"),
-                          names_to = "type", values_to = "value") |>
-      dplyr::mutate(scaled_data = rescale(value)) |>
-      dplyr::select(-value) |>
-      tidyr::pivot_wider(names_from = "type", values_from = "scaled_data")
-  }
-
   if (isTRUE(arg$legend)){
-    # Skip the linear transformation for legend data
+
+    # Skip the linear transformation and rescale for legend data
     data <- data |>
       dplyr::mutate(com = interaction(.data$x_major, .data$y_major)) |>
       dplyr::filter(com == sample(com, 1)) |>
       dplyr::select(-com)
 
   } else {
+
+    ## Scale minor axis
+    if (isTRUE(arg$segment)){
+      data <- data |>
+        dplyr::mutate(
+          y_minor = rescale11y(y_minor, yend_minor)[[1]],
+          yend_minor = rescale11y(y_minor, yend_minor)[[2]]
+        )
+    } else {
+      data <- data |>
+        tidyr::pivot_longer(cols = c("ymin_minor", "ymax_minor"),
+                            names_to = "type", values_to = "value") |>
+        dplyr::mutate(scaled_data = rescale(value)) |>
+        dplyr::select(-value) |>
+        tidyr::pivot_wider(names_from = "type", values_from = "scaled_data")
+    }
+
     ## Linear transformation using scaled positional adjustment
     if (isTRUE(arg$segment)){
       # For geom_segment_glyph
@@ -486,7 +490,8 @@ glyph_setup_grob <- function(data, panel_params){
                      ymax = ymax_minor)) +
       geom_ribbon() +
       theme_bw()  +
-      labs(x = "")
+      labs(x = "") +
+      scale_x_discrete(expand = c(0,0))
   } else {
     p_grob <- data |>
       ggplot2::ggplot(
@@ -495,7 +500,8 @@ glyph_setup_grob <- function(data, panel_params){
                      yend = yend_minor)) +
       geom_segment() +
       theme_bw()  +
-      labs(x = "", y = "")
+      labs(x = "", y = "") +
+      scale_x_discrete(expand = c(0,0))
   }
 
   ggplotify::as.grob(p_grob)
@@ -597,7 +603,8 @@ custom_scale <- function(dx){
 # Global variables declaration -------------------------------------------------
 utils::globalVariables(c(".data", "na.omit", "value", "com", "x_minor", "geom_segment",
                          "ymin_minor", "ymax_minor", "geom_ribbon", "theme_bw", "labs",
-                         "theme", "margin", "element_blank", "y_minor", "yend_minor"))
+                         "theme", "margin", "element_blank", "y_minor", "yend_minor",
+                         "scale_x_discrete"))
 
 
 

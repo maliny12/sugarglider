@@ -67,7 +67,7 @@ geom_glyph_segment <- function(mapping = NULL, data = NULL, stat = "identity",
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomSegmentGlyph,
+    geom = GeomGlyphSegment,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -86,8 +86,8 @@ geom_glyph_segment <- function(mapping = NULL, data = NULL, stat = "identity",
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomSegmentGlyph <- ggplot2::ggproto(
-  "GeomSegmentGlyph",
+GeomGlyphSegment <- ggplot2::ggproto(
+  "GeomGlyphSegment",
   ggplot2::GeomSegment,
 
   setup_data = function(data, params) {

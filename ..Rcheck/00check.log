@@ -1,0 +1,9 @@
+* using log directory ‘/Users/malinypo/Desktop/gsoc/ribbon/..Rcheck’
+* using R version 4.2.2 (2022-10-31)
+* using platform: aarch64-apple-darwin20 (64-bit)
+* using session charset: UTF-8
+* checking for file ‘./DESCRIPTION’ ... ERROR
+Required fields missing or empty:
+  ‘Author’ ‘Maintainer’
+* DONE
+Status: 1 ERROR
