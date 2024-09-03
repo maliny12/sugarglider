@@ -470,6 +470,7 @@ ref_line <- function(data, params){
 #' Scaled positional adjustment
 #' @keywords internal
 glyph_mapping <- function(spatial, scaled_value, length) {
+
   spatial + scaled_value * (length / 2)
 }
 
@@ -542,7 +543,7 @@ rescale <- function(dx) {
 
   rng <- range(dx, na.rm = TRUE)
   if (rng[1] == rng[2]) return(rep(0, length(dx))) # Avoid division by zero
-  2 * (dx - rng[1])/(rng[2] - rng[1]) - 1
+  as.numeric(2 * (dx - rng[1])/(rng[2] - rng[1]) - 1)
 }
 
 
