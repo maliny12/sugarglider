@@ -329,9 +329,17 @@ glyph_setup_data <- function(data, params,...) {
     data <- data |>  dplyr::group_by(.data$group)
   }
 
-  # Convert x_minor to numeric
+  # Convert minor axis to numeric
   if (!is.numeric(data$x_minor)){
     data[["x_minor"]] <- as.numeric(data[["x_minor"]])
+  }
+
+  if (isTRUE(arg$segment)){
+    data[["y_minor"]] <- as.numeric(data[["y_minor"]])
+    data[["yend_minor"]] <- as.numeric(data[["yend_minor"]])
+  } else {
+    data[["ymin_minor"]] <- as.numeric(data[["ymin_minor"]])
+    data[["ymax_minor"]] <- as.numeric(data[["ymax_minor"]])
   }
 
   # Handle missing data
