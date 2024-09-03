@@ -1,6 +1,6 @@
-Package: ribbon
+Package: sugarglider
 Type: Package
-Title: "Ribbon" ggplot2 extension for geom ribbon
+Title: "sugarglider" ggplot2 extension for geom sugarglider
 Version: 0.0.0.9000
 Authors@R: c(
             person("Maliny", "Po", ,"malinypo12@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0009-0008-4686-6631")),
@@ -8,7 +8,7 @@ Authors@R: c(
             person("H. Sherry","Zhang", email = "huizezhangsh@gmail.com", role = "ctb", comment = c(ORCID = "0000-0002-7122-1463")),
             person("Dianne", "Cook", email = "dicook@monash.edu", role = "ctb", comment = c(ORCID = "0000-0002-3813-7155"))
             )
-Description: The "ribbon" package extends ggplot2 by introducing ribbon and segment plots, designed for glyph plot creation.
+Description: The "sugarglider" package extends ggplot2 by introducing ribbon and segment plots, designed for glyph plot creation.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

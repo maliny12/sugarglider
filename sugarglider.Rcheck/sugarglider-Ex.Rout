@@ -1,0 +1,143 @@
+
+R version 4.2.2 (2022-10-31) -- "Innocent and Trusting"
+Copyright (C) 2022 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin20 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "sugarglider"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('sugarglider')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("geom_glyph_ribbon")
+> ### * geom_glyph_ribbon
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: geom_glyph_ribbon
+> ### Title: Create a Glyph Ribbon plot using ggplot2
+> ### Aliases: geom_glyph_ribbon
+> 
+> ### ** Examples
+> 
+> 
+> library(ggplot2)
+Warning: package ‘ggplot2’ was built under R version 4.2.3
+> 
+> # Basic glyph map with base map and custom theme
+> aus_temp |>
++   ggplot(aes(x_major = long, y_major = lat,
++          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
++   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
++           color = "white",inherit.aes = FALSE) +
++   geom_glyph_ribbon() +
++   ggthemes::theme_map()
+> 
+> 
+> # Adjust width and height of the glyph
+> aus_temp |>
++   ggplot(aes(x_major = long, y_major = lat,
++          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
++   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
++           color = "white",inherit.aes = FALSE) +
++   geom_glyph_ribbon(width = rel(4.5), height = rel(3)) +
++  ggthemes::theme_map()
+> 
+> # Extend glyph map with reference box and line
+> aus_temp |>
++  ggplot(aes(x_major = long, y_major = lat,
++          x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
++   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
++           color = "white",inherit.aes = FALSE) +
++   add_glyph_boxes() +
++   add_ref_lines() +
++   geom_glyph_ribbon() +
++   ggthemes::theme_map()
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> nameEx("geom_glyph_segment")
+> ### * geom_glyph_segment
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: geom_glyph_segment
+> ### Title: Create a Glyph Segment plot using ggplot2
+> ### Aliases: geom_glyph_segment
+> 
+> ### ** Examples
+> 
+> library(ggplot2)
+Warning: package ‘ggplot2’ was built under R version 4.2.3
+> 
+> # Basic glyph map with base map and custom theme
+> aus_temp |>
++   ggplot(aes(x_major = long, y_major = lat,
++          x_minor = month, y_minor = tmin, yend_minor = tmax)) +
++   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
++           color = "white",inherit.aes = FALSE) +
++   geom_glyph_segment() +
++   ggthemes::theme_map()
+> 
+> 
+> # Adjust width and height of the glyph
+> aus_temp |>
++   ggplot(aes(x_major = long, y_major = lat,
++          x_minor = month, y_minor = tmin, yend_minor = tmax)) +
++   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
++           color = "white",inherit.aes = FALSE) +
++   geom_glyph_segment(width = rel(4.5), height = rel(3)) +
++  ggthemes::theme_map()
+> 
+> # Extend glyph map with reference box and line
+> aus_temp |>
++  ggplot(aes(x_major = long, y_major = lat,
++          x_minor = month, y_minor = tmin, yend_minor = tmax)) +
++   geom_sf(data = ozmaps::abs_ste, fill = "grey95",
++           color = "white",inherit.aes = FALSE) +
++   add_glyph_boxes() +
++   add_ref_lines() +
++   geom_glyph_segment() +
++   ggthemes::theme_map()
+> 
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+
+detaching ‘package:ggplot2’
+
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  2.507 0.087 2.6 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')
