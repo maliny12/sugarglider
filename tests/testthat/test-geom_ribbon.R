@@ -81,7 +81,9 @@ test_that("geom_glyph_ribbon() works", {
       x_minor = month,
       ymin_minor = tmin,
       ymax_minor = tmax)
-  )
+  ) +
+    ggthemes::theme_map()
+
 
   P2 <- p + geom_glyph_ribbon(
     global_rescale = FALSE,
@@ -91,7 +93,9 @@ test_that("geom_glyph_ribbon() works", {
       x_minor = month,
       ymin_minor = tmin,
       ymax_minor = tmax)
-  )
+  ) +
+    ggthemes::theme_map()
+
 
   P3 <- p + geom_glyph_ribbon(
     global_rescale = TRUE,
@@ -101,7 +105,9 @@ test_that("geom_glyph_ribbon() works", {
       x_minor = month,
       ymin_minor = tmin,
       ymax_minor = tmax)
-  )
+  )  +
+    ggthemes::theme_map()
+
 
   P4 <- aus_temp |> ggplot2::ggplot(
     ggplot2::aes(x_major = long,
