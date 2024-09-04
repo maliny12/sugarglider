@@ -1,6 +1,6 @@
 Package: sugarglider
 Type: Package
-Title: "sugarglider" ggplot2 extension for geom sugarglider
+Title: Visualizing Spatial-Temporal Data with ggplot2
 Version: 0.0.0.9000
 Authors@R: c(
             person("Maliny", "Po", ,"malinypo12@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0009-0008-4686-6631")),
@@ -8,7 +8,7 @@ Authors@R: c(
             person("H. Sherry","Zhang", email = "huizezhangsh@gmail.com", role = "ctb", comment = c(ORCID = "0000-0002-7122-1463")),
             person("Dianne", "Cook", email = "dicook@monash.edu", role = "ctb", comment = c(ORCID = "0000-0002-3813-7155"))
             )
-Description: The "sugarglider" package extends ggplot2 by introducing ribbon and segment plots, designed for glyph plot creation.
+Description: Provides ggplot2 extensions for visualizing multivariate, spatial, and temporal data. See the Journal of Statistical Software reference: <doi:10.18637/jss.v110.i07>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -17,7 +17,7 @@ Imports:
     ggplot2
 RoxygenNote: 7.3.1
 Depends: 
-    R (>= 2.10)
+    R (>= 3.0.0)
 Suggests: 
     testthat (>= 3.0.0),
     ggplotify,
