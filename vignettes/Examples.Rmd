@@ -30,48 +30,59 @@ library(ggthemes)
   
 ## Overview
 
-`sugarglider` provides a ggplot2 extension for producing glyph plots with `geom_glyph_ribbon()` and 
-`geom_glyph_segment()`.
+`sugarglider` provides ggplot2 extensions to create glyph maps that visualize multivariate spatio-temporal data with `geom_glyph_ribbon()` and `geom_glyph_segment()`.
 
-These functions create a ribbon geometry designed to display glyphs based on the combination of `x_major` and `y_major`. For each `x_minor`
-value, `geom_glyph_ribbon()` displays a y interval defined by
-`ymin_minor` and `ymax_minor`. 
+These functions create a ribbon geometry designed to display glyphs based on the combination of `x_major` and `y_major`. For each `x_minor` value, `geom_glyph_ribbon()` displays a y interval defined by `ymin_minor` and `ymax_minor`. 
 
 Let's compare `geom_glyph_ribbon()` and `geom_glyph_segment()`:
+
 
 ```{r}
 vic_temp <- aus_temp |>
   filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143"))
 
+# Define a color palette
+color_palette <- c("deepskyblue4", "coral3")
+
 p1 <- vic_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin, ymax_minor = tmax)) +
   geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
-         color = grey(0.7), fill = NA, inherit.aes = FALSE)  +
+          fill = "antiquewhite", color = "white", inherit.aes = FALSE)  +
   # Customize the size of each glyph box using the width and height parameters.
-  add_glyph_boxes(width = rel(2.5), height = rel(1.5)) +
-  add_ref_lines(width = rel(2.5), height = rel(1.5)) +
-  geom_glyph_ribbon(width = rel(2.5), height = rel(1.5)) +
+  add_glyph_boxes(width = rel(2.5), height = rel(1.5),
+                  color = color_palette[1]) +
+  add_ref_lines(width = rel(2.5), height = rel(1.5),
+                color = color_palette[1]) +
+  geom_glyph_ribbon(width = rel(2.5), height = rel(1.5),
+                    color = color_palette[1], fill = color_palette[1]) +
   theme_map() +
   labs(title = "geom_glyph_ribbon()") +
   theme(plot.title = element_text(hjust = 0.5),
+        title = element_text(color = color_palette[1],
+                             family  = "mono"),
         panel.background = element_rect(fill = "white", color = NA),
-        plot.background = element_rect(fill = "white", color = NA))
+        plot.background = element_rect(fill = "white", color = "grey")) 
 
 p2 <- vic_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, y_minor = tmin, yend_minor = tmax)) +
   geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
-          color = grey(0.7), fill = NA, inherit.aes = FALSE)  +
+         fill = "antiquewhite", color = "white", inherit.aes = FALSE)  +
   # Customize the size of each glyph box using the width and height parameters.
-   add_glyph_boxes(width = rel(2.5), height = rel(1.5)) +
-   add_ref_lines(width = rel(2.5), height = rel(1.5)) +
-  geom_glyph_segment(width = rel(2.5), height = rel(1.5)) +
+  add_glyph_boxes(width = rel(2.5), height = rel(1.5),
+                  color = color_palette[2]) +
+  add_ref_lines(width = rel(2.5), height = rel(1.5),
+                color = color_palette[2]) +
+  geom_glyph_segment(width = rel(2.5), height = rel(1.5),
+                    color = color_palette[2]) +
   theme_map() +
   labs(title = "geom_glyph_segment()") +
   theme(plot.title = element_text(hjust = 0.5),
+        title = element_text(color = color_palette[2],
+                             family  = "mono"),
         panel.background = element_rect(fill = "white", color = NA),
-        plot.background = element_rect(fill = "white", color = NA))
+        plot.background = element_rect(fill = "white", color = "grey"))
 
 grid.arrange(p1, p2, ncol = 2) 
 ```
@@ -131,8 +142,7 @@ aus_temp |>
     x_minor = month, 
     y_minor = tmin, 
     yend_minor = tmax)) +
-  geom_sf(data = abs_ste, color = grey(0.7),
-          fill = NA, inherit.aes = FALSE) +
+  geom_sf(data = abs_ste, fill = "antiquewhite", inherit.aes = FALSE, color = "white") +
   coord_sf(xlim = c(110,155)) +
   # Add glyph box to each glyph
   add_glyph_boxes(
@@ -172,8 +182,8 @@ p1 <- aus_temp |>
     x_minor = month, 
     y_minor = tmin, 
     yend_minor = tmax)) +
-  geom_sf(data = abs_ste, color = grey(0.7),
-          fill = NA, inherit.aes = FALSE) +
+  geom_sf(data = abs_ste, fill = "antiquewhite",
+          inherit.aes = FALSE, color = "white") +
   coord_sf(xlim = c(110,155)) +
   # Add glyph box to each glyph
   add_glyph_boxes() +
@@ -194,8 +204,8 @@ p2 <- aus_temp |>
     x_minor = month, 
     y_minor = tmin, 
     yend_minor = tmax)) +
-  geom_sf(data = abs_ste, color = grey(0.7),
-          fill = NA, inherit.aes = FALSE) +
+  geom_sf(data = abs_ste, fill = "antiquewhite",
+          inherit.aes = FALSE, color = "white") +
   coord_sf(xlim = c(110,155)) +
   # Add glyph box to each glyph
   add_glyph_boxes() +
@@ -223,8 +233,8 @@ prcp <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat, x_minor = month,
               ymin_minor = tmin, ymax_minor = tmax,
               fill = prcp, color = prcp)) +
-  geom_sf(data = abs_ste, color = grey(0.7), fill = NA,
-          inherit.aes = FALSE)  +
+  geom_sf(data = abs_ste, fill = "antiquewhite",
+          inherit.aes = FALSE, color = "white") +
    add_glyph_boxes() +
    add_ref_lines() +
    geom_glyph_ribbon() +
@@ -254,7 +264,7 @@ fact <- historical_temp |>
               x_minor = month, ymin_minor = tmin,
               ymax_minor = tmax)) +
   geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
-           fill = NA, color = grey(0.7),
+           fill = "antiquewhite", color = "white",
           inherit.aes = FALSE)  +
    add_glyph_boxes(width = rel(2),
                    height = rel(1.5)) +
@@ -288,9 +298,8 @@ legend <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin,
               ymax_minor = tmax)) +
-  geom_sf(data = abs_ste ,
-           fill = NA, color = grey(0.7),
-           inherit.aes = FALSE)  +
+  geom_sf(data = abs_ste, fill = "antiquewhite",
+          inherit.aes = FALSE, color = "white") +
   add_glyph_boxes() +
   add_ref_lines() +
   add_glyph_legend() + 
@@ -307,7 +316,9 @@ grid.arrange(legend, ncol = 1)
 
 #### Observations and Insights
 
-Geom Segment Glyphs offer unique insights into seasonal temperature trends across Australia. Turning off global rescaling shows that most stations generally followed the same curvature trends relative to their lowest temperatures. However factoring in global rescaling, coastal regions show much less total variation in temperature.
+Both Geom Glyph Segment and Geom Glyph Ribbon offer unique insights into seasonal temperature trends across Australia. Turning off global rescaling shows that most stations generally followed the same curvature trends relative to their lowest temperatures. However factoring in global rescaling, coastal regions show much less total variation in temperature.
 
-### Flight 
+
+
+
 

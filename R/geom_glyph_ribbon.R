@@ -86,7 +86,7 @@ GeomGlyphRibbon <- ggplot2::ggproto(
                    "x_minor", "ymin_minor", "ymax_minor"),
 
   default_aes = ggplot2::aes(
-    linetype = 1, fill = "grey40", color = "grey50",
+    linetype = 1, fill = "black", color = "black",
     linewidth = 0.5, alpha = 0.8,
     width = ggplot2::rel(4),
     height = ggplot2::rel(2.5),
@@ -160,7 +160,7 @@ GeomGlyphBox <- ggplot2::ggproto(
   required_aes = c("x_major", "y_major"),
 
   default_aes = ggplot2::aes(
-    linetype = "solid", fill = "white", color = "grey85",
+    linetype = "solid", fill = "white", color = "black",
     linewidth = 0.5, alpha = 0.5,
     width = ggplot2::rel(4),
     height = ggplot2::rel(2.5)
@@ -224,7 +224,7 @@ GeomGlyphLine <- ggplot2::ggproto(
   required_aes = c("x_major", "y_major"),
 
   default_aes = ggplot2::aes(
-    linetype = "solid", color = "grey85",
+    linetype = "solid", color = "black",
     linewidth = 0.5, alpha = 1,
     width = ggplot2::rel(4),
     height = ggplot2::rel(2.5)
@@ -286,7 +286,7 @@ GeomGlyphLegend <- ggplot2::ggproto(
   required_aes = c("x_minor"),
 
   default_aes = ggplot2::aes(
-    linetype = 1, fill = "grey40", color = "grey50",
+    linetype = 1, fill = "black", color = "black",
     linewidth = 0.5, alpha = 0.8,
     x_scale = list(identity),
     y_scale = list(identity),

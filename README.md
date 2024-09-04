@@ -11,8 +11,9 @@
 
 ### Overview
 
-ribbon provides ggplot2 extension to produce glyph plots with
-`geom_glyph_ribbon()` and `geom_glyph_segment()`.
+`sugarglider` provides ggplot2 extensions to create glyph maps that
+visualize multivariate spatio-temporal data with `geom_glyph_ribbon()`
+and `geom_glyph_segment()`.
 
 These functions create a ribbon or segment geometry designed to display
 glyphs based on the combination of `x_major` and `y_major`. For each
@@ -21,19 +22,17 @@ glyphs based on the combination of `x_major` and `y_major`. For each
 straight line between `y_minor` and `yend_minor` with respect to
 `x_minor`.
 
-<a href="https://maliny12.github.io/ribbon/articles/Examples.html#overview"><img src="https://maliny12.github.io/ribbon/articles/Examples_files/figure-html/unnamed-chunk-2-1.png" alt="Global vs. Local Rescale" width="1457"/></img></a>
-
 ### Installation
 
 ``` r
 # Download the development version from GitHub:
-devtools::install_github("maliny12/ribbon")
+devtools::install_github("maliny12/sugarglider")
 ```
 
 ### Usage
 
 See the
-[examples](https://maliny12.github.io/ribbon/articles/Examples.html)
+[examples](https://maliny12.github.io/sugarglider/articles/Examples.html)
 page to learn more about how to use ribbon in your project.
 
 ### Examples

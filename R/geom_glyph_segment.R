@@ -100,7 +100,7 @@ GeomGlyphSegment <- ggplot2::ggproto(
 
   required_aes = c("x_major", "y_major", "x_minor", "y_minor", "yend_minor"),
   default_aes = ggplot2::aes(
-    colour = "grey50",
+    colour = "black",
     linewidth = 0.5,
     linetype = 1,
     width = ggplot2::rel(4),
