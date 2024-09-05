@@ -58,7 +58,7 @@
 
 
 
-
+<script src="Examples_files/kePrint-0.0.1/kePrint.js"></script><link href="Examples_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Examples</h1>
@@ -81,7 +81,10 @@ maps that visualize multivariate spatio-temporal data with
 based on the combination of <code>x_major</code> and
 <code>y_major</code>. For each <code>x_minor</code> value,
 <code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> displays a y interval defined by
-<code>ymin_minor</code> and <code>ymax_minor</code>.</p>
+<code>ymin_minor</code> and <code>ymax_minor</code>. Meanwhile,
+<code><a href="../reference/geom_glyph_segment.html">geom_glyph_segment()</a></code> draw a straight line between
+<code>y_minor</code> and <code>yend_minor</code> with respect to
+<code>x_minor</code>.</p>
 <p>Let’s compare <code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> and
 <code><a href="../reference/geom_glyph_segment.html">geom_glyph_segment()</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -92,8 +95,11 @@ based on the combination of <code>x_major</code> and
 <span><span class="va">color_palette</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"deepskyblue4"</span>, <span class="st">"coral3"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">vic_temp</span> <span class="op">|&gt;</span></span>
-<span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x_major <span class="op">=</span> <span class="va">long</span>, y_major <span class="op">=</span> <span class="va">lat</span>,</span>
-<span>              x_minor <span class="op">=</span> <span class="va">month</span>, ymin_minor <span class="op">=</span> <span class="va">tmin</span>, ymax_minor <span class="op">=</span> <span class="va">tmax</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x_major <span class="op">=</span> <span class="va">long</span>,</span>
+<span>              y_major <span class="op">=</span> <span class="va">lat</span>,</span>
+<span>              x_minor <span class="op">=</span> <span class="va">month</span>,</span>
+<span>              ymin_minor <span class="op">=</span> <span class="va">tmin</span>,</span>
+<span>              ymax_minor <span class="op">=</span> <span class="va">tmax</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">abs_ste</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">NAME</span> <span class="op">==</span> <span class="st">"Victoria"</span><span class="op">)</span>,</span>
 <span>          fill <span class="op">=</span> <span class="st">"antiquewhite"</span>, color <span class="op">=</span> <span class="st">"white"</span>, inherit.aes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>  <span class="op">+</span></span>
 <span>  <span class="co"># Customize the size of each glyph box using the width and height parameters.</span></span>
@@ -103,17 +109,19 @@ based on the combination of <code>x_major</code> and
 <span>                color <span class="op">=</span> <span class="va">color_palette</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">rel</a></span><span class="op">(</span><span class="fl">2.5</span><span class="op">)</span>, height <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">rel</a></span><span class="op">(</span><span class="fl">1.5</span><span class="op">)</span>,</span>
 <span>                    color <span class="op">=</span> <span class="va">color_palette</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, fill <span class="op">=</span> <span class="va">color_palette</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_map</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Theme and aesthetic</span></span>
+<span>  <span class="fu">theme_glyph</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"geom_glyph_ribbon()"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>        title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">color_palette</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
-<span>                             family  <span class="op">=</span> <span class="st">"mono"</span><span class="op">)</span>,</span>
-<span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>        plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> </span>
+<span>                             family  <span class="op">=</span> <span class="st">"mono"</span><span class="op">)</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">vic_temp</span> <span class="op">|&gt;</span></span>
-<span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x_major <span class="op">=</span> <span class="va">long</span>, y_major <span class="op">=</span> <span class="va">lat</span>,</span>
-<span>              x_minor <span class="op">=</span> <span class="va">month</span>, y_minor <span class="op">=</span> <span class="va">tmin</span>, yend_minor <span class="op">=</span> <span class="va">tmax</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x_major <span class="op">=</span> <span class="va">long</span>,</span>
+<span>              y_major <span class="op">=</span> <span class="va">lat</span>,</span>
+<span>              x_minor <span class="op">=</span> <span class="va">month</span>,</span>
+<span>              y_minor <span class="op">=</span> <span class="va">tmin</span>,</span>
+<span>              yend_minor <span class="op">=</span> <span class="va">tmax</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">abs_ste</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">NAME</span> <span class="op">==</span> <span class="st">"Victoria"</span><span class="op">)</span>,</span>
 <span>         fill <span class="op">=</span> <span class="st">"antiquewhite"</span>, color <span class="op">=</span> <span class="st">"white"</span>, inherit.aes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>  <span class="op">+</span></span>
 <span>  <span class="co"># Customize the size of each glyph box using the width and height parameters.</span></span>
@@ -123,16 +131,14 @@ based on the combination of <code>x_major</code> and
 <span>                color <span class="op">=</span> <span class="va">color_palette</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_glyph_segment.html">geom_glyph_segment</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">rel</a></span><span class="op">(</span><span class="fl">2.5</span><span class="op">)</span>, height <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">rel</a></span><span class="op">(</span><span class="fl">1.5</span><span class="op">)</span>,</span>
 <span>                    color <span class="op">=</span> <span class="va">color_palette</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_map</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Theme and aesthetic</span></span>
+<span>  <span class="fu">theme_glyph</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"geom_glyph_segment()"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>        title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">color_palette</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
-<span>                             family  <span class="op">=</span> <span class="st">"mono"</span><span class="op">)</span>,</span>
-<span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>        plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span>        title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">color_palette</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="Examples_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="Examples_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -244,34 +250,191 @@ options.</p>
 <div class="section level3">
 <h3 id="monthly-temperature-across-australia">Monthly temperature across Australia<a class="anchor" aria-label="anchor" href="#monthly-temperature-across-australia"></a>
 </h3>
-<p>The National Oceanica and Atmosphere Administration (NOAA) provides
-weather data from stations all over Australia. The <code>aus_temp</code>
-dataset contains climate variables such as precipitation, and
-temperature from 29 different weather stations in the year 2020.</p>
+<p>The National Oceanic and Atmospheric Administration (NOAA) provides
+comprehensive weather data from numerous stations across Australia. The
+<code>aus_temp</code> dataset includes key climate variables, such as
+precipitation and temperature, recorded at 29 different weather stations
+throughout 2020.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">aus_temp</span></span>
-<span><span class="co">## <span style="color: #949494;"># A tibble: 348 × 7</span></span></span>
-<span><span class="co">##    id           long   lat month  tmin  tmax     prcp</span></span>
-<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> ASN00001020  126. -<span style="color: #BB0000;">14.1</span>     1  253.  319  164.    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> ASN00001020  126. -<span style="color: #BB0000;">14.1</span>     2  249.  323. 163.    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> ASN00001020  126. -<span style="color: #BB0000;">14.1</span>     3  254.  333.  42     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> ASN00001020  126. -<span style="color: #BB0000;">14.1</span>     4  244.  341.  21.6   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> ASN00001020  126. -<span style="color: #BB0000;">14.1</span>     5  220.  332.   0     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> ASN00001020  126. -<span style="color: #BB0000;">14.1</span>     6  202.  311.  11.2   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> ASN00001020  126. -<span style="color: #BB0000;">14.1</span>     7  154.  292.   0     </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> ASN00001020  126. -<span style="color: #BB0000;">14.1</span>     8  186.  326.   0.069<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> ASN00001020  126. -<span style="color: #BB0000;">14.1</span>     9  228.  337.   2.73  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> ASN00001020  126. -<span style="color: #BB0000;">14.1</span>    10  256.  341.  12     </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 338 more rows</span></span></span></code></pre></div>
-<p>With the default rescaling parameters, this is the resulting geom
-segment glyph along with a geom_point to help illustrate the station
-location that each segment glyph corresponds to.</p>
-<p>The default <code>identity</code> scaling function is applied to all
-applied to each set of minor values within a grid cell. It centers the
-glyph both vertically and horizontally based on the station’s location
-and adjusts the minor axes to fit within the interval [-1, 1]. This
-ensures the glyph fits the desired width and height.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">aus_temp</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">kable</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">kable_styling</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<table class="table table" style="margin-left: auto; margin-right: auto;">
+<thead><tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:right;">
+long
+</th>
+<th style="text-align:right;">
+lat
+</th>
+<th style="text-align:right;">
+month
+</th>
+<th style="text-align:right;">
+tmin
+</th>
+<th style="text-align:right;">
+tmax
+</th>
+<th style="text-align:right;">
+prcp
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ASN00001020
+</td>
+<td style="text-align:right;">
+126.3867
+</td>
+<td style="text-align:right;">
+-14.09
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+253.4516
+</td>
+<td style="text-align:right;">
+319.0000
+</td>
+<td style="text-align:right;">
+163.87097
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ASN00001020
+</td>
+<td style="text-align:right;">
+126.3867
+</td>
+<td style="text-align:right;">
+-14.09
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+248.6786
+</td>
+<td style="text-align:right;">
+322.6071
+</td>
+<td style="text-align:right;">
+162.74074
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ASN00001020
+</td>
+<td style="text-align:right;">
+126.3867
+</td>
+<td style="text-align:right;">
+-14.09
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+253.6129
+</td>
+<td style="text-align:right;">
+333.1935
+</td>
+<td style="text-align:right;">
+42.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ASN00001020
+</td>
+<td style="text-align:right;">
+126.3867
+</td>
+<td style="text-align:right;">
+-14.09
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+244.0357
+</td>
+<td style="text-align:right;">
+340.9310
+</td>
+<td style="text-align:right;">
+21.57143
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ASN00001020
+</td>
+<td style="text-align:right;">
+126.3867
+</td>
+<td style="text-align:right;">
+-14.09
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+220.4138
+</td>
+<td style="text-align:right;">
+331.9333
+</td>
+<td style="text-align:right;">
+0.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ASN00001020
+</td>
+<td style="text-align:right;">
+126.3867
+</td>
+<td style="text-align:right;">
+-14.09
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+202.3667
+</td>
+<td style="text-align:right;">
+310.9000
+</td>
+<td style="text-align:right;">
+11.20000
+</td>
+</tr>
+</tbody>
+</table>
+<p>Using the default rescaling parameters, we can visualize the
+temperature data through <code><a href="../reference/geom_glyph_segment.html">geom_glyph_segment()</a></code>, alongside
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point()</a></code> elements that mark the location of each
+weather station. Each segment glyph represents local climate data,
+offering an intuitive way to explore temperature variations across
+Australia.</p>
+<p>The default <code>identity</code> scaling function is applied to each
+set of minor values within a grid cell. This method centers the glyphs
+both vertically and horizontally based on the station’s coordinates and
+adjusts the minor axes to fit within the interval [-1, 1]. This ensures
+that the glyphs are appropriately sized to fit the desired
+dimensions.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
@@ -286,33 +449,39 @@ ensures the glyph fits the desired width and height.</p>
 <span>  <span class="fu"><a href="../reference/add_glyph_boxes.html">add_glyph_boxes</a></span><span class="op">(</span></span>
 <span>    width <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>    height <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Add points for weather station </span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">long</span>, y <span class="op">=</span> <span class="va">lat</span>,</span>
 <span>                 color <span class="op">=</span> <span class="st">"Weather Station"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Customize the size of each glyph box using the width and height parameters.</span></span>
 <span>  <span class="fu"><a href="../reference/geom_glyph_segment.html">geom_glyph_segment</a></span><span class="op">(</span></span>
-<span>    <span class="co"># Customize the size of each glyph box using the width and height parameters.</span></span>
-<span>    width <span class="op">=</span> <span class="fl">4</span>, </span>
-<span>    height <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>    width <span class="op">=</span> <span class="fl">4</span>, height <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"Temperature"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggthemes</span><span class="fu">::</span><span class="fu"><a href="http://jrnold.github.io/ggthemes/reference/theme_map.html" class="external-link">theme_map</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Theme and aesthetic </span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span></span>
 <span>    values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Weather Station"</span> <span class="op">=</span> <span class="st">"firebrick"</span>,</span>
 <span>               <span class="st">"Temperature"</span> <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"Data"</span><span class="op">)</span>  <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position.inside <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.2</span>,<span class="fl">0</span><span class="op">)</span>, </span>
-<span>        legend.direction <span class="op">=</span> <span class="st">"horizontal"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Examples_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<p>All previous examples have been made with global rescaling enabled
-(default), resulting in glyphs being sized differently according to
-their values relative to each other. Turning off global rescaling allows
-each glyph to be rescaled based on its own individual values, producing
-more evenly sized glyphs.</p>
-<p>Local Rescale: With global_rescale = FALSE, the length of each line
-segment is based on the local temperature range within each region,
-highlighting regional differences.</p>
-<p>Global Rescale: With global_rescale = TRUE, the length of each line
-segment is based on the global temperature range, ensuring consistency
-in glyph size across regions.</p>
-<p>The following plot compares the two rescaling options.</p>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"Data"</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"Daily Temperature Variations Across Australian Weather Stations"</span><span class="op">)</span>  <span class="op">+</span></span>
+<span>  <span class="fu">theme_glyph</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Examples_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p>So far, all the visualizations have used global rescaling (enabled by
+default), meaning the glyphs are sized relative to one another based on
+their data values. By disabling global rescaling, we can see the effects
+of local rescaling, where each glyph is resized based on its individual
+values.</p>
+<ul>
+<li>
+<strong>Local Rescale (global_rescale = FALSE)</strong>: Each line
+segment’s length is determined by the local temperature range within a
+region, emphasizing regional differences in temperature patterns.</li>
+<li>
+<strong>Global Rescale (global_rescale = TRUE)</strong>: Global
+temperature range determined the length of each line segment, ensuring
+that data range remain consistent across all region for easy
+comparison.</li>
+</ul>
+<p>Below is a comparison between the local and global rescaling
+approaches:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Global rescale</span></span>
 <span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
@@ -329,12 +498,10 @@ in glyph size across regions.</p>
 <span>  <span class="fu"><a href="../reference/add_glyph_boxes.html">add_glyph_boxes</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># Add reference lines to each glyph</span></span>
 <span>  <span class="fu"><a href="../reference/add_ref_lines.html">add_ref_lines</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Glyph segment plot with global rescale</span></span>
 <span>  <span class="fu"><a href="../reference/geom_glyph_segment.html">geom_glyph_segment</a></span><span class="op">(</span>global_rescale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggthemes</span><span class="fu">::</span><span class="fu"><a href="http://jrnold.github.io/ggthemes/reference/theme_map.html" class="external-link">theme_map</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Global Rescale"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>        plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">theme_glyph</span><span class="op">(</span><span class="op">)</span></span>
 <span>  </span>
 <span><span class="co"># Local Rescale</span></span>
 <span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
@@ -351,25 +518,22 @@ in glyph size across regions.</p>
 <span>  <span class="fu"><a href="../reference/add_glyph_boxes.html">add_glyph_boxes</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># Add reference lines to each glyph</span></span>
 <span>  <span class="fu"><a href="../reference/add_ref_lines.html">add_ref_lines</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Glyph segment plot with local rescale</span></span>
 <span>  <span class="fu"><a href="../reference/geom_glyph_segment.html">geom_glyph_segment</a></span><span class="op">(</span>global_rescale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggthemes</span><span class="fu">::</span><span class="fu"><a href="http://jrnold.github.io/ggthemes/reference/theme_map.html" class="external-link">theme_map</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Local Rescale"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>        plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">theme_glyph</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="Examples_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="Examples_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 <div class="section level4">
 <h4 id="highlighting-temperature-changes-with-color-coded-glyph">Highlighting Temperature Changes with Color-Coded Glyph<a class="anchor" aria-label="anchor" href="#highlighting-temperature-changes-with-color-coded-glyph"></a>
 </h4>
-<p>Building on the temperature analysis, this section maps precipitation
-across Australia using glyphs. Average rainfall is calculated for each
-region and visualized with <code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code>. The glyphs
-are color-coded to show different rainfall levels. Reference lines and
-glyph boxes, similar to the previous section, enhance readability and
-provide a clear comparison of precipitation patterns across the
-country.</p>
+<p>Expanding on our temperature analysis, we now incorporate
+precipitation data across Australia using
+<code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code>. The glyphs are color-coded to
+represent varying levels of rainfall, with reference lines and glyph
+boxes enhancing clarity and allow for easy comparison of precipitation
+level across the country.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">prcp</span> <span class="op">&lt;-</span> <span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
@@ -380,28 +544,27 @@ country.</p>
 <span>              fill <span class="op">=</span> <span class="va">prcp</span>, color <span class="op">=</span> <span class="va">prcp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">abs_ste</span>, fill <span class="op">=</span> <span class="st">"antiquewhite"</span>,</span>
 <span>          inherit.aes <span class="op">=</span> <span class="cn">FALSE</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Add glyph box to each glyph</span></span>
 <span>   <span class="fu"><a href="../reference/add_glyph_boxes.html">add_glyph_boxes</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Add ref line to each glyph</span></span>
 <span>   <span class="fu"><a href="../reference/add_ref_lines.html">add_ref_lines</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Add glyph ribbon plots</span></span>
 <span>   <span class="fu"><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">112</span>,<span class="fl">155</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_map</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position.inside <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.2</span>,<span class="fl">0</span><span class="op">)</span>, </span>
-<span>        legend.direction <span class="op">=</span> <span class="st">"horizontal"</span>,</span>
-<span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>        plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Theme and aesthetic </span></span>
+<span>  <span class="fu">theme_glyph</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_fill_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#ADD8E6"</span>, <span class="st">"#2b5e82"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"#ADD8E6"</span>, <span class="st">"#2b5e82"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"Percepitation"</span>, color <span class="op">=</span> <span class="st">"Percepitation"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"Percepitation"</span>, color <span class="op">=</span> <span class="st">"Percepitation"</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"Precipitation and Temperature Ranges Across Australian Weather Stations"</span><span class="op">)</span> </span>
 <span>  </span>
 <span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">prcp</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="Examples_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
-<p>Say you want to compares temperature data across different years for
-selected regions in Victoria. Using <code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code>,
-the visualization shows how temperatures have changed over time, with
-each year highlighted in different colors for easy comparison. Reference
-lines and glyph boxes help clarify the data, making it simple to spot
-trends and patterns across the years.</p>
+<p><img src="Examples_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p>If you’re interested in comparing temperature trends across different
+years for specific regions in Victoria, <code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code>
+provides a way to visualize how temperatures have evolved over time,
+with each year distinguished by a different color for clarity.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">fact</span> <span class="op">&lt;-</span> <span class="va">historical_temp</span> <span class="op">|&gt;</span> </span>
@@ -414,6 +577,7 @@ trends and patterns across the years.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">abs_ste</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">NAME</span> <span class="op">==</span> <span class="st">"Victoria"</span><span class="op">)</span>,</span>
 <span>           fill <span class="op">=</span> <span class="st">"antiquewhite"</span>, color <span class="op">=</span> <span class="st">"white"</span>,</span>
 <span>          inherit.aes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>  <span class="op">+</span></span>
+<span>  <span class="co"># Customized the dimension of each glyph with `width` and `height` parameters</span></span>
 <span>   <span class="fu"><a href="../reference/add_glyph_boxes.html">add_glyph_boxes</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">rel</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>                   height <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">rel</a></span><span class="op">(</span><span class="fl">1.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>   <span class="fu"><a href="../reference/add_ref_lines.html">add_ref_lines</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">rel</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,</span>
@@ -422,34 +586,35 @@ trends and patterns across the years.</p>
 <span>                     width <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">rel</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,</span>
 <span>                     height <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">rel</a></span><span class="op">(</span><span class="fl">1.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Longitude"</span>, y <span class="op">=</span> <span class="st">"Latitude"</span>,</span>
-<span>       color <span class="op">=</span> <span class="st">"year"</span>, fill <span class="op">=</span> <span class="st">"year"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_map</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position.inside <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.3</span>,<span class="fl">0.9</span><span class="op">)</span>, </span>
-<span>        legend.direction <span class="op">=</span> <span class="st">"horizontal"</span>,</span>
-<span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>        plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>       color <span class="op">=</span> <span class="st">"year"</span>, fill <span class="op">=</span> <span class="st">"year"</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"Temperature Trends Over Time in Selected Victorian Weather Stations"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Theme and aesthetic</span></span>
+<span>  <span class="fu">theme_glyph</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position.inside <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.4</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_colour_wsj</span><span class="op">(</span><span class="st">"colors6"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_fill_wsj</span><span class="op">(</span><span class="st">"colors6"</span><span class="op">)</span> </span>
 <span></span>
-<span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">fact</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="Examples_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<p><img src="Examples_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="integrating-glyph-legends">Integrating Glyph Legends<a class="anchor" aria-label="anchor" href="#integrating-glyph-legends"></a>
 </h4>
-<p>The <code>add_geom_legend()</code> function enhances map
-visualizations by adding an enlarged version of one of the glyphs in the
-bottom left corner of the plot. This makes it easier to understand the
-symbols used in the map.</p>
-<p>In this example, a map of Australia is created with
-geom_glyph_ribbon() to display temperature data. The legend is
-integrated directly into the plot using add_glyph_legend(), providing a
-clear reference for interpreting the glyphs without cluttering the map.
-This approach ensures that the visualization remains both informative
-and visually clean.</p>
+<p>To further enhance map readability, the
+<code>add_geom_legend()</code> function integrates a larger version of
+one of the glyphs into the bottom left corner of the plot. This legend
+helps users interpret the scale of the data.</p>
+<p>In the example below, a series of glyph are created using
+<code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> and overlaid on a basemap to depict
+daily temperature variations across Australian weather stations. A
+legend is added through <code><a href="../reference/add_glyph_legend.html">add_glyph_legend()</a></code>, allowing users
+to easily interpret the range of daily temperature value based on a
+randomly selected weather station. Since the legend data is drawn from a
+single, randomly chosen station, it’s important for users to set a seed
+for reproducibility to ensure consistent results.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">legend</span> <span class="op">&lt;-</span> <span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">28493</span><span class="op">)</span></span>
+<span><span class="va">legend</span> <span class="op">&lt;-</span> <span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
 <span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x_major <span class="op">=</span> <span class="va">long</span>, y_major <span class="op">=</span> <span class="va">lat</span>,</span>
 <span>              x_minor <span class="op">=</span> <span class="va">month</span>, ymin_minor <span class="op">=</span> <span class="va">tmin</span>,</span>
 <span>              ymax_minor <span class="op">=</span> <span class="va">tmax</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -457,27 +622,24 @@ and visually clean.</p>
 <span>          inherit.aes <span class="op">=</span> <span class="cn">FALSE</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/add_glyph_boxes.html">add_glyph_boxes</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/add_ref_lines.html">add_ref_lines</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/add_glyph_legend.html">add_glyph_legend</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position.inside <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.3</span>,<span class="fl">0.9</span><span class="op">)</span>, </span>
-<span>        legend.direction <span class="op">=</span> <span class="st">"horizontal"</span>,</span>
-<span>        panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
-<span>        plot.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">theme_map</span><span class="op">(</span><span class="op">)</span> </span>
-<span></span>
+<span>  <span class="fu"><a href="../reference/add_glyph_legend.html">add_glyph_legend</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Add a ribbon legend</span></span>
+<span>  <span class="fu"><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_glyph</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Temperature Ranges Across Australia with Glyph Legend"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">legend</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="Examples_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="Examples_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="observations-and-insights">Observations and Insights<a class="anchor" aria-label="anchor" href="#observations-and-insights"></a>
 </h4>
-<p>Both Geom Glyph Segment and Geom Glyph Ribbon offer unique insights
-into seasonal temperature trends across Australia. Turning off global
-rescaling shows that most stations generally followed the same curvature
-trends relative to their lowest temperatures. However factoring in
-global rescaling, coastal regions show much less total variation in
-temperature.</p>
+<p>Both the Geom Glyph Segment and Geom Glyph Ribbon provide valuable
+insights into seasonal temperature trends across Australia. Disabling
+global rescaling reveals that most weather stations follow similar
+curvature trends relative to their neighboring stations. However, with
+global rescaling enabled, it becomes apparent that coastal regions
+exhibit far less temperature variation overall.</p>
 </div>
 </div>
 </div>

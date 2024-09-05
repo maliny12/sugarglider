@@ -32,6 +32,7 @@ Suggests:
     tidyverse,
     viridis,
     ggthemes,
-    vdiffr
+    vdiffr,
+    kableExtra
 Config/testthat/edition: 3
 VignetteBuilder: knitr
