@@ -38,9 +38,5 @@ devtools::install_github("maliny12/sugarglider")
 
 See the [examples](https://maliny12.github.io/sugarglider/articles/Examples.html) page to learn more about how to use ribbon in your project.
 
-### Examples
-
-Click one of the images below to go to see the code example: 
-
 
 
