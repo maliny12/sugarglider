@@ -298,17 +298,16 @@ GeomGlyphLegend <- ggplot2::ggproto(
   },
 
   # Draw polygons
-  draw_panel = function(data, panel_params, coord, ...) {
+  draw_panel = function(data, panel_params, params, ...) {
+
     grob <- glyph_setup_grob(data, panel_params)
+
     sample_vp <- viewport(x = 0.13, y = 0.02,
                           width = 0.23, height = 0.23,
                           just = c("bottom"))
-    pushViewport(sample_vp)
-    grid.draw(grob)
-    popViewport()
 
+    editGrob(grob, vp = sample_vp, name = grob$name)
   }
-
 )
 
 # Helper functions -------------------------------------------------------------

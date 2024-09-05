@@ -62,7 +62,7 @@ p1 <- vic_temp |>
         title = element_text(color = color_palette[1],
                              family  = "mono"),
         panel.background = element_rect(fill = "white", color = NA),
-        plot.background = element_rect(fill = "white", color = "grey")) 
+        plot.background = element_rect(fill = "white", color = NA)) 
 
 p2 <- vic_temp |>
    ggplot(aes(x_major = long, y_major = lat,
@@ -82,7 +82,7 @@ p2 <- vic_temp |>
         title = element_text(color = color_palette[2],
                              family  = "mono"),
         panel.background = element_rect(fill = "white", color = NA),
-        plot.background = element_rect(fill = "white", color = "grey"))
+        plot.background = element_rect(fill = "white", color = NA))
 
 grid.arrange(p1, p2, ncol = 2) 
 ```
@@ -307,8 +307,8 @@ legend <- aus_temp |>
   theme(legend.position.inside = c(.3,0.9), 
         legend.direction = "horizontal",
         panel.background = element_rect(fill = "white", color = NA),
-        plot.background = element_rect(fill = "white", color = NA)) +
-  theme_map() 
+        plot.background = element_rect(fill = "white", color = NA)) + 
+  theme_map()
 
 
 grid.arrange(legend, ncol = 1) 
