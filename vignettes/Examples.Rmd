@@ -37,31 +37,6 @@ These functions create a ribbon geometry designed to display glyphs based on the
 
 Let's compare `geom_glyph_ribbon()` and `geom_glyph_segment()`:
 
-
-```{r, echo=FALSE}
-# customized theme
-theme_glyph <- function() {
-  theme_map() %+replace%
-    theme(
-      # Legend
-      legend.position.inside = c(0,0), 
-      legend.direction = "horizontal",
-      legend.text = element_text(family = "mono"),
-      legend.title = element_text(family = "mono"),
-      # Title and subtitles
-      plot.title = element_text(hjust = 0.5, family = "mono",
-                                size = 12, face = "bold"),
-      plot.subtitle = element_text(family = "mono"),
-      plot.caption = element_text(family = "mono"),
-      # Panel background
-      panel.background = element_rect(fill = "white", color = NA),
-      plot.background = element_rect(fill = "white", color = NA)
-      
-    )
-}
-
-```
-
 ```{r}
 vic_temp <- aus_temp |>
   filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143"))
