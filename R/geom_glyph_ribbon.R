@@ -76,8 +76,11 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL, show.legend = NA,
 }
 
 #' GeomGlyphRibbon
+#' @rdname sugarglider
 #' @format NULL
 #' @usage NULL
+#' @seealso \link[ggplot2]{GeomRibbon} from the ggplot2 package.
+#' @keywords internal
 #' @export
 GeomGlyphRibbon <- ggplot2::ggproto(
   "GeomGlyphRibbon", ggplot2::GeomRibbon,
@@ -151,8 +154,11 @@ add_glyph_boxes <- function( mapping = NULL, data = NULL,
 }
 
 #' GeomGlyphBox
+#' @rdname sugarglider
 #' @format NULL
 #' @usage NULL
+#' @seealso \link[cubble]{geom_glyph_box} from the cubble package.
+#' @keywords internal
 #' @export
 GeomGlyphBox <- ggplot2::ggproto(
   "GeomGlyphBox", ggplot2::Geom,
@@ -215,8 +221,11 @@ add_ref_lines <- function( mapping = NULL, data = NULL,
 }
 
 #' GeomGlyphLine
+#' @rdname sugarglider
 #' @format NULL
 #' @usage NULL
+#' @seealso \link[cubble]{geom_glyph_line} from the cubble package.
+#' @keywords internal
 #' @export
 GeomGlyphLine <- ggplot2::ggproto(
   "GeomGlyphLine", ggplot2::Geom,
@@ -277,8 +286,10 @@ add_glyph_legend <- function( mapping = NULL, data = NULL,
 }
 
 #' GeomGlyphLegend
+#' @rdname sugarglider
 #' @format NULL
 #' @usage NULL
+#' @keywords internal
 #' @export
 GeomGlyphLegend <- ggplot2::ggproto(
   "GeomGlyphLegend", ggplot2::Geom,

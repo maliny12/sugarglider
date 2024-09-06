@@ -85,6 +85,8 @@ geom_glyph_segment <- function(mapping = NULL, data = NULL, stat = "identity",
 #' GeomSegmentGlyph
 #' @format NULL
 #' @usage NULL
+#' @seealso \link[ggplot2]{GeomSegment} from the ggplot2 package.
+#' @keywords internal
 #' @export
 GeomGlyphSegment <- ggplot2::ggproto(
   "GeomGlyphSegment",
@@ -100,7 +102,7 @@ GeomGlyphSegment <- ggplot2::ggproto(
 
   required_aes = c("x_major", "y_major", "x_minor", "y_minor", "yend_minor"),
   default_aes = ggplot2::aes(
-    colour = "black",
+    colour = "black",-
     linewidth = 0.5,
     linetype = 1,
     width = ggplot2::rel(4),

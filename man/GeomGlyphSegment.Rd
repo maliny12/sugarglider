@@ -7,4 +7,7 @@
 \description{
 GeomSegmentGlyph
 }
-\keyword{datasets}
+\seealso{
+\link[ggplot2]{GeomSegment} from the ggplot2 package.
+}
+\keyword{internal}
