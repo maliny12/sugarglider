@@ -1,4 +1,22 @@
 url: ~
 template:
   bootstrap: 5
+  bootswatch: lux
+  bslib:
+    pkgdown-nav-height: 100px
 
+reference:
+- title: Glyph
+  desc: >
+   Funcitons
+  contents:
+  - geom_glyph_ribbon
+  - geom_glyph_segment
+  - add_ref_lines
+  - add_glyph_boxes
+- title: Data
+  desc: >
+    Datasets
+  contents:
+  - climate
+  - flight
