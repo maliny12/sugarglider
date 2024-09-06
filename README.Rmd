@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 ### Overview
 
-`sugarglider` provides ggplot2 extensions to create glyph maps that visualize multivariate spatio-temporal data with `geom_glyph_ribbon()` and `geom_glyph_segment()`.
+`sugarglider` provides ggplot2 extensions to create glyph maps that visualize seasonal aspects of spatio-temporal data with `geom_glyph_ribbon()` and `geom_glyph_segment()`.
 
 These functions create a ribbon or segment geometry designed to display glyphs based on the combination of `x_major` and `y_major`. For each `x_minor` value, `geom_glyph_ribbon()` displays a y interval defined by `ymin_minor` and `ymax_minor`. Meanwhile, `geom_glyph_segment()` draw a straight line between `y_minor` and `yend_minor` with respect to `x_minor`.
 
