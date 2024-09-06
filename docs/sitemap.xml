@@ -1,114 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Examples.html</loc>
-  </url>
-  <url>
-    <loc>/articles/geom_segment_glyph.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GeomGlyphBox.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GeomGlyphLegend.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GeomGlyphLine.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GeomGlyphRibbon.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GeomGlyphSegment.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GeomSegmentGlyph.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_glyph_boxes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_glyph_legend.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_ref_lines.html</loc>
-  </url>
-  <url>
-    <loc>/reference/add_ribbon_legend.html</loc>
-  </url>
-  <url>
-    <loc>/reference/aus_temp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/configure_glyph_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/custom_scale.html</loc>
-  </url>
-  <url>
-    <loc>/reference/flights.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geom_glyph_ribbon.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geom_glyph_segment.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geom_segment_glyph.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_scale.html</loc>
-  </url>
-  <url>
-    <loc>/reference/glyph.html</loc>
-  </url>
-  <url>
-    <loc>/reference/glyph_box.html</loc>
-  </url>
-  <url>
-    <loc>/reference/glyph_mapping.html</loc>
-  </url>
-  <url>
-    <loc>/reference/glyph_setup_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/glyph_setup_grob.html</loc>
-  </url>
-  <url>
-    <loc>/reference/historical_temp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ref_line.html</loc>
-  </url>
-  <url>
-    <loc>/reference/rescale.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sugarglider.html</loc>
-  </url>
-  <url>
-    <loc>/reference/theme_glyph.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://maliny12.github.io/sugarglider/404.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/LICENSE-text.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/LICENSE.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/articles/Examples.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/articles/geom_segment_glyph.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/articles/index.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/authors.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/index.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/GeomGlyphRibbon.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/GeomGlyphSegment.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/GeomSegmentGlyph.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/add_glyph_boxes.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/add_glyph_legend.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/add_ref_lines.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/add_ribbon_legend.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/aus_temp.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/configure_glyph_data.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/custom_scale.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/flights.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/geom_glyph_ribbon.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/geom_glyph_segment.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/geom_segment_glyph.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/get_scale.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/glyph.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/glyph_box.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/glyph_mapping.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/glyph_setup_data.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/glyph_setup_grob.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/historical_temp.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/index.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/ref_line.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/rescale.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/sugarglider.html</loc></url>
+<url><loc>https://maliny12.github.io/sugarglider/reference/theme_glyph.html</loc></url>
 </urlset>
+
