@@ -1,6 +1,7 @@
 url: ~
 template:
   bootstrap: 5
+  light-switch: true
   bootswatch: lux
   bslib:
     pkgdown-nav-height: 100px
@@ -8,15 +9,18 @@ template:
 reference:
 - title: Glyph
   desc: >
-   Funcitons
+   Functions
   contents:
   - geom_glyph_ribbon
   - geom_glyph_segment
   - add_ref_lines
   - add_glyph_boxes
+  - add_glyph_legend
+  - theme_glyph
 - title: Data
   desc: >
     Datasets
   contents:
-  - climate
-  - flight
+  - aus_temp
+  - historical_temp
+  - flights

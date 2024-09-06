@@ -145,7 +145,7 @@ aus_temp |>
     x_minor = month, 
     y_minor = tmin, 
     yend_minor = tmax)) +
-  geom_sf(data = abs_ste, fill = "antiquewhite", inherit.aes = FALSE, color = "white") +
+  geom_sf(data = abs_ste, fill = "#E2C499", inherit.aes = FALSE, color = "white") +
   coord_sf(xlim = c(110,155)) +
   # Add glyph box to each glyph
   add_glyph_boxes(
