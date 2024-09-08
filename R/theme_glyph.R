@@ -40,16 +40,17 @@ theme_glyph <- function() {
       # Legend
       legend.position.inside = c(0,0),
       legend.direction = "horizontal",
-      legend.text = element_text(family = "mono"),
-      legend.title = element_text(family = "mono"),
+      legend.text = element_text(family = "mono", size = 10),
+      legend.title = element_text(family = "mono", size = 10),
       # Title and subtitles
       plot.title = element_text(hjust = 0.5, family = "mono",
                                 size = 12, face = "bold"),
       plot.subtitle = element_text(family = "mono"),
       plot.caption = element_text(family = "mono"),
       # Panel background
-      panel.background = element_rect(fill = "white", color = NA),
-      plot.background = element_rect(fill = "white", color = NA)
+      panel.background = element_rect(fill = NA, color = NA),
+      plot.background = element_rect(fill = NA, color = NA),
+      legend.background = element_rect(fill = NA, color = NA)
 
     )
 }

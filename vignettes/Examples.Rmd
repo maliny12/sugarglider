@@ -88,7 +88,9 @@ p2 <- vic_temp |>
         title = element_text(color = color_palette[2]))
 
 grid.arrange(p1, p2, ncol = 2) 
+
 ```
+
 
 ## Installation
 

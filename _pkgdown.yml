@@ -1,10 +1,13 @@
 url: https://maliny12.github.io/sugarglider
 template:
   bootstrap: 5
+  light-switch: true
+  # theme: gruvbox-light
+  # theme-dark: gruvbox-dark
   bootswatch: lux
   bslib:
     pkgdown-nav-height: 100px
-  light-switch: true
+
 
 reference:
 - title: Glyph

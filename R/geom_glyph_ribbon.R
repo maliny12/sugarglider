@@ -509,6 +509,10 @@ glyph_setup_grob <- function(data, panel_params){
                      ymax = ymax_minor)) +
       geom_ribbon() +
       theme_bw()  +
+      theme(
+        panel.background = element_rect(fill = NA, color = NA),
+        plot.background = element_rect(fill = NA, color = NA)
+      ) +
       labs(x = "") +
       scale_x_discrete(expand = c(0,0))
   } else {
@@ -519,6 +523,10 @@ glyph_setup_grob <- function(data, panel_params){
                      yend = yend_minor)) +
       geom_segment() +
       theme_bw()  +
+      theme(
+        panel.background = element_rect(fill = NA, color = NA),
+        plot.background = element_rect(fill = NA, color = NA)
+      ) +
       labs(x = "", y = "") +
       scale_x_discrete(expand = c(0,0))
   }

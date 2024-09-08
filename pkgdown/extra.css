@@ -1,0 +1,69 @@
+:root {
+  /* light theme */
+  --text-color-light: #121212;
+  --bkg-color-light: #FCF6F5;
+  --nav-color-light: #fbfbfb;
+  --nvb-bg-light: #A07855;
+  --nav-text: #C1E1DC;
+  /* dark theme */
+  --text-color-dark: #eee;
+  --bkg-color-dark: #121212;
+  --nav-color-dark: #D0E1f9;
+  --input-color: #1E1f26;
+  --form-control-bg: #d8d8db;
+  --a-color: rgba(115, 153, 205, 1);
+
+}
+
+[data-bs-theme=light] {
+    .navbar {
+        background-color: var(--nvb-bg-light);
+    }
+    .navbar-brand {
+      color: var(--nav-color-light);
+    }
+    .nav-text.text-muted {
+      color: var(--nav-text) !important;
+    }
+    .nav-link {
+      color: var(--nav-color-light);
+    }
+    body {
+      background: var(--bkg-color-light);
+    }
+    img,svg {
+      background: #fff;
+    }
+
+}
+
+[data-bs-theme=dark] {
+    .navbar {
+        background-color: var(--bs-dark);
+    }
+    .form-control {
+      background-color: var(--form-control-bg);
+    }
+    input, input::placeholder {
+      color: var(--input-color) !important;
+    }
+    .nav-link, .navbar-brand {
+      color: var(--nav-color-dark);
+    }
+    .nav-text.text-muted {
+      color: #CDCDC0 !important;
+    }
+    a {
+      color: var(--a-color);
+    }
+    .table{
+      --bs-table-bg: #363535 !important;
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+    img,svg {
+      background: #fff;
+      opacity: 0.8;
+    }
+}
+
+
