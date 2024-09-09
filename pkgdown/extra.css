@@ -31,10 +31,6 @@
     body {
       background: var(--bkg-color-light);
     }
-    img,svg {
-      background: #fff;
-    }
-
 }
 
 [data-bs-theme=dark] {
