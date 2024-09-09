@@ -6,7 +6,7 @@
 #' height, width, and scaling, allowing for flexible data representation in a visual context.
 #'
 #' @inheritParams cubble::geom_glyph
-#' @import ggplot2a
+#' @import ggplot2
 #' @import From dplyr mutate
 #'
 #' @param x_major,x_minor,y_major,y_minor,yend_minor The name of the
@@ -87,6 +87,7 @@ geom_glyph_segment <- function(mapping = NULL, data = NULL, stat = "identity",
 #' @usage NULL
 #' @seealso \link[ggplot2]{GeomSegment} from the ggplot2 package.
 #' @keywords internal
+#' @import ggiraph
 #' @export
 GeomGlyphSegment <- ggplot2::ggproto(
   "GeomGlyphSegment",

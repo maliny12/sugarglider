@@ -34,6 +34,7 @@ Suggests:
     viridis,
     ggthemes,
     vdiffr,
-    kableExtra
+    kableExtra,
+    ggiraph
 Config/testthat/edition: 3
 VignetteBuilder: knitr
