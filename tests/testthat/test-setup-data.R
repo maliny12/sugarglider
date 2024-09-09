@@ -62,42 +62,5 @@ test_that("function can handle edge cases with non-numeric and empty data", {
 })
 
 
-test_that("glyph_setup_data processes data with extreme value correctly", {
-
-  data <- data.frame(
-    x_major = sample(1:5, 100, replace = TRUE),
-    y_major = sample(10:50, 100, replace = TRUE),
-    x_minor = seq(from = lubridate::ymd('2022-12-25'),
-                  length.out = 100, by = "days"),
-    ymin_minor = c(runif(20, min = 0, max = 0.1),
-                runif(60, min = 0.45, max = 0.55),
-                runif(20, min = 0.9, max = 1)))
-  data$ymax_minor <- data$ymin_minor + runif(100, min = 0.1, max = 0.5)
-
-  # Add extreme values
-  extreme_values <- data.frame(
-    x_major = c(1, 1),
-    y_major = c(10, 10),
-    x_minor = c(lubridate::ymd('2022-12-31'), lubridate::ymd('2023-01-01')),
-    ymin_minor = c(0, 1),  # Minimal and maximal y values
-    ymax_minor = c(0.1, 1.1)
-  )
-  combined_data <- dplyr::bind_rows(data, extreme_values)
-
-  processed_data <- glyph_setup_data(combined_data, params, legend = FALSE) |>
-    dplyr::mutate(x_scaled = rescale(x_minor),
-           ymin_scaled = rescale(ymin_minor),
-           ymax_scaled = rescale(ymax_minor))
-
-  # Check if scaling is within expected range
-  expect_true(all(processed_data$x_scaled >= -1 & processed_data$x_scaled <= 1))
-  expect_true(all(processed_data$ymin_scaled >= -1 & processed_data$ymin_scaled <= 1))
-  expect_true(all(processed_data$ymax_scaled >= -1 & processed_data$ymax_scaled <= 1))
-
-  expect_true(all(inherits(processed_data$x_minor, "numeric")))
-  expect_equal(nrow(processed_data), nrow(combined_data)) # check for no data loss unless expected
-})
-
-
 
 

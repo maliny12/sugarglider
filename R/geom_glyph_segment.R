@@ -98,6 +98,8 @@ GeomGlyphSegment <- ggplot2::ggproto(
 
   draw_panel = function(data, panel_params, coord, ...) {
     ggplot2:::GeomSegment$draw_panel(data, panel_params, coord, ...)
+    # For interactive element
+    ggiraph::GeomInteractiveSegment$draw_panel(data, panel_params, coord, ...)
   },
 
   required_aes = c("x_major", "y_major", "x_minor", "y_minor", "yend_minor"),
