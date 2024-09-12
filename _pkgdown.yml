@@ -10,9 +10,7 @@ template:
 
 
 reference:
-- title: Glyph
-  desc: >
-   Functions
+- title: "Function reference"
   contents:
   - geom_glyph_ribbon
   - geom_glyph_segment
@@ -20,10 +18,19 @@ reference:
   - add_glyph_boxes
   - add_glyph_legend
   - theme_glyph
-- title: Data
-  desc: >
-    Datasets
+- title: "Datasets"
   contents:
   - aus_temp
   - historical_temp
   - flights
+
+navbar:
+  title: "ggrepel"
+  left:
+    - text: "Reference"
+      href: reference/index.html
+    - text: "Examples"
+      href: articles/Examples.html
+
+
+

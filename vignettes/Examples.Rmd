@@ -90,6 +90,8 @@ p2 <- vic_temp |>
 grid.arrange(p1, p2, ncol = 2) 
 
 ```
+
+
 ## Installation
 
 ```{r, eval=FALSE}

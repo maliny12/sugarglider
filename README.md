@@ -12,8 +12,8 @@
 ### Overview
 
 `sugarglider` provides ggplot2 extensions to create glyph maps that
-visualize multivariate spatio-temporal data with `geom_glyph_ribbon()`
-and `geom_glyph_segment()`.
+visualize seasonal aspects of spatio-temporal data with
+`geom_glyph_ribbon()` and `geom_glyph_segment()`.
 
 These functions create a ribbon or segment geometry designed to display
 glyphs based on the combination of `x_major` and `y_major`. For each
@@ -33,4 +33,4 @@ devtools::install_github("maliny12/sugarglider")
 
 See the
 [examples](https://maliny12.github.io/sugarglider/articles/Examples.html)
-page to learn more about how to use ribbon in your project.
+page to learn more about how to use sugarglider in your project.
