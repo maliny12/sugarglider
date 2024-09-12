@@ -27,6 +27,8 @@ library(gridExtra)
 library(ozmaps)
 library(ggthemes)
 library(kableExtra)
+library(usmap)
+library(ggiraph)
 ```
   
 ## Overview
@@ -227,12 +229,12 @@ grid.arrange(p1, p2, ncol = 2)
 Expanding on our temperature analysis, we now incorporate precipitation data across Australia using `geom_glyph_ribbon()`. The glyphs are color-coded to represent varying levels of rainfall, with reference lines and glyph boxes enhancing clarity and allow for easy comparison of precipitation level across the country.
 
 ```{r}
-
 prcp <- aus_temp |>
    group_by(id) |>
    mutate(prcp = mean(prcp, na.rm = TRUE)) |>
-   ggplot(aes(x_major = long, y_major = lat, x_minor = month,
-              ymin_minor = tmin, ymax_minor = tmax,
+   ggplot(aes(x_major = long, y_major = lat,
+              x_minor = month, ymin_minor = tmin,
+              ymax_minor = tmax, 
               fill = prcp, color = prcp)) +
   geom_sf(data = abs_ste, fill = "antiquewhite",
           inherit.aes = FALSE, color = "white") +
@@ -249,9 +251,8 @@ prcp <- aus_temp |>
   scale_color_gradientn(colors = c( "#ADD8E6", "#2b5e82", "dodgerblue4")) +
   labs(fill = "Percepitation", color = "Percepitation",
        title = "Precipitation and Temperature Ranges Across Australian Weather Stations") 
-  
 
-grid.arrange(prcp, ncol = 1) 
+prcp
 ```
 
 If you're interested in comparing temperature trends across different years for specific regions in Victoria, `geom_glyph_ribbon()` provides a way to visualize how temperatures have evolved over time, with each year distinguished by a different color for clarity. 
@@ -263,7 +264,7 @@ fact <- historical_temp |>
    ggplot(aes(color = factor(year), fill = factor(year),
               group = interaction(year,id),
               x_major = long, y_major = lat,
-              x_minor = month, ymin_minor = tmin,
+              x_minor = month, ymin_minor = tmin, 
               ymax_minor = tmax)) +
   geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
            fill = "antiquewhite", color = "white",
@@ -278,14 +279,14 @@ fact <- historical_temp |>
                      height = rel(1.5)) +
   labs(x = "Longitude", y = "Latitude",
        color = "year", fill = "year",
-       title = "Temperature Trends Over Time in Selected Victorian Weather Stations") +
+       title = "Temperature Trends in Selected Victorian Weather Stations") +
   # Theme and aesthetic
   theme_glyph() +
   theme(legend.position.inside = c(.4,0)) +
   scale_colour_wsj("colors6") +
   scale_fill_wsj("colors6") 
 
-grid.arrange(fact, ncol = 1) 
+fact
 ```
 
 #### Integrating Glyph Legends
@@ -310,12 +311,102 @@ legend <- aus_temp |>
   theme_glyph() +
   labs(title = "Temperature Ranges Across Australia with Glyph Legend")
 
-grid.arrange(legend, ncol = 1) 
+legend
 ```
 
 #### Observations and Insights
 
 Both the Geom Glyph Segment and Geom Glyph Ribbon provide valuable insights into seasonal temperature trends across Australia. Disabling global rescaling reveals that most weather stations follow similar curvature trends relative to their neighboring stations. However, with global rescaling enabled, it becomes apparent that coastal regions exhibit far less temperature variation overall.
+
+### Flight Variability at U.S. Airports with the Most Cancellations
+
+The U.S. Department of Transportation (DOT) Bureau of Transportation Statistics monitors the on-time performance of domestic flights operated by major U.S. airlines. Each month, the DOT publishes the Air Travel Consumer Report, which provides a summary of on-time, delayed, canceled, and diverted flights.
+
+This dataset, sourced from the Kaggle [Airline Flight Delay and Cancellation](https://www.kaggle.com/datasets/patrickzel/flight-delay-and-cancellation-dataset-2019-2023) data, has been processed and aggregated to show the minimum and maximum number of flights originating from the top 10 U.S. airports with the highest cancellation rates. 
+
+```{r}
+head(flights) |>
+  kable() |> kable_styling()
+```
+
+In this section of the analysis, we will showcase the functionality of `geom_glyph_segment()` the monthly range of flights for each airport, providing insights into how flight numbers fluctuate over time. Additionally, we will use `geom_glyph_ribbon()` to visualize the variation between the minimum and maximum number of flights from each airport. 
+
+```{r}
+USmap <- us_map(regions = "state") |>
+  filter(full != "Alaska")
+
+# Specify tooltip for ggiraph 
+flights <- flights |>
+  mutate(tooltip = paste("origin: ",origin,
+                         "\nmonth: ", month,
+                         "\nmin_flights: ", min_flights,
+                         "\nmax_flights: ", max_flights))
+
+fl <- flights |> 
+  ggplot(aes(x_major = long, y_major = lat,
+             x_minor = month, y_minor = min_flights,
+             yend_minor = max_flights,
+             tooltip = tooltip)) + 
+  geom_sf(data = USmap, color = "white",
+          fill = "antiquewhite", inherit.aes = FALSE) +
+  coord_sf(crs = st_crs(4326)) +
+  add_glyph_boxes(color = "#CD5C08") +
+  add_ref_lines(color = "#CD5C08") +
+  geom_glyph_segment(color = "#CD5C08")  +
+  labs(title = "Monthly Flight Variability",
+       subtitle = "Based on top 10 US Airports with high cancellations rate") +
+  theme_glyph() 
+
+# Interactive plot using ggiraph
+girafe(ggobj = fl)
+```
+
+This plot displays the minimum and maximum number of flights departing from each airport on a spatial map. Each line segment represents the flight range for a respective airport. The length of each segment indicates the variability in flight numbers across different airports. Notably, airports like ATL and ORD generally have a higher volume of departing flights compared to others such as MCO and PHX. Additionally, all airports exhibit fluctuations throughout the year, with broader flight intervals mid-year and narrower intervals during the holiday season at year-end.
+
+From the graph, it is evident that airports in certain regions experience more variability than others. While segment plots provide a good estimation of this variability, the geom_glyph_ribbon enhances our understanding by displaying the gap between minimum and maximum flights. Wider ribbons suggest greater fluctuation in flight operations month-to-month.
+
+```{r}
+south <- us_map(include = .south_region)
+west <- us_map(include = .west_region, exclude = c("AK", "HI"))
+  
+  
+southR <- flights |> 
+  filter(origin %in% c("ATL", "CLT", "MCO", "DFW")) |>
+  ggplot(aes(x_major = long, y_major = lat,
+             x_minor = month, ymin_minor = min_flights,
+             ymax_minor = max_flights)) + 
+  geom_sf(data = south, color = "white",
+          fill = "antiquewhite", inherit.aes = FALSE) +
+  coord_sf(crs = st_crs(4326)) +
+  add_glyph_boxes(color = "#A6B37D") +
+  add_ref_lines(color = "#A6B37D") +
+  geom_glyph_ribbon(color = "#A6B37D", fill = "#A6B37D")  +
+  labs(title = "South Region") +
+  theme_glyph() 
+
+westR <- flights |> 
+  filter(origin %in% c("PHX", "LAS", "LAX", "SEA")) |>
+  ggplot(aes(x_major = long, y_major = lat,
+             x_minor = month, ymin_minor = min_flights,
+             ymax_minor = max_flights)) + 
+  geom_sf(data = west, color = "white",
+          fill = "antiquewhite", inherit.aes = FALSE) +
+  coord_sf(crs = st_crs(4326)) +
+  add_glyph_boxes(color = "#CD5C08") +
+  add_ref_lines(color = "#CD5C08") +
+  geom_glyph_ribbon(color = "#CD5C08", fill = "#CD5C08")  +
+  labs(title = "West Region") +
+  theme_glyph() 
+
+grid.arrange(westR, southR, ncol = 2)
+```
+
+`geom_glyph_ribbon()` highlights the disparities in flight volume between regions. The Western region exhibits a larger variation in the number of flights compared to the Southern region, as evidenced by the thicker ribbons. Interestingly, both regions show a notable increase in discrepancies during the mid-year, which supports our findings from the `geom_glyph_segment()`. 
+
+
+
+
+
 
 
 

@@ -19,7 +19,7 @@
 #' @export
 "aus_temp"
 
-#' Historical Australian Weather Data for 2021-2022
+#' Historical Australian Weather Data from 2021-2022
 #'
 #' This dataset contains aggregated monthly average temperatures (minimum and maximum) and precipitation
 #' for selected Australian weather stations for the years 2021 and 2022. It provides a broader historical perspective

@@ -102,10 +102,11 @@ GeomGlyphRibbon <- ggplot2::ggproto(
     data <- glyph_setup_data(data, params)
   },
 
-
   # Draw polygons
   draw_panel = function(data,  panel_params, ...) {
    ggplot2::GeomRibbon$draw_panel(data, panel_params, ...)
+   # For interactive element: Aesthetics can not vary with a ribbon
+   # ggiraph::GeomInteractiveRibbon$draw_group(data, panel_params, ...)
   }
 
 )

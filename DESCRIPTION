@@ -35,6 +35,9 @@ Suggests:
     ggthemes,
     vdiffr,
     kableExtra,
-    ggiraph
+    ggiraph,
+    jsonlite,
+    httr,
+    usmap
 Config/testthat/edition: 3
 VignetteBuilder: knitr

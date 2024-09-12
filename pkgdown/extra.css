@@ -31,6 +31,7 @@
     body {
       background: var(--bkg-color-light);
     }
+
 }
 
 [data-bs-theme=dark] {
@@ -66,4 +67,20 @@
   display: none;
 }
 
+
+/*
+.hovertext>*  {
+  stroke-width: 2px !important;
+}
+
+.hovertext>*>*:first-child  {
+  font-weight: bold !important;
+}
+
+rect.ggiraph-svg-bg {
+  font: "monospace";
+  fill: transparent;
+  stroke: transparent;
+}
+*/
 

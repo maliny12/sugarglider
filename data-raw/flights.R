@@ -70,7 +70,9 @@ flights <- left_join(monthly_flight, airport_coordinates,
   summarise(
     min_flights = min(total_flights),
     max_flights = max(total_flights)) |>
-  rename("origin" = "ORIGIN")
+  rename("origin" = "ORIGIN",
+         "long" = "longitude",
+         "lat" = "latitude")
 
 usethis::use_data(flights, overwrite = TRUE)
 

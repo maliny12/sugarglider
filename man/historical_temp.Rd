@@ -3,7 +3,7 @@
 \docType{data}
 \name{historical_temp}
 \alias{historical_temp}
-\title{Historical Australian Weather Data for 2021-2022}
+\title{Historical Australian Weather Data from 2021-2022}
 \format{
 A data frame with the following columns:
 \describe{

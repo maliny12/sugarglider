@@ -3,22 +3,27 @@
 \docType{data}
 \name{flights}
 \alias{flights}
-\title{Flight Data from 2019-2023}
+\title{Flight Summary from Airports with the Most Cancellations}
 \format{
-## `flights`
+`flights`
 A data frame with 120 rows and 6 columns:
 \describe{
-  \item{month}{The month of the flight}
   \item{origin}{The origin airport for that flight}
-  ...
+  \item{month}{The month of the flight}
+  \item{long}{Longitude of the airport}
+  \item{lat}{Latitude of the airport}
+  \item{min_flights}{The minimum number of flights that originated from the airport}
+  \item{max_flights}{The maximum number of flights that originated from the airport}
 }
 }
 \usage{
 flights
 }
 \description{
-Minimum and maximum number of flights originated from the top 10 airports with the
-most canceled flights. The included airports are DEN, MCO, SEA, ATL, DFW,
-ORD, LAS, LAX, and PHX.
+This dataset contains information on the minimum and maximum number of flights
+that originated from the top 10 U.S. airports with the highest number of flight
+cancellations. The airports included are Denver (DEN), Orlando (MCO), Seattle (SEA),
+Atlanta (ATL), Dallas/Fort Worth (DFW), Chicago O'Hare (ORD), Las Vegas (LAS), Los Angeles (LAX),
+and Phoenix (PHX).
 }
 \keyword{datasets}
