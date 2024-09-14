@@ -272,6 +272,7 @@ GeomGlyphLine <- ggplot2::ggproto(
 add_glyph_legend <- function( mapping = NULL, data = NULL,
                         stat = "identity", position = "identity", show.legend = NA,
                         x_minor = NULL,x_scale = identity, y_scale = identity,
+                        fill = "black", color = "black", linewidth = 0.5, alpha = 0.8,
                         global_rescale = TRUE, inherit.aes = TRUE, ...) {
   ggplot2::layer(
     geom = GeomGlyphLegend,
@@ -285,6 +286,10 @@ add_glyph_legend <- function( mapping = NULL, data = NULL,
       x_scale = list(x_scale),
       y_scale = list(y_scale),
       global_rescale = global_rescale,
+      fill = fill,
+      color = color,
+      linewidth = linewidth,
+      alpha = alpha,
       ...)
   )
 
@@ -501,6 +506,8 @@ glyph_mapping <- function(spatial, scaled_value, length) {
 #' @keywords internal
 glyph_setup_grob <- function(data, panel_params){
 
+
+
   stopifnot(
     ("ymin_minor" %in% names(data) && "ymax_minor" %in% names(data)) ||
       ("y_minor" %in% names(data) && "yend_minor" %in% names(data))
@@ -511,8 +518,12 @@ glyph_setup_grob <- function(data, panel_params){
       ggplot2::ggplot(
         ggplot2::aes(x = x_minor,
                      ymin = ymin_minor,
-                     ymax = ymax_minor)) +
-      geom_ribbon() +
+                     ymax = ymax_minor
+                     )) +
+      geom_ribbon(fill = data$fill,
+                  color = data$colour,
+                  linewidth = data$linewidth,
+                  alpha = data$alpha) +
       theme_bw()  +
       theme(
         panel.background = element_rect(fill = NA, color = NA),
@@ -526,7 +537,10 @@ glyph_setup_grob <- function(data, panel_params){
         ggplot2::aes(x = x_minor,
                      y = y_minor,
                      yend = yend_minor)) +
-      geom_segment() +
+      geom_segment(
+                   color = data$colour,
+                   linewidth = data$linewidth,
+                   alpha = data$alpha) +
       theme_bw()  +
       theme(
         panel.background = element_rect(fill = NA, color = NA),

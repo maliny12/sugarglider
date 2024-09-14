@@ -13,6 +13,10 @@ add_glyph_legend(
   x_minor = NULL,
   x_scale = identity,
   y_scale = identity,
+  fill = "black",
+  color = "black",
+  linewidth = 0.5,
+  alpha = 0.8,
   global_rescale = TRUE,
   inherit.aes = TRUE,
   ...

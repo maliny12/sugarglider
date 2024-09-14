@@ -305,11 +305,11 @@ legend <- aus_temp |>
               ymax_minor = tmax)) +
   geom_sf(data = abs_ste, fill = "antiquewhite",
           inherit.aes = FALSE, color = "white") +
-  add_glyph_boxes() +
-  add_ref_lines() +
-  add_glyph_legend() +
+  add_glyph_boxes(color = "#227B94") +
+  add_ref_lines(color = "#227B94") +
+  add_glyph_legend(color = "#227B94", fill = "#227B94") +
   # Add a ribbon legend
-  geom_glyph_ribbon() +
+  geom_glyph_ribbon(color = "#227B94", fill = "#227B94") +
   theme_glyph() +
   labs(title = "Temperature Ranges Across Australia with Glyph Legend")
 
@@ -354,7 +354,7 @@ fl <- flights |>
   coord_sf(crs = st_crs(4326)) +
   add_glyph_boxes(color = "#CD5C08") +
   add_ref_lines(color = "#CD5C08") +
-  geom_glyph_segment(color = "#CD5C08")  +
+  geom_glyph_segment(color = "#CD5C08") +
   labs(title = "Monthly Flight Variability",
        subtitle = "Based on top 10 US Airports with high cancellations rate") +
   theme_glyph() 
