@@ -16,6 +16,16 @@
 #'   \item White background for both the panel and plot.
 #' }
 #'
+#' @param control A list specifying the relative font sizes for different plot elements.
+#'   The list can contain the following components:
+#'   \describe{
+#'     \item{plot.title}{Font size for the plot title (default: \code{rel(2)}).}
+#'     \item{plot.subtitle}{Font size for the plot subtitle (default: \code{rel(1.7)}).}
+#'     \item{plot.caption}{Font size for the plot caption (default: \code{rel(1)}).}
+#'     \item{legend.text}{Font size for the legend text (default: \code{rel(1.5)}).}
+#'     \item{legend.title}{Font size for the legend title (default: \code{rel(1.5)}).}
+#'   }
+#'
 #' @examples
 #' library(ggplot2)
 #' library(ozmaps)
@@ -34,19 +44,24 @@
 #' @seealso [ggthemes::theme_map()], [ggplot2::theme()]
 #' @export
 
-theme_glyph <- function() {
-  ggthemes::theme_map() %+replace%
+theme_glyph <- function(control = list(
+                    plot.title = rel(2), plot.subtitle = rel(1.7),
+                    plot.caption = rel(1), legend.text = rel(1.5),
+                    legend.title = rel(1.5))) {
+
+    ggthemes::theme_map() %+replace%
     ggplot2::theme(
       # Legend
       legend.position.inside = c(0,0),
       legend.direction = "horizontal",
-      legend.text = element_text(family = "mono", size = 10),
-      legend.title = element_text(family = "mono", size = 10),
+      legend.text = element_text(family = "mono", size = control$legend.text),
+      legend.title = element_text(family = "mono", size = control$legend.title),
       # Title and subtitles
       plot.title = element_text(hjust = 0.5, family = "mono",
-                                size = 12, face = "bold"),
-      plot.subtitle = element_text(family = "mono"),
-      plot.caption = element_text(family = "mono"),
+                                size = control$plot.title, face = "bold"),
+      plot.subtitle = element_text(family = "mono", size = control$plot.subtitle,
+                                   vjust = -2),
+      plot.caption = element_text(family = "mono", size = control$plot.caption),
       # Panel background
       panel.background = element_rect(fill = NA, color = NA),
       plot.background = element_rect(fill = NA, color = NA),
@@ -55,7 +70,7 @@ theme_glyph <- function() {
     )
 }
 
-utils::globalVariables(c("%+replace%", "theme_map", "element_text", "element_rect"))
+utils::globalVariables(c("%+replace%", "theme_map", "element_text", "element_rect", "rel"))
 
 
 

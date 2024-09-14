@@ -11,7 +11,9 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   warning = FALSE,
-  message = FALSE
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 8
 )
 ```
 
@@ -39,7 +41,7 @@ These functions create a ribbon geometry designed to display glyphs based on the
 
 Let's compare `geom_glyph_ribbon()` and `geom_glyph_segment()`:
 
-```{r}
+```{r, fig.height=6}
 vic_temp <- aus_temp |>
   filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143"))
 
@@ -180,7 +182,7 @@ So far, all the visualizations have used global rescaling (enabled by default), 
 
 Below is a comparison between the local and global rescaling approaches:
 
-```{r}
+```{r, fig.height = 6}
 # Global rescale
 p1 <- aus_temp |>
   ggplot(aes(
@@ -250,7 +252,7 @@ prcp <- aus_temp |>
   scale_fill_gradientn(colors = c("#ADD8E6", "#2b5e82", "dodgerblue4")) +
   scale_color_gradientn(colors = c( "#ADD8E6", "#2b5e82", "dodgerblue4")) +
   labs(fill = "Percepitation", color = "Percepitation",
-       title = "Precipitation and Temperature Ranges Across Australian Weather Stations") 
+       title = "Precipitation and Temperature Ranges Across Australia") 
 
 prcp
 ```
@@ -295,7 +297,7 @@ To further enhance map readability, the `add_geom_legend()` function integrates 
 
 In the example below, a series of glyph are created using `geom_glyph_ribbon()` and overlaid on a basemap to depict daily temperature variations across Australian weather stations. A legend is added through `add_glyph_legend()`, allowing users to easily interpret the range of daily temperature value based on a randomly selected weather station. Since the legend data is drawn from a single, randomly chosen station, it's important for users to set a seed for reproducibility to ensure consistent results.
 
-```{r}
+```{r, fig.height=6}
 set.seed(28493)
 legend <- aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
@@ -365,7 +367,7 @@ This plot displays the minimum and maximum number of flights departing from each
 
 From the graph, it is evident that airports in certain regions experience more variability than others. While segment plots provide a good estimation of this variability, the geom_glyph_ribbon enhances our understanding by displaying the gap between minimum and maximum flights. Wider ribbons suggest greater fluctuation in flight operations month-to-month.
 
-```{r}
+```{r, fig.height=6}
 south <- us_map(include = .south_region)
 west <- us_map(include = .west_region, exclude = c("AK", "HI"))
   

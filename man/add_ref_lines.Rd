@@ -15,6 +15,7 @@ add_ref_lines(
   height = ggplot2::rel(2.5),
   width = ggplot2::rel(4),
   inherit.aes = TRUE,
+  linewidth = 0.1,
   ...
 )
 }
@@ -68,6 +69,8 @@ for major and minor glyph components.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+
+\item{linewidth}{The thickness of the reference line.}
 
 \item{...}{Additional arguments passed on to function.}
 }

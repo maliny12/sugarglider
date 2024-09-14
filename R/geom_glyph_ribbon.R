@@ -123,9 +123,9 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 #' inherited from the plot data as specified in the call to \code{ggplot()}.
 #' @param x_major,y_major Aesthetics to map plot coordinates
 #' for major and minor glyph components.
-#' @param alpha The transparency level of the glyph box (ranges between 0 and 1).
 #' @param height,width The relative height and width of each glyph box.
 #' @param fill The color used to fill the glyph box.
+#' @param linewidth The thickness of the glyph box.
 #' @param ... Additional arguments passed on to function.
 #'
 #' @return A layer object that can be added to a ggplot.
@@ -133,9 +133,10 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 #' @export
 add_glyph_boxes <- function( mapping = NULL, data = NULL,
                              stat = "identity", position = "identity",
-                             x_major = NULL, y_major = NULL, alpha = 1,
+                             x_major = NULL, y_major = NULL,
                              height = ggplot2::rel(2.5), width = ggplot2::rel(4),
-                             fill = "white", inherit.aes = TRUE, show.legend = NA, ...) {
+                             fill = "white", linewidth = 0.1,
+                             inherit.aes = TRUE, show.legend = NA, ...) {
   ggplot2::layer(
     geom = GeomGlyphBox,
     mapping = mapping,
@@ -148,6 +149,7 @@ add_glyph_boxes <- function( mapping = NULL, data = NULL,
       height = height,
       width = width,
       fill = fill,
+      linewidth = linewidth,
       ...)
   )
 
@@ -168,7 +170,7 @@ GeomGlyphBox <- ggplot2::ggproto(
 
   default_aes = ggplot2::aes(
     linetype = "solid", fill = "white", color = "black",
-    linewidth = 0.5, alpha = 0.5,
+    linewidth = 0.1, alpha = 0.5,
     width = ggplot2::rel(4),
     height = ggplot2::rel(2.5)
   ),
@@ -178,7 +180,7 @@ GeomGlyphBox <- ggplot2::ggproto(
     glyph_box(data, params)
   },
 
-  draw_panel = function(data,  panel_params, coord, alpha = alpha,
+  draw_panel = function(data,  panel_params, coord, alpha = alpha, linewidth = linewidth,
                         fill = fill, linetype = linetype, color = color, ...) {
     ggplot2:::GeomRect$draw_panel(data, panel_params, coord, ...)
   }
@@ -196,6 +198,7 @@ GeomGlyphBox <- ggplot2::ggproto(
 #' @param x_major,y_major Aesthetics to map plot coordinates
 #' for major and minor glyph components.
 #' @param height,width he relative height and width of each glyph box.
+#' @param linewidth The thickness of the reference line.
 #' @param ... Additional arguments passed on to function.
 #' @return A ggplot2 layer.
 #' @export
@@ -203,7 +206,7 @@ add_ref_lines <- function( mapping = NULL, data = NULL,
                              stat = "identity", position = "identity",
                              show.legend = NA, x_major = NULL, y_major = NULL,
                              height = ggplot2::rel(2.5), width = ggplot2::rel(4),
-                             inherit.aes = TRUE, ...) {
+                             inherit.aes = TRUE, linewidth = 0.1, ...) {
   ggplot2::layer(
     geom = GeomGlyphLine,
     mapping = mapping,
@@ -215,6 +218,7 @@ add_ref_lines <- function( mapping = NULL, data = NULL,
     params = list(
       height = height,
       width = width,
+      linewidth = linewidth,
       ...)
   )
 
@@ -235,7 +239,7 @@ GeomGlyphLine <- ggplot2::ggproto(
 
   default_aes = ggplot2::aes(
     linetype = "solid", color = "black",
-    linewidth = 0.5, alpha = 1,
+    linewidth = 0.01, alpha = 0.5,
     width = ggplot2::rel(4),
     height = ggplot2::rel(2.5)
   ),
@@ -245,7 +249,7 @@ GeomGlyphLine <- ggplot2::ggproto(
     ref_line(data, params)
   },
 
-  draw_panel = function(data,  panel_params, coord, ...) {
+  draw_panel = function(data,  panel_params, coord, linewidth = linewidth, ...) {
     ggplot2:::GeomPath$draw_panel(data, panel_params, coord, ...)
   }
 

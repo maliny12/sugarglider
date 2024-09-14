@@ -11,10 +11,10 @@ add_glyph_boxes(
   position = "identity",
   x_major = NULL,
   y_major = NULL,
-  alpha = 1,
   height = ggplot2::rel(2.5),
   width = ggplot2::rel(4),
   fill = "white",
+  linewidth = 0.1,
   inherit.aes = TRUE,
   show.legend = NA,
   ...
@@ -58,11 +58,11 @@ to use \code{position_jitter()}, give the position as \code{"jitter"}.
 \item{x_major, y_major}{Aesthetics to map plot coordinates
 for major and minor glyph components.}
 
-\item{alpha}{The transparency level of the glyph box (ranges between 0 and 1).}
-
 \item{height, width}{The relative height and width of each glyph box.}
 
 \item{fill}{The color used to fill the glyph box.}
+
+\item{linewidth}{The thickness of the glyph box.}
 
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
