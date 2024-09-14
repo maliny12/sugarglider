@@ -266,6 +266,10 @@ GeomGlyphLine <- ggplot2::ggproto(
 #' @param x_scale,y_scale The scaling function applied to each set of minor
 #' values within a grid cell. Defaults to `identity`.
 #' @param global_rescale A setting that determines whether to perform rescaling globally or on individual glyphs.
+#' @param fill The fill color for the geometric object.
+#' @param color The color of the geometric object's border or line.
+#' @param linewidth The width of the geometric object's line.
+#' @param alpha The transparency level of the geometric object, ranging from 0 (fully transparent) to 1 (fully opaque).
 #' @param ... Additional arguments passed on to function.
 #' @return A ggplot2 layer.
 #' @export

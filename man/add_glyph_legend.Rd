@@ -81,6 +81,14 @@ for major and minor glyph components.}
 \item{x_scale, y_scale}{The scaling function applied to each set of minor
 values within a grid cell. Defaults to `identity`.}
 
+\item{fill}{The fill color for the geometric object.}
+
+\item{color}{The color of the geometric object's border or line.}
+
+\item{linewidth}{The width of the geometric object's line.}
+
+\item{alpha}{The transparency level of the geometric object, ranging from 0 (fully transparent) to 1 (fully opaque).}
+
 \item{global_rescale}{A setting that determines whether to perform rescaling globally or on individual glyphs.}
 
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
