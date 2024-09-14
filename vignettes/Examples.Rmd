@@ -121,11 +121,11 @@ Options allow you to modify the behavior of `sugarglider` to fit the specific ne
 
 |Option          | Default      | Description
 |--------------- | ------------ | ------------------------------------------------
-| `colour`         | `"grey50"`         | Color for line segments and borders.
+| `colour`         | `"black"`         | Color for line segments and borders.
 |`linewidth`      | `0.5`          | Width of the line for borders.
 |`linetype`         | `1`          |  Style of the line for borders.
-|`fill`     | `"grey40"`     | Color of the interior area of the geometries.
-|`alpha`      | `1`        | Transparency level of the glyphs. 
+|`fill`     | `"black"`     | Color of the interior area of the geometries.
+|`alpha`      | `0.8`        | Transparency level of the glyphs. 
 
 
 ## Examples
