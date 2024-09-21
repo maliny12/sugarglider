@@ -95,14 +95,6 @@ grid.arrange(p1, p2, ncol = 2)
 
 ```
 
-
-## Installation
-
-```{r, eval=FALSE}
-# Download the development version from GitHub:
-devtools::install_github("maliny12/ribbon")
-```
-
 ## Options
 
 Options allow you to modify the behavior of `sugarglider` to fit the specific needs of your figure. These are all global options that affect every glyph.
