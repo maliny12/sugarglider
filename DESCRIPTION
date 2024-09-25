@@ -10,7 +10,7 @@ Authors@R: c(
             )
 Description: Provides ggplot2 extensions to construct glyphmaps for visualizing seasonality in spatio-temporal data. See the Journal of Statistical Software reference: <doi:10.18637/jss.v110.i07>.
 License: MIT + file LICENSE
-URL:  https://maliny12.github.io/sugarglider, https://github.com/maliny12/sugarglider
+URL: https://maliny12.github.io/sugarglider, https://github.com/maliny12/sugarglider
 Encoding: UTF-8
 LazyData: true
 Imports:
@@ -41,3 +41,4 @@ Suggests:
     usmap
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+BugReports: https://github.com/maliny12/sugarglider/issues
