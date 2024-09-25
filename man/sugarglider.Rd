@@ -42,7 +42,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Maliny Po \email{malinypo12@gmail.com} (\href{https://orcid.org/0009-0008-4686-6631}{ORCID})
+\strong{Maintainer}: Maliny Po \email{malinypo12@gmail.com} (\href{https://orcid.org/0009-0008-4686-6631}{ORCID}) [copyright holder]
 
 Authors:
 \itemize{

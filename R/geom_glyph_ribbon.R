@@ -372,7 +372,6 @@ glyph_setup_data <- function(data, params,...) {
     data <- data |> na.omit()
   }
 
-
   if (custom_scale(params$x_scale)) {
       x_scale <- get_scale(params$x_scale)
       data <- data |>
@@ -382,7 +381,7 @@ glyph_setup_data <- function(data, params,...) {
     }
 
   if (custom_scale(params$y_scale)) {
-    if (isTRUE(arg$segment)){
+    if (isTRUE(arg$segment)) {
       y_scale <- get_scale(params$y_scale)
       data <- data |>
         dplyr::mutate(
