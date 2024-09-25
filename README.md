@@ -9,7 +9,7 @@
 
 <!-- badges: end -->
 
-### Overview
+## Overview
 
 `sugarglider` provides ggplot2 extensions to create glyph maps that
 visualize seasonal aspects of spatio-temporal data with
@@ -18,18 +18,18 @@ visualize seasonal aspects of spatio-temporal data with
 These functions create a ribbon or segment geometry designed to display
 glyphs based on the combination of `x_major` and `y_major`. For each
 `x_minor` value, `geom_glyph_ribbon()` displays a y interval defined by
-`ymin_minor` and `ymax_minor`. Meanwhile, `geom_glyph_segment()` draw a
+`ymin_minor` and `ymax_minor`. Meanwhile, `geom_glyph_segment()` draws a
 straight line between `y_minor` and `yend_minor` with respect to
 `x_minor`.
 
-### Installation
+## Installation
 
 ``` r
 # Download the development version from GitHub:
 devtools::install_github("maliny12/sugarglider")
 ```
 
-### Usage
+## Usage
 
 See the
 [examples](https://maliny12.github.io/sugarglider/articles/Examples.html)
