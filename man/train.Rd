@@ -7,11 +7,10 @@
 \format{
 A data frame with each row representing aggregated monthly data per station, containing:
 \describe{
-  \item{month}{Operating month}
-  \item{year}{Financial year}
   \item{station_name}{Name of the train station.}
-  \item{lat}{Latitude of the train station.}
+  \item{month_year}{Operating month}
   \item{long}{Longitude of the train station.}
+  \item{lat}{Latitude of the train station.}
   \item{services}{Number of unique services passing through the station.}
   \item{mode}{Transportation mode, such as 'Metro', 'VLine', or both.}
   \item{min_monthly}{Minimum daily patronage by month.}
