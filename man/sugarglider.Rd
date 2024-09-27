@@ -25,7 +25,7 @@ Also see the vignette for more usage examples:
 
 Please report issues and suggest improvements at Github:
 
-\url{maliny12.github.io/sugarglider/}
+\url{https://maliny12.github.io/sugarglider/}
 }
 \seealso{
 \link[ggplot2]{GeomRibbon} from the ggplot2 package.
@@ -38,6 +38,7 @@ Useful links:
 \itemize{
   \item \url{https://maliny12.github.io/sugarglider/}
   \item \url{https://github.com/maliny12/sugarglider}
+  \item Report bugs at \url{https://github.com/maliny12/sugarglider/issues}
 }
 
 }

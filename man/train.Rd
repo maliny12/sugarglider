@@ -20,8 +20,6 @@ A data frame with each row representing aggregated monthly data per station, con
   \item{max_weekday}{Maximum daily patronage on a typical weekday.}
   \item{min_weekend}{Minimum daily patronage on weekends.}
   \item{max_weekend}{Maximum daily patronage on weekends.}
-  \item{min_holiday}{Minimum daily patronage on public and school holidays.}
-  \item{max_holiday}{Maximum daily patronage on public and school holidays.}
   \item{min_preAM_peak}{Minimum daily patronage during pre-AM peak hours.}
   \item{max_preAM_peak}{Maximum daily patronage during pre-AM peak hours.}
   \item{min_AM_peak}{Minimum daily patronage during AM peak hours.}
@@ -44,11 +42,11 @@ data(train)
 This dataset provides a comprehensive monthly summary of daily patronage at each
 train station in Victoria for the fiscal year 2023-2024. The number of patronage is definded by the
 total number of boardings and alightings at each station. This dataset includes detailed breakdowns by day types
-such as weekdays, weekends, holidays, and different peak periods, enhancing transit management
+such as weekdays, weekends, and different peak periods, enhancing transit management
 and planning capabilities. Note the influence of station closures which may skew or omit data
 on particular days.
 }
 \note{
-Station closures may impact the recorded data, potentially resulting in lower counts or missing data for some stations on certain months.
+Stations with incomplete entries due to closure are not included in this dataset.
 }
 \keyword{data}

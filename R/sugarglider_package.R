@@ -15,7 +15,7 @@
 #'
 #' Please report issues and suggest improvements at Github:
 #'
-#' \url{maliny12.github.io/sugarglider/}
+#' \url{https://maliny12.github.io/sugarglider/}
 #'
 #' @name sugarglider
 #' @docType package

@@ -1,4 +1,5 @@
 
+options(digits = 4)
 
 url<- 'https://vicroadsopendatastorehouse.vicroads.vic.gov.au/opendata/Public_Transport/Patronage/Train_Service_Passenger_Counts/train_service_passenger_counts_fy_2023-2024.csv'
 
@@ -11,9 +12,8 @@ total <- raw_result |>
   summarise( daily_boardings = sum(passenger_boardings, na.rm = TRUE),
              daily_alightings = sum(passenger_alightings, na.rm = TRUE),
              .groups = "drop") |>
-  mutate(month = month(business_date),
-         year = year(business_date)) |>
-  group_by(month, year, station_name) |>
+  mutate(month_year = floor_date(business_date, "month")) |>
+  group_by(station_name, month_year) |>
   summarise(
     min_monthly = min(daily_boardings + daily_alightings),
     max_monthly = max(daily_boardings + daily_alightings),
@@ -26,9 +26,8 @@ weekday <- raw_result |>
   summarise( daily_boardings = sum(passenger_boardings, na.rm = TRUE),
              daily_alightings = sum(passenger_alightings, na.rm = TRUE),
              .groups = "drop") |>
-  mutate(month = month(business_date),
-         year = year(business_date)) |>
-  group_by(month, year, station_name) |>
+  mutate(month_year = floor_date(business_date, "month")) |>
+  group_by(station_name, month_year) |>
   summarise(
     min_weekday = min(daily_boardings + daily_alightings, na.rm = TRUE),
     max_weekday = max(daily_boardings + daily_alightings, na.rm = TRUE),
@@ -41,27 +40,11 @@ weekend <- raw_result |>
   summarise( daily_boardings = sum(passenger_boardings, na.rm = TRUE),
              daily_alightings = sum(passenger_alightings, na.rm = TRUE),
              .groups = "drop") |>
-  mutate(month = month(business_date),
-         year = year(business_date)) |>
-  group_by(month, year, station_name) |>
+  mutate(month_year = floor_date(business_date, "month")) |>
+  group_by(station_name, month_year) |>
   summarise(
     min_weekend = min(daily_boardings + daily_alightings),
     max_weekend = max(daily_boardings + daily_alightings),
-    .groups = "drop")
-
-# Average daily number of patronage during holidays (School + Public Holidays)
-holiday <- raw_result |>
-  filter(day_type %in% c("School Holiday", "Public Holiday")) |>
-  group_by(station_name, business_date) |>
-  summarise( daily_boardings = sum(passenger_boardings, na.rm = TRUE),
-             daily_alightings = sum(passenger_alightings, na.rm = TRUE),
-             .groups = "drop") |>
-  mutate(month = month(business_date),
-         year = year(business_date)) |>
-  group_by(month, year, station_name) |>
-  summarise(
-    min_holiday = min(daily_boardings + daily_alightings),
-    max_holiday = max(daily_boardings + daily_alightings),
     .groups = "drop")
 
 # Average daily number of patronage during  pre-AM peak (based on Train arrival time). Peak hour defined by VIC.GOV and set to be from 12:00am – 6:59am
@@ -73,9 +56,8 @@ pre_AM_peak <- raw_result |>
   summarise( daily_boardings = sum(passenger_boardings, na.rm = TRUE),
              daily_alightings = sum(passenger_alightings, na.rm = TRUE),
              .groups = "drop") |>
-  mutate(month = month(business_date),
-         year = year(business_date)) |>
-  group_by(month, year, station_name) |>
+  mutate(month_year = floor_date(business_date, "month")) |>
+  group_by(station_name, month_year) |>
   summarise(
     min_preAM_peak = min(daily_boardings + daily_alightings),
     max_preAM_peak = max(daily_boardings + daily_alightings),
@@ -90,9 +72,8 @@ AM_peak <- raw_result |>
   summarise( daily_boardings = sum(passenger_boardings, na.rm = TRUE),
              daily_alightings = sum(passenger_alightings, na.rm = TRUE),
              .groups = "drop") |>
-  mutate(month = month(business_date),
-         year = year(business_date)) |>
-  group_by(month, year, station_name) |>
+  mutate(month_year = floor_date(business_date, "month")) |>
+  group_by(station_name, month_year) |>
   summarise(
     min_AM_peak = min(daily_boardings + daily_alightings),
     max_AM_peak = max(daily_boardings + daily_alightings),
@@ -107,9 +88,8 @@ inter_peak <- raw_result |>
   summarise( daily_boardings = sum(passenger_boardings, na.rm = TRUE),
              daily_alightings = sum(passenger_alightings, na.rm = TRUE),
              .groups = "drop") |>
-  mutate(month = month(business_date),
-         year = year(business_date)) |>
-  group_by(month, year, station_name) |>
+  mutate(month_year = floor_date(business_date, "month")) |>
+  group_by(station_name, month_year) |>
   summarise(
     min_interpeak = min(daily_boardings + daily_alightings),
     max_interpeak = max(daily_boardings + daily_alightings),
@@ -124,9 +104,8 @@ PM_peak <- raw_result |>
   summarise( daily_boardings = sum(passenger_boardings, na.rm = TRUE),
              daily_alightings = sum(passenger_alightings, na.rm = TRUE),
              .groups = "drop") |>
-  mutate(month = month(business_date),
-         year = year(business_date)) |>
-  group_by(month, year, station_name) |>
+  mutate(month_year = floor_date(business_date, "month")) |>
+  group_by(station_name, month_year) |>
   summarise(
     min_PM_peak = min(daily_boardings + daily_alightings),
     max_PM_peak = max(daily_boardings + daily_alightings),
@@ -141,9 +120,8 @@ PM_late <- raw_result |>
   summarise( daily_boardings = sum(passenger_boardings, na.rm = TRUE),
              daily_alightings = sum(passenger_alightings, na.rm = TRUE),
              .groups = "drop") |>
-  mutate(month = month(business_date),
-         year = year(business_date)) |>
-  group_by(month, year, station_name) |>
+  mutate(month_year = floor_date(business_date, "month")) |>
+  group_by(station_name, month_year) |>
   summarise(
     min_PM_late = min(daily_boardings + daily_alightings),
     max_PM_late = max(daily_boardings + daily_alightings),
@@ -151,28 +129,49 @@ PM_late <- raw_result |>
 
 # Station information
 station <- raw_result |>
-  mutate(month = month(business_date),
-         year = year(business_date)) |>
-  group_by(month, year, station_name, station_latitude, station_longitude) |>
-  reframe(services = length(unique(line_name)),
-          mode = case_when(unique(mode) == "Metro" ~ "metro",
-                           unique(mode) == "VLine" ~ "vline",
-                           .default = "both"),
+  mutate(month_year = floor_date(business_date, "month"),
+         long =  station_longitude,
+         lat = station_latitude) |>
+  group_by(station_name,month_year, long, lat) |>
+  summarise(services = length(unique(line_name)),
+          mode = case_when(
+            n_distinct(mode) == 1 & first(mode) == "Metro" ~ "metro",
+            n_distinct(mode) == 1 & first(mode) == "VLine" ~ "vline",
+            TRUE ~ "both"
+          ),
           .groups = "drop")
 
+# Merge all datasets --------------------------------------------------
+train_joined <- station |>
+  filter( ! station_name %in% unique(station_incomplete$station_name)) |>
+  left_join(total, by = c("station_name", "month_year")) |>
+  left_join(weekday, by = c("station_name", "month_year")) |>
+  left_join(weekend, by = c("station_name", "month_year")) |>
+  left_join(pre_AM_peak, by = c("station_name", "month_year")) |>
+  left_join(AM_peak, by = c("station_name", "month_year")) |>
+  left_join(inter_peak, by = c("station_name", "month_year")) |>
+  left_join(PM_peak, by = c("station_name", "month_year")) |>
+  left_join(PM_late, by = c("station_name", "month_year")) |>
+  na.omit()
 
-train <- station |>
-  left_join(total, by = c("month", "year", "station_name")) |>
-  left_join(weekday, by = c("month", "year", "station_name")) |>
-  left_join(weekend, by = c("month", "year", "station_name")) |>
-  left_join(holiday, by = c("month", "year", "station_name")) |>
-  left_join(pre_AM_peak, by = c("month", "year", "station_name")) |>
-  left_join(AM_peak, by = c("month", "year", "station_name")) |>
-  left_join(inter_peak, by = c("month", "year", "station_name")) |>
-  left_join(PM_peak, by = c("month", "year", "station_name")) |>
-  left_join(PM_late, by = c("month", "year", "station_name")) |>
-  select(-.groups) |>
-  rename("lat" = "station_latitude",
-         "long"= "station_longitude")
+# Remove stations in complete month entries -------------------------
+date_range <- min(raw_result$business_date)
+end_date <- max(raw_result$business_date)
+
+all_stations <- unique(raw_result$station_name)
+
+# Generate all month-year combinations
+all_months <- expand.grid(
+  month_year = seq(floor_date(start_date, "month"), end_date, by = "1 month"),
+  station_name = all_stations
+)
+
+station_incomplete <- anti_join(all_months,
+                                train_joined,
+                                by = c("station_name", "month_year"))
+
+# Remove 72 stations with incomplete time series
+train <- train_joined |>
+  filter( ! station_name %in% unique(station_incomplete$station_name))
 
 usethis::use_data(train, overwrite = TRUE)

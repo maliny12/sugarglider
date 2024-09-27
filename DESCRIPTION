@@ -1,14 +1,17 @@
 Package: sugarglider
 Type: Package
-Title: Create glyphmaps of spatio-temporal data
-Version: 0.0.0.9000
+Title: Create Glyph-Maps of Spatiotemporal Data
+Version: 1.0.0
 Authors@R: c(
-            person("Maliny", "Po", ,"malinypo12@gmail.com", role = c("aut", "cre", "cph"), comment = c(ORCID = "0009-0008-4686-6631")),
-            person("Nathan", "Yang", , "nathan.s.yang@gmail.com", role = c("aut")),
-            person("H. Sherry","Zhang", email = "huizezhangsh@gmail.com", role = "ctb", comment = c(ORCID = "0000-0002-7122-1463")),
-            person("Dianne", "Cook", email = "dicook@monash.edu", role = "ctb", comment = c(ORCID = "0000-0002-3813-7155"))
-            )
-Description: Provides ggplot2 extensions to construct glyphmaps for visualizing seasonality in spatio-temporal data. See the Journal of Statistical Software reference: <doi:10.18637/jss.v110.i07>.
+    person("Maliny", "Po", , "malinypo12@gmail.com", role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "0009-0008-4686-6631")),
+    person("Nathan", "Yang", , "nathan.s.yang@gmail.com", role = "aut"),
+    person("H. Sherry", "Zhang", , "huizezhangsh@gmail.com", role = "ctb",
+           comment = c(ORCID = "0000-0002-7122-1463")),
+    person("Dianne", "Cook", , "dicook@monash.edu", role = "ctb",
+           comment = c(ORCID = "0000-0002-3813-7155"))
+  )
+Description: Provides 'ggplot2' extensions to construct glyph-maps for visualizing seasonality in spatiotemporal data. See the Journal of Statistical Software reference: <doi:10.18637/jss.v110.i07>.
 License: MIT + file LICENSE
 URL: https://maliny12.github.io/sugarglider/, https://github.com/maliny12/sugarglider
 Encoding: UTF-8

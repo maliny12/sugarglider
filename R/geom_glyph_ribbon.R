@@ -343,6 +343,7 @@ glyph_setup_data <- function(data, params,...) {
 
   arg <- list(...)
 
+
   stopifnot(class(data$x_minor) %in% c("Date", "yearmonth", "numeric",
                                        "yearweek", "yearquarter", "yearqtr",
                                        "POSIXct", "POSIXlt"))
@@ -474,6 +475,7 @@ glyph_setup_data <- function(data, params,...) {
 #' Create reference boxes for glyph plot
 #' @keywords internal
 glyph_box <- function(data, params) {
+  # Code from cubble:
     data <- data |>
       dplyr::mutate(
         xmin = data$x_major - params$width/2,
@@ -488,6 +490,7 @@ glyph_box <- function(data, params) {
 #' Calculate reference lines for glyph plot
 #' @keywords internal
 ref_line <- function(data, params){
+  # Code from cubble:
   data <- data |>
     tidyr::expand_grid(delta = c(-1, 1)) |>
     dplyr::mutate(
@@ -508,8 +511,6 @@ glyph_mapping <- function(spatial, scaled_value, length) {
 #' Convert ggplot2 object into grob
 #' @keywords internal
 glyph_setup_grob <- function(data, panel_params){
-
-
 
   stopifnot(
     ("ymin_minor" %in% names(data) && "ymax_minor" %in% names(data)) ||
