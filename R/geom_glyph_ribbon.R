@@ -9,7 +9,11 @@
 #' @param x_major,y_major,x_minor,ymin_minor,ymax_minor Each combination of
 #' `x_major` and `y_major` forms a unique grid cell. `ymin_minor` and `ymax_minor` define
 #' the lower and upper bounds of the geom_ribbon.
-#' @param height,width The height and width of each glyph.
+#' @param width The width of each glyph. The `default` is set
+#' to the smallest distance between two consecutive coordinates, converted from meters
+#' to degrees of latitude using the Haversine method.
+#' @param height The height of each glyph. The `default` is calculated using the ratio (1:1.618)
+#' relative to the `width`, to maintain a consistent aspect ratio.
 #' @param x_scale,y_scale The scaling function applied to each set of minor
 #' values within a grid cell. Defaults to `identity`.
 #' @param global_rescale A setting that determines whether to perform rescaling globally or on individual glyphs.
@@ -53,7 +57,7 @@ geom_glyph_ribbon <- function( mapping = NULL, data = NULL, show.legend = NA,
                                stat = "identity", position = "identity",
                                x_major = NULL, y_major = NULL,
                                x_minor = NULL, ymin_minor = NULL, ymax_minor = NULL,
-                               height = ggplot2::rel(2.5), width = ggplot2::rel(4),
+                               height = "default", width = "default",
                                x_scale = identity, y_scale = identity,
                                global_rescale = TRUE, inherit.aes = TRUE, ...) {
   ggplot2::layer(
@@ -91,14 +95,17 @@ GeomGlyphRibbon <- ggplot2::ggproto(
   default_aes = ggplot2::aes(
     linetype = 1, fill = "black", color = "black",
     linewidth = 0.5, alpha = 0.8,
-    width = ggplot2::rel(4),
-    height = ggplot2::rel(2.5),
+    width = "default",
+    height = "default",
     x_scale = list(identity),
     y_scale = list(identity),
     global_rescale = TRUE
     ),
 
   setup_data = function(data, params) {
+    min_dist <- calculate_min_dist(data)
+    params$width <- ifelse(params$width == "default", min_dist$width, params$width)
+    params$height <- ifelse(params$height == "default", min_dist$height, params$height)
     data <- glyph_setup_data(data, params)
   },
 
@@ -123,7 +130,11 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 #' inherited from the plot data as specified in the call to \code{ggplot()}.
 #' @param x_major,y_major Aesthetics to map plot coordinates
 #' for major and minor glyph components.
-#' @param height,width The relative height and width of each glyph box.
+#' @param width The width of each glyph. The `default` is set
+#' to the smallest distance between two consecutive coordinates, converted from meters
+#' to degrees of latitude using the Haversine method.
+#' @param height The height of each glyph. The `default` is calculated using the ratio (1:1.618)
+#' relative to the `width`, to maintain a consistent aspect ratio.
 #' @param fill The color used to fill the glyph box.
 #' @param linewidth The thickness of the glyph box.
 #' @param ... Additional arguments passed on to function.
@@ -134,7 +145,7 @@ GeomGlyphRibbon <- ggplot2::ggproto(
 add_glyph_boxes <- function( mapping = NULL, data = NULL,
                              stat = "identity", position = "identity",
                              x_major = NULL, y_major = NULL,
-                             height = ggplot2::rel(2.5), width = ggplot2::rel(4),
+                             height = "default", width = "default",
                              fill = "white", linewidth = 0.1,
                              inherit.aes = TRUE, show.legend = NA, ...) {
   ggplot2::layer(
@@ -171,11 +182,14 @@ GeomGlyphBox <- ggplot2::ggproto(
   default_aes = ggplot2::aes(
     linetype = "solid", fill = "white", color = "black",
     linewidth = 0.1, alpha = 0.5,
-    width = ggplot2::rel(4),
-    height = ggplot2::rel(2.5)
+    width = "default",
+    height = "default"
   ),
 
   setup_data = function(data, params) {
+    min_dist <- calculate_min_dist(data)
+    params$width <- ifelse(params$width == "default", min_dist$width, params$width)
+    params$height <- ifelse(params$height == "default", min_dist$height, params$height)
     data <- configure_glyph_data(data, params)
     glyph_box(data, params)
   },
@@ -197,7 +211,11 @@ GeomGlyphBox <- ggplot2::ggproto(
 #' inherited from the plot data as specified in the call to \code{ggplot()}.
 #' @param x_major,y_major Aesthetics to map plot coordinates
 #' for major and minor glyph components.
-#' @param height,width he relative height and width of each glyph box.
+#' @param width The width of each glyph. The `default` is set
+#' to the smallest distance between two consecutive coordinates, converted from meters
+#' to degrees of latitude using the Haversine method.
+#' @param height The height of each glyph. The `default` is calculated using the ratio (1:1.618)
+#' relative to the `width`, to maintain a consistent aspect ratio.
 #' @param linewidth The thickness of the reference line.
 #' @param ... Additional arguments passed on to function.
 #' @return A ggplot2 layer.
@@ -205,7 +223,7 @@ GeomGlyphBox <- ggplot2::ggproto(
 add_ref_lines <- function( mapping = NULL, data = NULL,
                              stat = "identity", position = "identity",
                              show.legend = NA, x_major = NULL, y_major = NULL,
-                             height = ggplot2::rel(2.5), width = ggplot2::rel(4),
+                             height = "default", width = "default",
                              inherit.aes = TRUE, linewidth = 0.1, ...) {
   ggplot2::layer(
     geom = GeomGlyphLine,
@@ -240,11 +258,14 @@ GeomGlyphLine <- ggplot2::ggproto(
   default_aes = ggplot2::aes(
     linetype = "solid", color = "black",
     linewidth = 0.01, alpha = 0.5,
-    width = ggplot2::rel(4),
-    height = ggplot2::rel(2.5)
+    width = "default",
+    height = "default"
   ),
 
   setup_data = function(data, params) {
+    min_dist <- calculate_min_dist(data)
+    params$width <- ifelse(params$width == "default", min_dist$width, params$width)
+    params$height <- ifelse(params$height == "default", min_dist$height, params$height)
     data <- configure_glyph_data(data, params)
     ref_line(data, params)
   },
@@ -479,6 +500,9 @@ glyph_setup_data <- function(data, params,...) {
 #' Create reference boxes for glyph plot
 #' @keywords internal
 glyph_box <- function(data, params) {
+
+
+
   # Code from cubble:
     data <- data |>
       dplyr::mutate(
@@ -581,6 +605,45 @@ configure_glyph_data <- function(data, params,...){
   }
 }
 
+#' Calculate the Smallest Distance Across Unique Combinations of Major Axes
+#'
+#' This function calculates the smallest distance between all unique coordinate combinations of major axes
+#' using the Haversine formula, which measures distances on the surface of a sphere (i.e., Earth).
+#' The function returns the minimum distance in degrees of latitude and a corresponding height that
+#' maintains a glyph ratio of 1:1.618 (the golden ratio).
+#'
+#' @param data A data frame containing columns `x_major` and `y_major`, which represent the coordinates
+#' (longitude and latitude) for each point.
+#'
+#' @return A list containing:
+#' \describe{
+#'   \item{width}{The smallest distance between any two unique points, converted from meters to degrees of latitude.}
+#'   \item{height}{The height corresponding to the width, calculated using the golden ratio (1:1.618).}
+#' }
+#'
+#' @keywords internal
+calculate_min_dist <- function(data) {
+
+  coordinates <- data |>
+    dplyr::mutate(unique_coord = paste(x_major, y_major, sep = ",")) |>
+    dplyr::group_by(unique_coord) |>
+    dplyr::slice_head(n = 1)
+
+  # Calculate distance using Haversine method
+  dist_matrix <- geosphere::distm(coordinates[, c("x_major", "y_major")],
+                                  fun = geosphere::distHaversine)
+  diag(dist_matrix) <- Inf
+
+  # Convert meters to degrees of latitude (1 degree latiude = 111,320 meters)
+  min_distance <- min(apply(dist_matrix, 1, min))/111320
+
+  list(
+    # Glyph ratio of 1:1.618
+    width = min_distance,
+    height = min_distance / 1.618
+  )
+}
+
 # Rescale Functions ----------------------------------------------------------
 
 #' Rescale Functions
@@ -661,7 +724,7 @@ custom_scale <- function(dx){
 utils::globalVariables(c(".data", "na.omit", "value", "com", "x_minor", "geom_segment",
                          "ymin_minor", "ymax_minor", "geom_ribbon", "theme_bw", "labs",
                          "theme", "margin", "element_blank", "y_minor", "yend_minor",
-                         "scale_x_discrete"))
+                         "scale_x_discrete", "x_major", "y_major", "unique_coord"))
 
 
 

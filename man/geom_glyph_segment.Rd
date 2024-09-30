@@ -15,10 +15,10 @@ geom_glyph_segment(
   y_major = NULL,
   y_minor = NULL,
   yend_minor = NULL,
-  width = ggplot2::rel(4),
+  width = "default",
   x_scale = identity,
   y_scale = identity,
-  height = ggplot2::rel(2.5),
+  height = "default",
   global_rescale = TRUE,
   show.legend = NA,
   inherit.aes = TRUE
@@ -66,11 +66,16 @@ and \code{y_major} specify a longitude and latitude on a map while
 \code{x_minor}, \code{y_minor}, and \code{yend_minor}
 provide the structure for glyph.}
 
+\item{width}{The width of each glyph. The `default` is set
+to the smallest distance between two consecutive coordinates, converted from meters
+to degrees of latitude using the Haversine method.}
+
 \item{y_scale, x_scale}{The scaling function to be applied to each set of
 minor values within a grid cell. The default is \code{\link{identity}} which
 produces a result without scaling.}
 
-\item{height, width}{The height and width of each glyph.}
+\item{height}{The height of each glyph. The `default` is calculated using the ratio (1:1.618)
+relative to the `width`, to maintain a consistent aspect ratio.}
 
 \item{global_rescale}{Determines whether or not the rescaling is performed
 globally or separately for each individual glyph.}

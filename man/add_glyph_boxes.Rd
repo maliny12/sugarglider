@@ -11,8 +11,8 @@ add_glyph_boxes(
   position = "identity",
   x_major = NULL,
   y_major = NULL,
-  height = ggplot2::rel(2.5),
-  width = ggplot2::rel(4),
+  height = "default",
+  width = "default",
   fill = "white",
   linewidth = 0.1,
   inherit.aes = TRUE,
@@ -58,7 +58,12 @@ to use \code{position_jitter()}, give the position as \code{"jitter"}.
 \item{x_major, y_major}{Aesthetics to map plot coordinates
 for major and minor glyph components.}
 
-\item{height, width}{The relative height and width of each glyph box.}
+\item{height}{The height of each glyph. The `default` is calculated using the ratio (1:1.618)
+relative to the `width`, to maintain a consistent aspect ratio.}
+
+\item{width}{The width of each glyph. The `default` is set
+to the smallest distance between two consecutive coordinates, converted from meters
+to degrees of latitude using the Haversine method.}
 
 \item{fill}{The color used to fill the glyph box.}
 

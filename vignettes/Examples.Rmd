@@ -57,12 +57,9 @@ p1 <- vic_temp |>
   geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
           fill = "antiquewhite", color = "white", inherit.aes = FALSE)  +
   # Customize the size of each glyph box using the width and height parameters.
-  add_glyph_boxes(width = rel(2.5), height = rel(1.5),
-                  color = color_palette[1]) +
-  add_ref_lines(width = rel(2.5), height = rel(1.5),
-                color = color_palette[1]) +
-  geom_glyph_ribbon(width = rel(2.5), height = rel(1.5),
-                    color = color_palette[1], fill = color_palette[1]) +
+  add_glyph_boxes(color = color_palette[1]) +
+  add_ref_lines(color = color_palette[1]) +
+  geom_glyph_ribbon(color = color_palette[1], fill = color_palette[1]) +
   # Theme and aesthetic
   theme_glyph() +
   labs(title = "geom_glyph_ribbon()") +
@@ -79,12 +76,9 @@ p2 <- vic_temp |>
   geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
          fill = "antiquewhite", color = "white", inherit.aes = FALSE)  +
   # Customize the size of each glyph box using the width and height parameters.
-  add_glyph_boxes(width = rel(2.5), height = rel(1.5),
-                  color = color_palette[2]) +
-  add_ref_lines(width = rel(2.5), height = rel(1.5),
-                color = color_palette[2]) +
-  geom_glyph_segment(width = rel(2.5), height = rel(1.5),
-                    color = color_palette[2]) +
+  add_glyph_boxes(color = color_palette[2]) +
+  add_ref_lines(color = color_palette[2]) +
+  geom_glyph_segment(color = color_palette[2]) +
   # Theme and aesthetic
   theme_glyph() +
   labs(title = "geom_glyph_segment()") +
@@ -103,8 +97,8 @@ Options allow you to modify the behavior of `sugarglider` to fit the specific ne
 |--------------- | ------------ | ------------------------------------------------
 | `x_scale`         | `"identity"`         | This function scales each set of minor values within a grid cell along the x-dimension.
 |`y_scale`      | `"identity"`          | This function scales each set of minor values within a grid cell along the y-dimension.
-|`width`         | `ggplot2::rel(4)`          |  Width of the glyph.
-|`height`     | `ggplot2::rel(2.5)`     | Height of the glyph.
+|`width`         | `default`          |  The width of each glyph. The `default` is set to the smallest distance between two consecutive coordinates, converted from meters to degrees of latitude using the Haversine method.
+|`height`     | `default`     | The height of each glyph. The `default` is calculated using the ratio (1:1.618) relative to the `width`, to maintain a consistent aspect ratio.
 |`global_rescale`      | `TRUE`        | Determines whether rescaling is applied globally across all glyphs or individually for each glyph
 
 ## Aesthetics
@@ -133,7 +127,7 @@ head(aus_temp) |>
 
 Using the default rescaling parameters, we can visualize the temperature data through `geom_glyph_segment()`, alongside `geom_point()` elements that mark the location of each weather station. Each segment glyph represents local climate data, offering an intuitive way to explore temperature variations across Australia.
 
-The default `identity` scaling function is applied to each set of minor values within a grid cell. This method centers the glyphs both vertically and horizontally based on the station's coordinates and adjusts the minor axes to fit within the interval [-1, 1]. This ensures that the glyphs are appropriately sized to fit the desired dimensions.
+The default `identity` scaling function is applied to each set of minor values within a grid cell. This method centers the glyphs both vertically and horizontally based on the station's coordinates and adjusts the minor axes to fit within the interval [-1, 1]. This ensures that the glyphs are appropriately sized to fit the desired dimensions. In this example, we wil also be specifying the size of the glyph by specifying the size of the width and height of the glyph. 
 
 ```{r}
 aus_temp |>
@@ -147,15 +141,13 @@ aus_temp |>
           inherit.aes = FALSE, color = "white") +
   coord_sf(xlim = c(110,155)) +
   # Add glyph box to each glyph
-  add_glyph_boxes(
-    width = 4,
-    height = 3) +
+  add_glyph_boxes( width = 3, height = 2) +
   # Add points for weather station 
   geom_point(aes(x = long, y = lat,
                  color = "Weather Station")) +
   # Customize the size of each glyph box using the width and height parameters.
   geom_glyph_segment(
-    width = 4, height = 3,
+    width = 3, height = 2,
     aes(color = "Temperature")) +
   # Theme and aesthetic 
   scale_color_manual(
@@ -172,7 +164,7 @@ So far, all the visualizations have used global rescaling (enabled by default), 
 - **Local Rescale (global_rescale = FALSE)**: Each line segment's length is determined by the local temperature range within a region, emphasizing regional differences in temperature patterns. 
 - **Global Rescale (global_rescale = TRUE)**: Global temperature range determined the length of each line segment, ensuring that data range remain consistent across all region for easy comparison.
 
-Below is a comparison between the local and global rescaling approaches:
+Below is a comparison of the two rescaling approaches. In this example, we also specify the size of the glyphs by setting width = 3 and height = 2. 
 
 ```{r, fig.height = 6}
 # Global rescale
@@ -187,11 +179,12 @@ p1 <- aus_temp |>
           inherit.aes = FALSE, color = "white") +
   coord_sf(xlim = c(110,155)) +
   # Add glyph box to each glyph
-  add_glyph_boxes() +
+  add_glyph_boxes(width = 3, height = 2) +
   # Add reference lines to each glyph
-  add_ref_lines() +
+  add_ref_lines(width = 3, height = 2) +
   # Glyph segment plot with global rescale
-  geom_glyph_segment(global_rescale = TRUE) +
+  geom_glyph_segment(global_rescale = TRUE,
+                     width = 3, height = 2) +
   labs(title = "Global Rescale") +
   theme_glyph()
   
@@ -207,17 +200,17 @@ p2 <- aus_temp |>
           inherit.aes = FALSE, color = "white") +
   coord_sf(xlim = c(110,155)) +
   # Add glyph box to each glyph
-  add_glyph_boxes() +
+  add_glyph_boxes(width = 3, height = 2) +
   # Add reference lines to each glyph
-  add_ref_lines() +
+  add_ref_lines(width = 3, height = 2) +
   # Glyph segment plot with local rescale
-  geom_glyph_segment(global_rescale = FALSE) +
+  geom_glyph_segment(global_rescale = FALSE,
+                     width = 3, height = 2) +
   labs(title = "Local Rescale") +
   theme_glyph()
 
 grid.arrange(p1, p2, ncol = 2) 
 ```
-
 
 #### Highlighting Temperature Changes with Color-Coded Glyph
 
@@ -418,9 +411,10 @@ aus_temp |>
   ggplot(aes(x_major = long, y_major = lat,
               x_minor = month_fct, ymin_minor = tmin, 
               ymax_minor = tmax)) +
-  geom_glyph_ribbon()  
+  geom_sf(data = abs_ste, fill = "antiquewhite",
+          inherit.aes = FALSE, color = "white") +
+  geom_glyph_ribbon(width = 2.233387, height = 1.563371)  
 ```
-
 
 
 

@@ -12,8 +12,8 @@ add_ref_lines(
   show.legend = NA,
   x_major = NULL,
   y_major = NULL,
-  height = ggplot2::rel(2.5),
-  width = ggplot2::rel(4),
+  height = "default",
+  width = "default",
   inherit.aes = TRUE,
   linewidth = 0.1,
   ...
@@ -63,7 +63,12 @@ display.}
 \item{x_major, y_major}{Aesthetics to map plot coordinates
 for major and minor glyph components.}
 
-\item{height, width}{he relative height and width of each glyph box.}
+\item{height}{The height of each glyph. The `default` is calculated using the ratio (1:1.618)
+relative to the `width`, to maintain a consistent aspect ratio.}
+
+\item{width}{The width of each glyph. The `default` is set
+to the smallest distance between two consecutive coordinates, converted from meters
+to degrees of latitude using the Haversine method.}
 
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions

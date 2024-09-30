@@ -14,7 +14,11 @@
 #' and \code{y_major} specify a longitude and latitude on a map while
 #' \code{x_minor}, \code{y_minor}, and \code{yend_minor}
 #' provide the structure for glyph.
-#' @param height,width The height and width of each glyph.
+#' @param width The width of each glyph. The `default` is set
+#' to the smallest distance between two consecutive coordinates, converted from meters
+#' to degrees of latitude using the Haversine method.
+#' @param height The height of each glyph. The `default` is calculated using the ratio (1:1.618)
+#' relative to the `width`, to maintain a consistent aspect ratio.
 #' @param y_scale,x_scale The scaling function to be applied to each set of
 #'  minor values within a grid cell. The default is \code{\link{identity}} which
 #'  produces a result without scaling.
@@ -59,9 +63,9 @@
 geom_glyph_segment <- function(mapping = NULL, data = NULL, stat = "identity",
                                position = "identity", ..., x_major = NULL,
                                x_minor = NULL, y_major = NULL, y_minor = NULL,
-                               yend_minor = NULL, width = ggplot2::rel(4),
+                               yend_minor = NULL, width = "default",
                                x_scale = identity, y_scale = identity,
-                               height = ggplot2::rel(2.5), global_rescale = TRUE,
+                               height = "default", global_rescale = TRUE,
                                show.legend = NA, inherit.aes = TRUE) {
   ggplot2::layer(
     data = data,
@@ -94,6 +98,9 @@ GeomGlyphSegment <- ggplot2::ggproto(
   ggplot2::GeomSegment,
 
   setup_data = function(data, params) {
+    min_dist <- calculate_min_dist(data)
+    params$width <- ifelse(params$width == "default", min_dist$width, params$width)
+    params$height <- ifelse(params$height == "default", min_dist$height, params$height)
     data <- glyph_setup_data(data, params, segment = TRUE)
   },
 
@@ -108,8 +115,8 @@ GeomGlyphSegment <- ggplot2::ggproto(
     colour = "black",
     linewidth = 0.5,
     linetype = 1,
-    width = ggplot2::rel(4),
-    height = ggplot2::rel(2.5),
+    width = "default",
+    height = "default",
     alpha = 1,
     global_rescale = TRUE,
     x_scale = list(identity),
