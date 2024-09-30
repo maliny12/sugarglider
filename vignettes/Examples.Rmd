@@ -218,6 +218,7 @@ p2 <- aus_temp |>
 grid.arrange(p1, p2, ncol = 2) 
 ```
 
+
 #### Highlighting Temperature Changes with Color-Coded Glyph
 
 Expanding on our temperature analysis, we now incorporate precipitation data across Australia using `geom_glyph_ribbon()`. The glyphs are color-coded to represent varying levels of rainfall, with reference lines and glyph boxes enhancing clarity and allow for easy comparison of precipitation level across the country.
@@ -362,7 +363,7 @@ From the graph, it is evident that airports in certain regions experience more v
 ```{r, fig.height=6}
 south <- us_map(include = .south_region)
 west <- us_map(include = .west_region, exclude = c("AK", "HI"))
-  
+
   
 southR <- flights |> 
   filter(origin %in% c("ATL", "CLT", "MCO", "DFW")) |>
@@ -377,6 +378,7 @@ southR <- flights |>
   geom_glyph_ribbon(color = "#A6B37D", fill = "#A6B37D")  +
   labs(title = "South Region") +
   theme_glyph() 
+
 
 westR <- flights |> 
   filter(origin %in% c("PHX", "LAS", "LAX", "SEA")) |>
@@ -397,6 +399,27 @@ grid.arrange(westR, southR, ncol = 2)
 
 `geom_glyph_ribbon()` highlights the disparities in flight volume between regions. The Western region exhibits a larger variation in the number of flights compared to the Southern region, as evidenced by the thicker ribbons. Interestingly, both regions show a notable increase in discrepancies during the mid-year, which supports our findings from the `geom_glyph_segment()`. 
 
+
+```{r}
+aus_temp |>
+  mutate(month_fct = factor(case_when(month == 1 ~ "Jan",
+                                      month == 2 ~ "Feb",
+                                      month == 3 ~ "Mar",
+                                      month == 4 ~ "Apr",
+                                      month == 5 ~ "May",
+                                      month == 6 ~ "Jun",
+                                      month == 7 ~ "Jul",
+                                      month == 8 ~ "Aug",
+                                      month == 9 ~ "Sep",
+                                      month == 10 ~ "Oct",
+                                      month == 11 ~ "Nov",
+                                      month == 12 ~ "Dec"),
+                            levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))) |> 
+  ggplot(aes(x_major = long, y_major = lat,
+              x_minor = month_fct, ymin_minor = tmin, 
+              ymax_minor = tmax)) +
+  geom_glyph_ribbon()  
+```
 
 
 

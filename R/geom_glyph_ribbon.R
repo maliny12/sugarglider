@@ -105,8 +105,8 @@ GeomGlyphRibbon <- ggplot2::ggproto(
   # Draw polygons
   draw_panel = function(data,  panel_params, ...) {
    ggplot2::GeomRibbon$draw_panel(data, panel_params, ...)
-   # For interactive element: Aesthetics can not vary with a ribbon
-   # ggiraph::GeomInteractiveRibbon$draw_group(data, panel_params, ...)
+   #ggiraph::GeomInteractiveRibbon$draw_group(data, panel_params, ...)
+
   }
 
 )
@@ -252,7 +252,6 @@ GeomGlyphLine <- ggplot2::ggproto(
   draw_panel = function(data,  panel_params, coord, linewidth = linewidth, ...) {
     ggplot2:::GeomPath$draw_panel(data, panel_params, coord, ...)
   }
-
 )
 
 #' Add Legend Layer to a ggplot
@@ -343,16 +342,21 @@ glyph_setup_data <- function(data, params,...) {
 
   arg <- list(...)
 
+  if (!class(data$x_minor) %in% c("Date", "yearmonth", "numeric", "factor",
+                                  "yearweek", "yearquarter", "yearqtr",
+                                  "POSIXct", "POSIXlt")) {
 
-  stopifnot(class(data$x_minor) %in% c("Date", "yearmonth", "numeric",
-                                       "yearweek", "yearquarter", "yearqtr",
-                                       "POSIXct", "POSIXlt"))
+    stop("Error: Unsupported class for x_minor. Supported classes are Date,
+         yearmonth, numeric, factor, yearweek, yearquarter, yearqtr, POSIXct, and POSIXlt.")
+  }
 
   # Ensure geom draws each glyph as a distinct path
-  if (dplyr::n_distinct(data$group) == 1){
+  if (dplyr::n_distinct(data$group) == 1 ||
+      (inherits(data$x_minor, "factor") && !any(c("color", "fill") %in% names(data)))) {
     data$group <- as.integer(factor(paste(data$x_major, data$y_major)))
     data <- data |>  dplyr::group_by(.data$group)
   }
+
 
   # Convert minor axis to numeric
   if (!is.numeric(data$x_minor)){
@@ -512,10 +516,12 @@ glyph_mapping <- function(spatial, scaled_value, length) {
 #' @keywords internal
 glyph_setup_grob <- function(data, panel_params){
 
-  stopifnot(
-    ("ymin_minor" %in% names(data) && "ymax_minor" %in% names(data)) ||
-      ("y_minor" %in% names(data) && "yend_minor" %in% names(data))
-  )
+  if (!(("ymin_minor" %in% names(data) && "ymax_minor" %in% names(data)) ||
+        ("y_minor" %in% names(data) && "yend_minor" %in% names(data)))) {
+
+    stop("Data must include either 'ymin_minor' and 'ymax_minor' columns for
+         geom_glyph_ribbon() or 'y_minor' and 'yend_minor' columns for geom_glyph_segment().")
+  }
 
   if ("ymin_minor" %in% names(data)) {
     p_grob <- data |>
@@ -561,10 +567,11 @@ glyph_setup_grob <- function(data, panel_params){
 #' @keywords internal
 configure_glyph_data <- function(data, params,...){
 
-  stopifnot(
-    ("ymin_minor" %in% names(data) && "ymax_minor" %in% names(data)) ||
-    ("y_minor" %in% names(data) && "yend_minor" %in% names(data))
-  )
+  if (!(("ymin_minor" %in% names(data) && "ymax_minor" %in% names(data)) ||
+        ("y_minor" %in% names(data) && "yend_minor" %in% names(data)))) {
+    stop("Data must include either 'ymin_minor' and 'ymax_minor' columns for
+         geom_glyph_ribbon() or 'y_minor' and 'yend_minor' columns for geom_glyph_segment().")
+  }
 
   # If "y_minor" is provided
   if ("y_minor" %in% names(data)) {
