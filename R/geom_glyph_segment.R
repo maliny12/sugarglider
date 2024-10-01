@@ -98,9 +98,7 @@ GeomGlyphSegment <- ggplot2::ggproto(
   ggplot2::GeomSegment,
 
   setup_data = function(data, params) {
-    min_dist <- calculate_min_dist(data)
-    params$width <- ifelse(params$width == "default", min_dist$width, params$width)
-    params$height <- ifelse(params$height == "default", min_dist$height, params$height)
+    params <- update_params(data, params)
     data <- glyph_setup_data(data, params, segment = TRUE)
   },
 

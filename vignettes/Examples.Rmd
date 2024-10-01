@@ -297,7 +297,7 @@ legend <- aus_temp |>
   # Add a ribbon legend
   geom_glyph_ribbon(color = "#227B94", fill = "#227B94") +
   theme_glyph() +
-  labs(title = "Temperature Ranges Across Australia with Glyph Legend")
+  labs(title = "Temperature Ranges Across Australia with Glyph Legend") 
 
 legend
 ```
@@ -413,7 +413,8 @@ aus_temp |>
               ymax_minor = tmax)) +
   geom_sf(data = abs_ste, fill = "antiquewhite",
           inherit.aes = FALSE, color = "white") +
-  geom_glyph_ribbon(width = 2.233387, height = 1.563371)  
+  geom_glyph_ribbon(width = 2.233387, height = 1.563371) +
+  geom_rect(aes(xmin = 125, xmax = 127, ymin =  -13.1 , ymax = -14.1), color = "yellow", fill = NA, linewidth = 0.7)
 ```
 
 

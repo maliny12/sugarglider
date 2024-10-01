@@ -103,9 +103,7 @@ GeomGlyphRibbon <- ggplot2::ggproto(
     ),
 
   setup_data = function(data, params) {
-    min_dist <- calculate_min_dist(data)
-    params$width <- ifelse(params$width == "default", min_dist$width, params$width)
-    params$height <- ifelse(params$height == "default", min_dist$height, params$height)
+    params <- update_params(data, params)
     data <- glyph_setup_data(data, params)
   },
 
@@ -187,9 +185,7 @@ GeomGlyphBox <- ggplot2::ggproto(
   ),
 
   setup_data = function(data, params) {
-    min_dist <- calculate_min_dist(data)
-    params$width <- ifelse(params$width == "default", min_dist$width, params$width)
-    params$height <- ifelse(params$height == "default", min_dist$height, params$height)
+    params <- update_params(data, params)
     data <- configure_glyph_data(data, params)
     glyph_box(data, params)
   },
@@ -263,9 +259,7 @@ GeomGlyphLine <- ggplot2::ggproto(
   ),
 
   setup_data = function(data, params) {
-    min_dist <- calculate_min_dist(data)
-    params$width <- ifelse(params$width == "default", min_dist$width, params$width)
-    params$height <- ifelse(params$height == "default", min_dist$height, params$height)
+    params <- update_params(data, params)
     data <- configure_glyph_data(data, params)
     ref_line(data, params)
   },
@@ -335,25 +329,57 @@ GeomGlyphLegend <- ggplot2::ggproto(
     linewidth = 0.5, alpha = 0.8,
     x_scale = list(identity),
     y_scale = list(identity),
-    global_rescale = TRUE
+    global_rescale = TRUE,
+    width = "default",
+    height = "default"
   ),
 
   setup_data = function(data, params){
-    data <- configure_glyph_data(data, params, legend = TRUE)
+     data <- configure_glyph_data(data, params, legend = TRUE)
+
+    # box_data <- glyph_box(data, params)
+    # box_data$npc_xmin <- scales::rescale(box_data$xmin, to = c(0, 1), from = range(data$x_major))
+    # box_data$npc_xmax <- scales::rescale(box_data$xmax, to = c(0, 1), from = range(data$x_major))
+    # box_data$npc_ymin <- scales::rescale(box_data$ymin, to = c(0, 1), from = range(data$y_major))
+    # box_data$npc_ymax <- scales::rescale(box_data$ymax, to = c(0, 1), from = range(data$y_major))
+    # box_data
   },
 
   # Draw polygons
   draw_panel = function(data, panel_params, params, ...) {
 
+
     grob <- glyph_setup_grob(data, panel_params)
 
-    sample_vp <- viewport(x = 0.13, y = 0.02,
+    # box_grob <- glyph_setup_box(data, panel_params, params)
+    #box_grob <- create_rect_grob(data$xmin[1], data$xmax[1],data$ymin[1], data$ymax[1] )
+    # box_vp <- viewport(x = mean(c(box_data$npc_xmin,
+    #                               box_data$npc_xmax)),
+    #                    y = mean(c(box_data$npc_ymin,
+    #                               box_data$npc_ymax)),
+    #                    width = box_data$npc_xmax[1] - box_data$npc_xmin[1],
+    #                    height = box_data$npc_ymax[1] - box_data$npc_ymin[1])
+
+    legend_vp <- viewport(x = 0.13, y = 0.02,
                           width = 0.23, height = 0.23,
                           just = c("bottom"))
+    # full_vp <- viewport(layout.pos.row = 1, layout.pos.col = 1)
 
-    editGrob(grob, vp = sample_vp, name = grob$name)
+    editGrob(grob, vp = legend_vp, name = grob$name)
+    #editGrob(box_grob, vp = box_vp,  name = box_grob$name)
   }
 )
+
+# create_rect_grob <- function(xmin, xmax, ymin, ymax) {
+#   grid::rectGrob(
+#     x = mean(c(xmin, xmax)),
+#     y = mean(c(ymin, ymax)),
+#     width = xmax - xmin,
+#     height = ymax - ymin,
+#     gp = gpar(fill = "#227B94", alpha = 0.5, col = "#227B94")
+#   )
+# }
+
 
 # Helper functions -------------------------------------------------------------
 
@@ -500,9 +526,6 @@ glyph_setup_data <- function(data, params,...) {
 #' Create reference boxes for glyph plot
 #' @keywords internal
 glyph_box <- function(data, params) {
-
-
-
   # Code from cubble:
     data <- data |>
       dplyr::mutate(
@@ -587,6 +610,22 @@ glyph_setup_grob <- function(data, panel_params){
   ggplotify::as.grob(p_grob)
 }
 
+
+
+# glyph_setup_box <- function(data, panel_params, params){
+#
+#   p_box <- data |>
+#     ggplot2::ggplot(
+#       ggplot2::aes(xmin = xmin,
+#                    xmax= xmax,
+#                    ymin = ymin,
+#                    ymax = ymax )) +
+#     geom_rect(color = "yellow", linewidth = 0.7, fill = NA) +
+#     theme_void()
+#
+#   ggplotify::as.grob(p_box)
+# }
+
 #' Setup Glyph Data Based on Geometric Plot Type
 #' @keywords internal
 configure_glyph_data <- function(data, params,...){
@@ -596,6 +635,7 @@ configure_glyph_data <- function(data, params,...){
     stop("Data must include either 'ymin_minor' and 'ymax_minor' columns for
          geom_glyph_ribbon() or 'y_minor' and 'yend_minor' columns for geom_glyph_segment().")
   }
+
 
   # If "y_minor" is provided
   if ("y_minor" %in% names(data)) {
@@ -642,6 +682,28 @@ calculate_min_dist <- function(data) {
     width = min_distance,
     height = min_distance / 1.618
   )
+}
+
+#' Set Glyph Dimensions Based on Minimum Distance
+#'
+#' This is an internal function that calculates the minimum `width` and `height`
+#' from the given dataset and adjusts the `params` list accordingly. If the `width`
+#' or `height` in `params` is set to `"default"`, it is replaced by the minimum
+#' values calculated from the dataset.
+#'
+#' @param data A data frame or list that contains `width` and `height` columns (or similar structure).
+#' @param params A list containing `width` and `height` parameters. If set to `"default"`,
+#' the function will replace them with calculated minimum values.
+#'
+#' @return A modified `params` list with updated `width` and `height` values.
+#'
+#' @keywords internal
+update_params <- function(data, params) {
+  min_dist <- calculate_min_dist(data)
+  params$width <- ifelse(params$width == "default", min_dist$width, params$width)
+  params$height <- ifelse(params$height == "default", min_dist$height, params$height)
+
+  return(params)
 }
 
 # Rescale Functions ----------------------------------------------------------
@@ -724,7 +786,8 @@ custom_scale <- function(dx){
 utils::globalVariables(c(".data", "na.omit", "value", "com", "x_minor", "geom_segment",
                          "ymin_minor", "ymax_minor", "geom_ribbon", "theme_bw", "labs",
                          "theme", "margin", "element_blank", "y_minor", "yend_minor",
-                         "scale_x_discrete", "x_major", "y_major", "unique_coord"))
+                         "scale_x_discrete", "x_major", "y_major", "unique_coord",
+                         "gpar"))
 
 
 
