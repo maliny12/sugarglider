@@ -664,44 +664,40 @@ configure_glyph_data <- function(data, params,...){
 #' @keywords internal
 calculate_min_dist <- function(data) {
 
-  coordinates <- data |>
-    dplyr::mutate(unique_coord = paste(x_major, y_major, sep = ",")) |>
-    dplyr::group_by(unique_coord) |>
-    dplyr::slice_head(n = 1)
+    coordinates <- data |>
+      dplyr::mutate(unique_coord = paste(x_major, y_major, sep = ",")) |>
+      dplyr::group_by(unique_coord) |>
+      dplyr::slice_head(n = 1)
 
-  # Calculate distance using Haversine method
-  dist_matrix <- geosphere::distm(coordinates[, c("x_major", "y_major")],
-                                  fun = geosphere::distHaversine)
-  diag(dist_matrix) <- Inf
+    # Calculate distance using Haversine method
+    dist_matrix <- geosphere::distm(coordinates[, c("x_major", "y_major")],
+                                    fun = geosphere::distHaversine)
+    diag(dist_matrix) <- Inf
 
-  # Convert meters to degrees of latitude (1 degree latiude = 111,320 meters)
-  min_distance <- min(apply(dist_matrix, 1, min))/111320
+    # Convert meters to degrees of latitude (1 degree latiude = 111,320 meters)
+    min_distance <- min(apply(dist_matrix, 1, min))/111320
 
-  list(
-    # Glyph ratio of 1:1.618
-    width = min_distance,
-    height = min_distance / 1.618
-  )
+    list(
+      # Glyph ratio of 1:1.618
+      width = min_distance,
+      height = min_distance / 1.618
+    )
 }
 
-#' Set Glyph Dimensions Based on Minimum Distance
-#'
-#' This is an internal function that calculates the minimum `width` and `height`
-#' from the given dataset and adjusts the `params` list accordingly. If the `width`
-#' or `height` in `params` is set to `"default"`, it is replaced by the minimum
-#' values calculated from the dataset.
-#'
-#' @param data A data frame or list that contains `width` and `height` columns (or similar structure).
-#' @param params A list containing `width` and `height` parameters. If set to `"default"`,
-#' the function will replace them with calculated minimum values.
-#'
-#' @return A modified `params` list with updated `width` and `height` values.
-#'
+#' Defined Glyph dimension
 #' @keywords internal
 update_params <- function(data, params) {
-  min_dist <- calculate_min_dist(data)
-  params$width <- ifelse(params$width == "default", min_dist$width, params$width)
-  params$height <- ifelse(params$height == "default", min_dist$height, params$height)
+
+  if (dplyr::n_distinct(data$x_major) == 1 &&
+      dplyr::n_distinct(data$y_major) == 1) {
+    params$width <-  rel(3)
+    params$height <- rel(2)
+
+  } else {
+    min_dist <- calculate_min_dist(data)
+    params$width <- ifelse(params$width == "default", min_dist$width, params$width)
+    params$height <- ifelse(params$height == "default", min_dist$height, params$height)
+  }
 
   return(params)
 }

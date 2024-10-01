@@ -2,23 +2,11 @@
 % Please edit documentation in R/geom_glyph_ribbon.R
 \name{update_params}
 \alias{update_params}
-\title{Set Glyph Dimensions Based on Minimum Distance}
+\title{Defined Glyph dimension}
 \usage{
 update_params(data, params)
 }
-\arguments{
-\item{data}{A data frame or list that contains `width` and `height` columns (or similar structure).}
-
-\item{params}{A list containing `width` and `height` parameters. If set to `"default"`,
-the function will replace them with calculated minimum values.}
-}
-\value{
-A modified `params` list with updated `width` and `height` values.
-}
 \description{
-This is an internal function that calculates the minimum `width` and `height`
-from the given dataset and adjusts the `params` list accordingly. If the `width`
-or `height` in `params` is set to `"default"`, it is replaced by the minimum
-values calculated from the dataset.
+Defined Glyph dimension
 }
 \keyword{internal}

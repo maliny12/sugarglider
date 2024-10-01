@@ -19,11 +19,11 @@
 #' @param control A list specifying the relative font sizes for different plot elements.
 #'   The list can contain the following components:
 #'   \describe{
-#'     \item{plot.title}{Font size for the plot title (default: \code{rel(2)}).}
-#'     \item{plot.subtitle}{Font size for the plot subtitle (default: \code{rel(1.7)}).}
+#'     \item{plot.title}{Font size for the plot title (default: \code{rel(1.5)}).}
+#'     \item{plot.subtitle}{Font size for the plot subtitle (default: \code{rel(1.3)}).}
 #'     \item{plot.caption}{Font size for the plot caption (default: \code{rel(1)}).}
-#'     \item{legend.text}{Font size for the legend text (default: \code{rel(1.5)}).}
-#'     \item{legend.title}{Font size for the legend title (default: \code{rel(1.5)}).}
+#'     \item{legend.text}{Font size for the legend text (default: \code{rel(1)}).}
+#'     \item{legend.title}{Font size for the legend title (default: \code{rel(1)}).}
 #'   }
 #'
 #' @examples
@@ -45,9 +45,9 @@
 #' @export
 
 theme_glyph <- function(control = list(
-                    plot.title = rel(2), plot.subtitle = rel(1.7),
-                    plot.caption = rel(1), legend.text = rel(1.5),
-                    legend.title = rel(1.5))) {
+                    plot.title = rel(1.5), plot.subtitle = rel(1.3),
+                    plot.caption = rel(1), legend.text = rel(1),
+                    legend.title = rel(1))) {
 
     ggthemes::theme_map() %+replace%
     ggplot2::theme(

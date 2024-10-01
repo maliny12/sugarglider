@@ -42,7 +42,9 @@ Suggests:
     jsonlite,
     httr,
     usmap,
-    geosphere
+    geosphere,
+    purrr,
+    leaflet
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 BugReports: https://github.com/maliny12/sugarglider/issues
