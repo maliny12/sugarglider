@@ -31,189 +31,8 @@ library(ggthemes)
 library(kableExtra)
 library(usmap)
 library(ggiraph)
-library(leaflet)
-```
-  
-## Overview
-
-`sugarglider` provides ggplot2 extensions to create glyph maps that visualize multivariate spatio-temporal data with `geom_glyph_ribbon()` and `geom_glyph_segment()`.
-
-These functions create a ribbon geometry designed to display glyphs based on the combination of `x_major` and `y_major`. For each `x_minor` value, `geom_glyph_ribbon()` displays a y interval defined by `ymin_minor` and `ymax_minor`. Meanwhile, `geom_glyph_segment()` draw a straight line between `y_minor` and `yend_minor` with respect to `x_minor`.
-
-Let's compare `geom_glyph_ribbon()` and `geom_glyph_segment()`:
-
-```{r, fig.height=6}
-vic_temp <- aus_temp |>
-  filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143"))
-
-# Define a color palette
-color_palette <- c("deepskyblue4", "coral3")
-
-p1 <- vic_temp |>
-   ggplot(aes(x_major = long,
-              y_major = lat,
-              x_minor = month,
-              ymin_minor = tmin,
-              ymax_minor = tmax)) +
-  geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
-          fill = "antiquewhite", color = "white", inherit.aes = FALSE)  +
-  # Customize the size of each glyph box using the width and height parameters.
-  add_glyph_boxes(color = color_palette[1]) +
-  add_ref_lines(color = color_palette[1]) +
-  geom_glyph_ribbon(color = color_palette[1], fill = color_palette[1]) +
-  # Theme and aesthetic
-  theme_glyph() +
-  labs(title = "geom_glyph_ribbon()") +
-  theme(plot.title = element_text(hjust = 0.5),
-        title = element_text(color = color_palette[1],
-                             family  = "mono")) 
-
-p2 <- vic_temp |>
-   ggplot(aes(x_major = long,
-              y_major = lat,
-              x_minor = month,
-              y_minor = tmin,
-              yend_minor = tmax)) +
-  geom_sf(data = abs_ste |> filter(NAME == "Victoria"),
-         fill = "antiquewhite", color = "white", inherit.aes = FALSE)  +
-  # Customize the size of each glyph box using the width and height parameters.
-  add_glyph_boxes(color = color_palette[2]) +
-  add_ref_lines(color = color_palette[2]) +
-  geom_glyph_segment(color = color_palette[2]) +
-  # Theme and aesthetic
-  theme_glyph() +
-  labs(title = "geom_glyph_segment()") +
-  theme(plot.title = element_text(hjust = 0.5),
-        title = element_text(color = color_palette[2]))
-
-grid.arrange(p1, p2, ncol = 2) 
 
 ```
-
-## Options
-
-Options allow you to modify the behavior of `sugarglider` to fit the specific needs of your figure. These are all global options that affect every glyph.
-
-|Option          | Default      | Description
-|--------------- | ------------ | ------------------------------------------------
-| `x_scale`         | `"identity"`         | This function scales each set of minor values within a grid cell along the x-dimension.
-|`y_scale`      | `"identity"`          | This function scales each set of minor values within a grid cell along the y-dimension.
-|`width`         | `default`          |  The width of each glyph. The `default` is set to the smallest distance between two consecutive coordinates, converted from meters to degrees of latitude using the Haversine method.
-|`height`     | `default`     | The height of each glyph. The `default` is calculated using the ratio (1:1.618) relative to the `width`, to maintain a consistent aspect ratio.
-|`global_rescale`      | `TRUE`        | Determines whether rescaling is applied globally across all glyphs or individually for each glyph
-
-## Aesthetics
-
-`sugarglider` provides the same aesthetics for `geom_glyph_ribbon()` and `geom_glyph_segment()` as those available in `geom_ribbon()` or `geom_segment()`, while also introducing additional unique options.
-
-|Option          | Default      | Description
-|--------------- | ------------ | ------------------------------------------------
-| `colour`         | `"black"`         | Color for line segments and borders.
-|`linewidth`      | `0.5`          | Width of the line for borders.
-|`linetype`         | `1`          |  Style of the line for borders.
-|`fill`     | `"black"`     | Color of the interior area of the geometries.
-|`alpha`      | `0.8`        | Transparency level of the glyphs. 
-
-## Interactivity
-
-Interactive graphics can be useful when working with spatio-temporal data since they allow for exploring the data from multiple perspective. In [cubble](https://huizezhang-sherry.github.io/cubble/articles/cb6interactive.html) package, they demonstrate this by creating a linked interactive plot using `crosswalk::bscols()` . In this vignette, we will demonstrate how to generate how to generate interactive glyph maps with leaftlet and ggiraph. 
-
-### Creating glyph maps with leaflet
-
-The dataset used in this example is `aus_temp` which includes key climate variables, such as precipitation and temperature, recorded at 29 different weather stations throughout 2020. To generate PNG of each glyph, we first need to generate a list of all unique weather station. We then interate over all weather station and generate ribbon glyphs using `geom_glyph_ribbon()`, `add_glyph_boxes()` and `add_ref_lines()`. Each glpyh are saved into png format, and the file path of all the pngs are saved as an object for the next step. 
-
-```{r}
-# Generate a list of unique weather stations
-df_id <- aus_temp$id |> unique()
-
-# Generate PNG of all the ribbon glyph
-purrr::map(1:length(df_id), function(i) {
-  dt <- aus_temp |> filter(id == df_id[i])
-  p <- dt |> ggplot(aes(x_major = long, y_major = lat,
-                   x_minor = month, ymin_minor = tmin,
-                   ymax_minor = tmax)) +
-    add_glyph_boxes(color = "#FFAD60", 
-                    fill = "#FFEEAD", alpha = 0.5,
-                    linewidth = 1) +
-    add_ref_lines(color = "#FFAD60", alpha = 1,
-                  linewidth = 1) +
-    geom_glyph_ribbon(color = "#A66E38", fill = "#A66E38") +
-    theme_void() 
-  
-  file_path <- paste0("../man/figures/glyph_", df_id[i], ".png")
-  ggsave(file_path, plot = p, width = 3, height = 2, units = "in", dpi = 300,
-         path = "../man/figures", bg = "transparent")
-  return(file_path)
-
-  }) -> glyph_png 
-
-```
-
-To create the base map for leaflet, we use the function `leaflet()` and `addProviderTiles()` with [CartoDB.Positron](https://github.com/CartoDB/basemap-styles) as provider for the light, grey map aesthetic. 
-
-```{r}
-# Create a leaflet map 
-leaflet_map <- leaflet() |>
-  addProviderTiles("CartoDB.Positron")
-```
-
-Next is to iterate through all the PNG files and convert them into icons using `makeIcon()`. Here user can control the dimension of each icon by modifying the iconWidth and iconHeight arguments. The final step is to add each icon onto the leaflet map using `addMarkers`. Within options argument of `addMarkers`, user can finetune each glyphs such in this case is the opacity level. With label arugment allow user to specify the information they wishes to display with the hover over effect, which in this example is set to ID. 
-
-```{r}
-# Loop through the PNG files and add them to the map
-for (i in seq_along(glyph_png)) {
-  icon <- makeIcon(iconUrl = glyph_png[i], iconWidth = 100, iconHeight = 60)
-
-  dt <- aus_temp |> filter(id == df_id[i])
-  leaflet_map <- leaflet_map |>
-    addMarkers(lng = dt$long[1], lat = dt$lat[1], icon = icon,
-               label = dt$id, options = markerOptions(opacity = 0.1))
-}
-
-leaflet_map
-```
-
-### Interative glyph maps with ggiraph
-
-User can generate interactive glyphs with `ggiraph::girafe` using sugarglider. To start, user need to specify tooltips which is the information that will be displayed when hover over. In this example, the tooltips consist of station id, month, minimum and maximum temperature across all month. 
-
-```{r}
-
-vic_nsw <- aus_temp |>
-  filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143",
-                   "ASN00055325", "ASN00049000"))
-
-
-# Specify tooltip for ggiraph 
-vic_nsw <- vic_nsw |>
-  mutate(tooltip = paste("Station ID: ", id,
-                         "\nmonth: ", month,
-                         "\nmin-temp: ", round(tmin,2),
-                         "\nmax-temp: ", round(tmax,2)))
-```
-
-Tooltips needs to be provided in the asethetic to in the `tooltip` argument. User can then plot their desired glyph map and save it as a ggplot object. This ggplot object is then converted into girafe object using the `girafe()` function. 
-
-```{r}
-temp <- vic_nsw |> 
-  ggplot(aes(x_major = long, y_major = lat,
-             x_minor = month, y_minor = tmin,
-             yend_minor = tmax,
-             tooltip = tooltip)) + 
-  geom_sf(data = abs_ste |> filter(NAME %in% c("New South Wales", "Victoria")),
-          color = "white",
-          fill = "antiquewhite", inherit.aes = FALSE) +
-  add_glyph_boxes(color = "#CD5C08") +
-  add_ref_lines(color = "#CD5C08") +
-  geom_glyph_segment(color = "#CD5C08") +
-  coord_sf(xlim = c(140,153)) +
-  labs(title = "Daily Temperature Variation Across Victoria and New South Wales") +
-  theme_glyph() 
-
-# Interactive plot using ggiraph
-girafe(ggobj = temp)
-```
-
 
 ## Examples
 
@@ -376,6 +195,7 @@ fact <- historical_temp |>
   scale_fill_wsj("colors6") 
 
 fact
+
 ```
 
 #### Integrating Glyph Legends
@@ -397,10 +217,11 @@ legend <- aus_temp |>
   add_glyph_legend(color = "#227B94", fill = "#227B94") +
   # Add a ribbon legend
   geom_glyph_ribbon(color = "#227B94", fill = "#227B94") +
-  theme_glyph() +
+  theme_glyph()  + 
   labs(title = "Temperature Ranges Across Australia with Glyph Legend") 
 
 legend
+
 ```
 
 #### Observations and Insights
@@ -493,30 +314,6 @@ grid.arrange(westR, southR, ncol = 2)
 
 `geom_glyph_ribbon()` highlights the disparities in flight volume between regions. The Western region exhibits a larger variation in the number of flights compared to the Southern region, as evidenced by the thicker ribbons. Interestingly, both regions show a notable increase in discrepancies during the mid-year, which supports our findings from the `geom_glyph_segment()`. 
 
-
-```{r}
-aus_temp |>
-  mutate(month_fct = factor(case_when(month == 1 ~ "Jan",
-                                      month == 2 ~ "Feb",
-                                      month == 3 ~ "Mar",
-                                      month == 4 ~ "Apr",
-                                      month == 5 ~ "May",
-                                      month == 6 ~ "Jun",
-                                      month == 7 ~ "Jul",
-                                      month == 8 ~ "Aug",
-                                      month == 9 ~ "Sep",
-                                      month == 10 ~ "Oct",
-                                      month == 11 ~ "Nov",
-                                      month == 12 ~ "Dec"),
-                            levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))) |> 
-  ggplot(aes(x_major = long, y_major = lat,
-              x_minor = month_fct, ymin_minor = tmin, 
-              ymax_minor = tmax)) +
-  geom_sf(data = abs_ste, fill = "antiquewhite",
-          inherit.aes = FALSE, color = "white") +
-  geom_glyph_ribbon(width = 2.233387, height = 1.563371) +
-  geom_rect(aes(xmin = 125, xmax = 127, ymin =  -13.1 , ymax = -14.1), color = "yellow", fill = NA, linewidth = 0.7)
-```
 
 
 

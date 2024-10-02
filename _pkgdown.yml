@@ -26,10 +26,15 @@ reference:
 navbar:
   title: "sugarglider"
   left:
-    - text: "Reference"
-      href: reference/index.html
+    - text: "Get started"
+      href: articles/sugarglider.html
     - text: "Examples"
       href: articles/Examples.html
+    - text: "Reference"
+      href: reference/index.html
+    - text: "Change Log"
+      href: news/index.html
+
 
 
 

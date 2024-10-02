@@ -47,7 +47,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Nathan Yang \email{nathan.s.yang@gmail.com}
+  \item S. Nathan Yang \email{nathan.s.yang@gmail.com} (\href{https://orcid.org/0009-0002-9985-1042}{ORCID})
 }
 
 Other contributors:

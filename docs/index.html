@@ -32,8 +32,10 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="articles/sugarglider.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="articles/Examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Change Log</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -66,6 +68,7 @@
 </h2>
 <p><code>sugarglider</code> provides ggplot2 extensions to create glyph maps that visualize seasonal aspects of spatio-temporal data with <code><a href="reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> and <code><a href="reference/geom_glyph_segment.html">geom_glyph_segment()</a></code>.</p>
 <p>These functions create a ribbon or segment geometry designed to display glyphs based on the combination of <code>x_major</code> and <code>y_major</code>. For each <code>x_minor</code> value, <code><a href="reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> displays a y interval defined by <code>ymin_minor</code> and <code>ymax_minor</code>. Meanwhile, <code><a href="reference/geom_glyph_segment.html">geom_glyph_segment()</a></code> draws a straight line between <code>y_minor</code> and <code>yend_minor</code> with respect to <code>x_minor</code>.</p>
+<p><img src="reference/figures/ribbon-segment-plot.png"></p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -78,6 +81,20 @@
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <p>See the <a href="https://maliny12.github.io/sugarglider/articles/Examples.html">examples</a> page to learn more about how to use sugarglider in your project.</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="49%">
+</colgroup>
+<thead><tr class="header">
+<th align="center"><a href="https://maliny12.github.io/sugarglider/articles/sugarglider.html"><img src="reference/figures/leaflet-screenshot.png" alt="Image 1"></a></th>
+<th align="center"><a href="https://maliny12.github.io/sugarglider/articles/Examples.html"><img src="reference/figures/legend_plot.png" alt="Image 2"></a></th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="center"><a href="https://maliny12.github.io/sugarglider/articles/Examples.html"><img src="reference/figures/color-glyph.png" alt="Image 3"></a></td>
+<td align="center"><a href="https://maliny12.github.io/sugarglider/articles/sugarglider.html"><img src="reference/figures/segment-girafe.png" alt="Image 4"></a></td>
+</tr></tbody>
+</table>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -108,7 +125,7 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Maliny Po <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0009-0008-4686-6631" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Nathan Yang <br><small class="roles"> Author </small>  </li>
+<li>S. Nathan Yang <br><small class="roles"> Author </small> <a href="https://orcid.org/0009-0002-9985-1042" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -125,7 +142,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Maliny Po, Nathan Yang.</p>
+  <p>Developed by Maliny Po, S. Nathan Yang.</p>
 </div>
 
 <div class="pkgdown-footer-right">

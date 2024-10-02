@@ -292,24 +292,25 @@ add_glyph_legend <- function( mapping = NULL, data = NULL,
                         x_minor = NULL,x_scale = identity, y_scale = identity,
                         fill = "black", color = "black", linewidth = 0.5, alpha = 0.8,
                         global_rescale = TRUE, inherit.aes = TRUE, ...) {
-  ggplot2::layer(
-    geom = GeomGlyphLegend,
-    mapping = mapping,
-    data = data,
-    stat = stat,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      x_scale = list(x_scale),
-      y_scale = list(y_scale),
-      global_rescale = global_rescale,
-      fill = fill,
-      color = color,
-      linewidth = linewidth,
-      alpha = alpha,
-      ...)
-  )
+
+    ggplot2::layer(
+      geom = GeomGlyphLegend,
+      mapping = mapping,
+      data = data,
+      stat = stat,
+      position = position,
+      show.legend = show.legend,
+      inherit.aes = inherit.aes,
+      params = list(
+        x_scale = list(x_scale),
+        y_scale = list(y_scale),
+        global_rescale = global_rescale,
+        fill = fill,
+        color = color,
+        linewidth = linewidth,
+        alpha = alpha,
+        ...)
+    )
 
 }
 
@@ -329,20 +330,11 @@ GeomGlyphLegend <- ggplot2::ggproto(
     linewidth = 0.5, alpha = 0.8,
     x_scale = list(identity),
     y_scale = list(identity),
-    global_rescale = TRUE,
-    width = "default",
-    height = "default"
+    global_rescale = TRUE
   ),
 
   setup_data = function(data, params){
-     data <- configure_glyph_data(data, params, legend = TRUE)
-
-    # box_data <- glyph_box(data, params)
-    # box_data$npc_xmin <- scales::rescale(box_data$xmin, to = c(0, 1), from = range(data$x_major))
-    # box_data$npc_xmax <- scales::rescale(box_data$xmax, to = c(0, 1), from = range(data$x_major))
-    # box_data$npc_ymin <- scales::rescale(box_data$ymin, to = c(0, 1), from = range(data$y_major))
-    # box_data$npc_ymax <- scales::rescale(box_data$ymax, to = c(0, 1), from = range(data$y_major))
-    # box_data
+    data <- configure_glyph_data(data, params, legend = TRUE)
   },
 
   # Draw polygons
@@ -351,34 +343,15 @@ GeomGlyphLegend <- ggplot2::ggproto(
 
     grob <- glyph_setup_grob(data, panel_params)
 
-    # box_grob <- glyph_setup_box(data, panel_params, params)
-    #box_grob <- create_rect_grob(data$xmin[1], data$xmax[1],data$ymin[1], data$ymax[1] )
-    # box_vp <- viewport(x = mean(c(box_data$npc_xmin,
-    #                               box_data$npc_xmax)),
-    #                    y = mean(c(box_data$npc_ymin,
-    #                               box_data$npc_ymax)),
-    #                    width = box_data$npc_xmax[1] - box_data$npc_xmin[1],
-    #                    height = box_data$npc_ymax[1] - box_data$npc_ymin[1])
-
     legend_vp <- viewport(x = 0.13, y = 0.02,
                           width = 0.23, height = 0.23,
                           just = c("bottom"))
-    # full_vp <- viewport(layout.pos.row = 1, layout.pos.col = 1)
 
     editGrob(grob, vp = legend_vp, name = grob$name)
-    #editGrob(box_grob, vp = box_vp,  name = box_grob$name)
+
   }
 )
 
-# create_rect_grob <- function(xmin, xmax, ymin, ymax) {
-#   grid::rectGrob(
-#     x = mean(c(xmin, xmax)),
-#     y = mean(c(ymin, ymax)),
-#     width = xmax - xmin,
-#     height = ymax - ymin,
-#     gp = gpar(fill = "#227B94", alpha = 0.5, col = "#227B94")
-#   )
-# }
 
 
 # Helper functions -------------------------------------------------------------
@@ -610,21 +583,6 @@ glyph_setup_grob <- function(data, panel_params){
   ggplotify::as.grob(p_grob)
 }
 
-
-
-# glyph_setup_box <- function(data, panel_params, params){
-#
-#   p_box <- data |>
-#     ggplot2::ggplot(
-#       ggplot2::aes(xmin = xmin,
-#                    xmax= xmax,
-#                    ymin = ymin,
-#                    ymax = ymax )) +
-#     geom_rect(color = "yellow", linewidth = 0.7, fill = NA) +
-#     theme_void()
-#
-#   ggplotify::as.grob(p_box)
-# }
 
 #' Setup Glyph Data Based on Geometric Plot Type
 #' @keywords internal

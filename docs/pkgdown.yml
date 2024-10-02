@@ -3,7 +3,8 @@ pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   Examples: Examples.html
-last_built: 2024-10-01T15:06Z
+  sugarglider: sugarglider.html
+last_built: 2024-10-02T15:21Z
 urls:
   reference: https://maliny12.github.io/sugarglider/reference
   article: https://maliny12.github.io/sugarglider/articles
