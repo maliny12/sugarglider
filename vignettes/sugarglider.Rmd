@@ -140,35 +140,32 @@ Interactive graphics are particularly useful when working with spatio-temporal d
 
 ### Creating glyph maps with leaflet
 
-The dataset used in this example, `train`, provides a comprehensive monthly summary of daily patronage at each train station in Victoria for the fiscal year 2023-2024. To create interactive glyph maps with Leaflet, we first need to save each glyph as a PNG and then add these to the Leaflet basemap as icons. The process begins by creating a list of all unique train stations that service both metro and vline. We then iterate over each station and generate ribbon glyphs using `geom_glyph_ribbon()`, `add_glyph_boxes()` and `add_ref_lines()`. Each glyph is saved in PNG format, and the file paths for all the PNGs are stored in an object for the next step.
+The dataset used in this example, `train`, provides a comprehensive monthly summary of daily patronage at each train station in Victoria for the fiscal year 2023-2024. To create interactive glyph maps with Leaflet, we first need to save each glyph as a PNG and then add these to the Leaflet basemap as icons. The process starts by creating a list of unique train stations, then iterates through each station to generate ribbon glyphs using `geom_glyph_ribbon()`, `add_glyph_boxes()` and `add_ref_lines()`. Each glyph is saved in PNG format, and the file paths for all the PNGs are stored in an object for the next step.
+
 
 ```{r, eval=FALSE}
-# Generate a list of unique train stations that service both metro and vline
-both <- train |> filter(mode == "both")
-
-# Generate a list of unique train stations
-df_station <- both$station_name |> unique()
+# Generate a list of unique train stations 
+df_station <- train$station_name |> unique()
 
 # Generate PNG of all the ribbon glyph
 purrr::map(1:length(df_station), function(i) {
-  dt <- both |> filter(station_name == df_station[i])
+  dt <- train |> filter(station_name == df_station[1])
   p <- dt |>
   ggplot(aes(x_major = long, y_major = lat,
                    x_minor = month_year, ymin_minor = min_monthly,
                    ymax_minor = max_monthly)) +
-    add_glyph_boxes(color = "#FFAD60", 
-                    fill = "#FFEEAD", alpha = 0.5,
-                    linewidth = 1, width = 3, height  =2) +
-    add_ref_lines(color = "#FFAD60", alpha = 1,
-                  linewidth = 1, width = 3, height  =2) +
-    geom_glyph_ribbon(color = "#A66E38", fill = "#A66E38",
+    add_glyph_boxes(color = "#ffc40d", 
+                    fill = "#eff4ff", alpha = 0.5,
+                    linewidth = 2, width = 3, height  =2) +
+    add_ref_lines(color = "#ffc40d", alpha = 1,
+                  linewidth = 2, width = 3, height  =2) +
+    geom_glyph_ribbon(color = "#2b5797", fill = "#2b5797",
                       width = 3, height  =2) +
     theme_void() 
   
-  file_path <- paste0("figures/glyph_", df_station[i], ".png")
-  ggsave(file_path, plot = p, width = 3, height = 2, units = "in", dpi = 300,
-         bg = "transparent")
-  return(file_path)
+  file_path <- paste0("../man/figures/glyph_", df_station[i], ".png")
+  ggsave(file_path, plot = p, width = 3, height = 2, units = "in",
+         path = "../man/figures")
 
   }) -> train_png 
 
@@ -190,7 +187,7 @@ Next, we iterate through all the PNG files and convert them into icons using the
 for (i in seq_along(train_png)) {
   icon <- makeIcon(iconUrl = train_png[i], iconWidth = 100, iconHeight = 60)
 
-  dt <- both |> filter(station_name == df_station[i])
+  dt <- train |> filter(station_name == df_station[i])
   leaflet_map <- leaflet_map |>
     addMarkers(lng = dt$long[1], lat = dt$lat[1], icon = icon,
                label = dt$station_name, options = markerOptions(opacity = 0.1))
@@ -199,7 +196,7 @@ for (i in seq_along(train_png)) {
 leaflet_map
 ```
 
-![](../man/figures/leaflet-screenshot.png)
+![](../man/figures/leaflet-train.jpg)
 
 ### Interative glyph maps with ggiraph
 

@@ -22,7 +22,7 @@ glyphs based on the combination of `x_major` and `y_major`. For each
 straight line between `y_minor` and `yend_minor` with respect to
 `x_minor`.
 
-![](man/figures/ribbon-segment-plot.png)
+![](man/figures/ribbon-segment-plot.jpeg)
 
 ## Installation
 
@@ -37,6 +37,6 @@ See the
 [examples](https://maliny12.github.io/sugarglider/articles/Examples.html)
 page to learn more about how to use sugarglider in your project.
 
-| [![Image 1](man/figures/leaflet-screenshot.png)](https://maliny12.github.io/sugarglider/articles/sugarglider.html) |    [![Image 2](man/figures/legend_plot.png)](https://maliny12.github.io/sugarglider/articles/Examples.html)    |
-|:------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------:|
-|      [![Image 3](man/figures/color-glyph.png)](https://maliny12.github.io/sugarglider/articles/Examples.html)      | [![Image 4](man/figures/segment-girafe.png)](https://maliny12.github.io/sugarglider/articles/sugarglider.html) |
+| [![Image 1](man/figures/leaflet-train.jpg)](https://maliny12.github.io/sugarglider/articles/sugarglider.html) |    [![Image 2](man/figures/legend_plot.jpeg)](https://maliny12.github.io/sugarglider/articles/Examples.html)    |
+|:-------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------:|
+|   [![Image 3](man/figures/color-glyph.jpeg)](https://maliny12.github.io/sugarglider/articles/Examples.html)   | [![Image 4](man/figures/segment-girafe.jpeg)](https://maliny12.github.io/sugarglider/articles/sugarglider.html) |
