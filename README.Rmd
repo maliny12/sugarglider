@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# sugarglider
+# sugarglider  <img src="man/figures/sugarglider.svg" width="181px" align="right" />
 
 <!-- badges: start -->
 
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-## Overview
+## Overview 
 
 `sugarglider` provides ggplot2 extensions to create glyph maps that visualize seasonal aspects of spatio-temporal data with `geom_glyph_ribbon()` and `geom_glyph_segment()`.
 
