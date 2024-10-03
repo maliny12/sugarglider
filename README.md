@@ -37,6 +37,8 @@ See the
 [examples](https://maliny12.github.io/sugarglider/articles/Examples.html)
 page to learn more about how to use sugarglider in your project.
 
-| [![Image 1](man/figures/leaflet-train.jpg)](https://maliny12.github.io/sugarglider/articles/sugarglider.html) |    [![Image 2](man/figures/legend_plot.jpeg)](https://maliny12.github.io/sugarglider/articles/Examples.html)    |
-|:-------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------:|
-|   [![Image 3](man/figures/color-glyph.jpeg)](https://maliny12.github.io/sugarglider/articles/Examples.html)   | [![Image 4](man/figures/segment-girafe.jpeg)](https://maliny12.github.io/sugarglider/articles/sugarglider.html) |
+<a href="https://maliny12.github.io/sugarglider/articles/Examples.html"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/leaflet-train.jpg" alt="Generate glyph-maps with leaflet."></img></a>
+<a href="https://maliny12.github.io/sugarglider/articles/sugarglider.html"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/segment-girafe.jpeg" alt="Generate interavtive glyphs with ggiraph"></img></a>
+<a href="https://maliny12.github.io/sugarglider/articles/Examples.html"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/legend_plot.jpeg" alt="Add ribbon legend to the glyph map."></img></a>
+<a href="https://maliny12.github.io/sugarglider/articles/Examples.html"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/color-glyph.jpeg" alt="Color by year"></img></a>
+

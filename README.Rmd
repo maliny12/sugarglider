@@ -40,9 +40,6 @@ devtools::install_github("maliny12/sugarglider")
 
 See the [examples](https://maliny12.github.io/sugarglider/articles/Examples.html) page to learn more about how to use sugarglider in your project.
 
-| [![Image 1](man/figures/leaflet-train.jpg)](https://maliny12.github.io/sugarglider/articles/sugarglider.html) | [![Image 2](man/figures/legend_plot.jpeg)](https://maliny12.github.io/sugarglider/articles/Examples.html) |
-|:-------------------------------------------------------:|:-------------------------------------------------------:|
-| [![Image 3](man/figures/color-glyph.jpeg)](https://maliny12.github.io/sugarglider/articles/Examples.html) | [![Image 4](man/figures/segment-girafe.jpeg)](https://maliny12.github.io/sugarglider/articles/sugarglider.html) |
 
 
 
