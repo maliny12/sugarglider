@@ -362,9 +362,9 @@ glyph_setup_data <- function(data, params,...) {
 
   arg <- list(...)
 
-  if (!class(data$x_minor) %in% c("Date", "yearmonth", "numeric", "factor",
-                                  "yearweek", "yearquarter", "yearqtr",
-                                  "POSIXct", "POSIXlt")) {
+  if (!inherits(data$x_minor, c("Date", "yearmonth", "numeric", "factor",
+                                "yearweek", "yearquarter", "yearqtr",
+                                "POSIXct", "POSIXlt"))) {
 
     stop("Error: Unsupported class for x_minor. Supported classes are Date,
          yearmonth, numeric, factor, yearweek, yearquarter, yearqtr, POSIXct, and POSIXlt.")

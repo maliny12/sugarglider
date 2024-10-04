@@ -138,9 +138,9 @@ Additionally, the width and height of the glyphs are adjustable, allowing users 
 
 Interactive graphics are particularly useful when working with spatio-temporal data as they allow users to explore the data from multiple perspectives. The [cubble](https://huizezhang-sherry.github.io/cubble/articles/cb6interactive.html) package exemplifies this by creating linked interactive plots using `crosswalk::bscols()`. In this vignette, we will demonstrate how to create interactive glyph maps using Leaflet and ggiraph.
 
-### Creating glyph maps with leaflet
+### Create glyph maps with leaflet
 
-The dataset used in this example, `train`, provides a comprehensive monthly summary of daily patronage at each train station in Victoria for the fiscal year 2023-2024. To create interactive glyph maps with Leaflet, we first need to save each glyph as a PNG and then add these to the Leaflet basemap as icons. The process starts by creating a list of unique train stations, then iterates through each station to generate ribbon glyphs using `geom_glyph_ribbon()`, `add_glyph_boxes()` and `add_ref_lines()`. Each glyph is saved in PNG format, and the file paths for all the PNGs are stored in an object for the next step.
+The dataset used in this example, `train`, provides a comprehensive monthly summary of hourly patronage at each train station in Victoria for the fiscal year 2023-2024. To create interactive glyph maps with Leaflet, we first need to save each glyph as a PNG and then add these to the Leaflet basemap as icons. The process starts by creating a list of unique train stations, then iterates through each station to generate ribbon glyphs using `geom_glyph_ribbon()`, `add_glyph_boxes()` and `add_ref_lines()`. Each glyph is saved in PNG format, and the file paths for all the PNGs are stored in an object for the next step.
 
 
 ```{r, eval=FALSE}
@@ -149,11 +149,11 @@ df_station <- train$station_name |> unique()
 
 # Generate PNG of all the ribbon glyph
 purrr::map(1:length(df_station), function(i) {
-  dt <- train |> filter(station_name == df_station[1])
+  dt <- train |> filter(station_name == df_station[i])
   p <- dt |>
   ggplot(aes(x_major = long, y_major = lat,
-                   x_minor = month_year, ymin_minor = min_monthly,
-                   ymax_minor = max_monthly)) +
+                   x_minor = hour, ymin_minor = min_weekday,
+                   ymax_minor = max_weekday)) +
     add_glyph_boxes(color = "#ffc40d", 
                     fill = "#eff4ff", alpha = 0.5,
                     linewidth = 2, width = 3, height  =2) +
@@ -196,9 +196,9 @@ for (i in seq_along(train_png)) {
 leaflet_map
 ```
 
-![](../man/figures/leaflet-train.jpg)
+![](../man/figures/leaflet-screenshot.jpg)
 
-### Interative glyph maps with ggiraph
+### Create interative glyph maps with ggiraph
 
 User can generate interactive glyphs with `ggiraph::girafe` using sugarglider. To illustrate, we will use the `aus_temp` dataset in this example. First, users need to specify tooltips, which are the details displayed when hovering over the glyphs. In this example, the tooltips consist of station id, month, minimum and maximum temperature across all month. 
 
