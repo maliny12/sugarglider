@@ -30,7 +30,6 @@ library(ozmaps)
 library(ggthemes)
 library(kableExtra)
 library(usmap)
-library(ggiraph)
 ```
 
 ## Overview
@@ -202,7 +201,7 @@ leaflet_map
 
 User can generate interactive glyphs with `ggiraph::girafe` using sugarglider. To illustrate, we will use the `aus_temp` dataset in this example. First, users need to specify tooltips, which are the details displayed when hovering over the glyphs. In this example, the tooltips consist of station id, month, minimum and maximum temperature across all month. 
 
-```{r}
+```{r, eval=FALSE}
 
 vic_nsw <- aus_temp |>
   filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143",
@@ -219,7 +218,7 @@ vic_nsw <- vic_nsw |>
 
 Tooltips needs to be provided in the asethetic to in the `tooltip` argument. User can then plot their desired glyph map and save it as a ggplot object. This ggplot object is then converted into girafe object using the `girafe()` function. 
 
-```{r}
+```{r, eval=FALSE}
 temp <- vic_nsw |> 
   ggplot(aes(x_major = long, y_major = lat,
              x_minor = month, y_minor = tmin,
@@ -232,12 +231,16 @@ temp <- vic_nsw |>
   add_ref_lines(color = "#CD5C08") +
   geom_glyph_segment(color = "#CD5C08") +
   coord_sf(xlim = c(140,153)) +
-  #labs(title = "Daily Temperature Variation Across Victoria and New South Wales") +
   theme_glyph() 
 
 # Interactive plot using ggiraph
 girafe(ggobj = temp)
 ```
+
+![](../man/figures/girafe-screenshot.jpg)
+
+
+
 
 
 
