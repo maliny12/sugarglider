@@ -70,9 +70,9 @@
 
     
     
-<div class="section level2">
-<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
-</h2>
+<div class="section level3">
+<h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h3>
 <p>The <code>sugarglider</code> package extends the capabilities of
 ggplot2 by introducing functions specifically designed for visualizing
 seasonal patterns in spatio-temporal data. It includes
@@ -87,7 +87,7 @@ or segment glyphs. Additionally, users can create a legend, adding an
 extra layer to the glyph maps. Apart from the base map, sugarglider
 offers functionalities to generate all the elements of a comprehensive
 glyph map, as illustrated in the figure below.</p>
-<p><img src="../reference/figures/glyphmap-layers.png"> Each layer can be
+<p><img src="../reference/figures/glyphmap-layer.png"> Each layer can be
 plotted independently, and the package supports the creation of glyph
 plots using either ribbon or segment geometries. The core functionality
 includes:</p>
@@ -168,9 +168,9 @@ plot’s appearance, including the legend position, text styles, and
 background settings, to create a clean, visually consistent layout for
 glyph visualizations.</p>
 </div>
-<div class="section level2">
-<h2 id="aesthetics">Aesthetics<a class="anchor" aria-label="anchor" href="#aesthetics"></a>
-</h2>
+<div class="section level3">
+<h3 id="aesthetics">Aesthetics<a class="anchor" aria-label="anchor" href="#aesthetics"></a>
+</h3>
 <p>sugarglider provides the same aesthetics for
 <code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> and <code><a href="../reference/geom_glyph_segment.html">geom_glyph_segment()</a></code>
 as those available in <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon()</a></code> and
@@ -261,9 +261,9 @@ aspects:</p>
 </tbody>
 </table>
 </div>
-<div class="section level2">
-<h2 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a>
-</h2>
+<div class="section level3">
+<h3 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a>
+</h3>
 <p>Options within the <code>sugarglider</code> package allow you to
 tailor the behavior of your visualizations to meet the specific needs of
 your analysis. The <em>global_rescale</em> argument provides control
@@ -329,7 +329,7 @@ maintain a consistent aspect ratio.</td>
 <td><code>global_rescale</code></td>
 <td><code>TRUE</code></td>
 <td>Determines whether rescaling is applied globally across all glyphs
-or individually for each glyph</td>
+or individually for each glyph.</td>
 </tr>
 </tbody>
 </table>
@@ -339,26 +339,28 @@ or individually for each glyph</td>
 </h2>
 <p>Interactive graphics are particularly useful when working with
 spatio-temporal data as they allow users to explore the data from
-multiple perspectives. The <a href="https://huizezhang-sherry.github.io/cubble/articles/cb6interactive.html" class="external-link">cubble</a>
-package exemplifies this by creating linked interactive plots using
-<code>crosswalk::bscols()</code>. In this vignette, we will demonstrate
-how to create interactive glyph maps using Leaflet and ggiraph.</p>
-<div class="section level3">
-<h3 id="create-glyph-maps-with-leaflet">Create glyph maps with leaflet<a class="anchor" aria-label="anchor" href="#create-glyph-maps-with-leaflet"></a>
-</h3>
+multiple perspectives. The <code>cubble</code> package, exemplifies this
+by creating linked interactive plots using
+<code>crosswalk::bscols()</code> (<span class="citation">@JSSv110i07</span>). In this paper, we will demonstrate
+how to create interactive glyph maps using Leaflet.</p>
+</div>
+<div class="section level2">
+<h2 id="create-glyph-maps-with-leaflet">Create glyph maps with leaflet<a class="anchor" aria-label="anchor" href="#create-glyph-maps-with-leaflet"></a>
+</h2>
 <p>The dataset used in this example, <code>train</code>, provides a
-comprehensive monthly summary of hourly patronage at each train station
+comprehensive monthly summary of daily patronage at each train station
 in Victoria for the fiscal year 2023-2024. To create interactive glyph
 maps with Leaflet, we first need to save each glyph as a PNG and then
-add these to the Leaflet basemap as icons. The process starts by
-creating a list of unique train stations, then iterates through each
-station to generate ribbon glyphs using
-<code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code>, <code><a href="../reference/add_glyph_boxes.html">add_glyph_boxes()</a></code> and
-<code><a href="../reference/add_ref_lines.html">add_ref_lines()</a></code>. Each glyph is saved in PNG format, and the
-file paths for all the PNGs are stored in an object for the next
+add these to the Leaflet basemap as icons. The process begins by
+creating a list of all unique train stations that service both metro and
+vline. We then iterate over each station and generate ribbon glyphs
+using <code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code>, <code><a href="../reference/add_glyph_boxes.html">add_glyph_boxes()</a></code>
+and <code><a href="../reference/add_ref_lines.html">add_ref_lines()</a></code>. Each glyph is saved in PNG format, and
+the file paths for all the PNGs are stored in an object for the next
 step.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Generate a list of unique train stations </span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Generate a list of unique train stations</span></span>
 <span><span class="va">df_station</span> <span class="op">&lt;-</span> <span class="va">train</span><span class="op">$</span><span class="va">station_name</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Generate PNG of all the ribbon glyph</span></span>
@@ -366,20 +368,21 @@ step.</p>
 <span>  <span class="va">dt</span> <span class="op">&lt;-</span> <span class="va">train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">station_name</span> <span class="op">==</span> <span class="va">df_station</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="va">dt</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x_major <span class="op">=</span> <span class="va">long</span>, y_major <span class="op">=</span> <span class="va">lat</span>,</span>
-<span>                   x_minor <span class="op">=</span> <span class="va">hour</span>, ymin_minor <span class="op">=</span> <span class="va">min_weekday</span>,</span>
-<span>                   ymax_minor <span class="op">=</span> <span class="va">max_weekday</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="../reference/add_glyph_boxes.html">add_glyph_boxes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#ffc40d"</span>, </span>
-<span>                    fill <span class="op">=</span> <span class="st">"#eff4ff"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>                    linewidth <span class="op">=</span> <span class="fl">2</span>, width <span class="op">=</span> <span class="fl">3</span>, height  <span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="../reference/add_ref_lines.html">add_ref_lines</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#ffc40d"</span>, alpha <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>                  linewidth <span class="op">=</span> <span class="fl">2</span>, width <span class="op">=</span> <span class="fl">3</span>, height  <span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#2b5797"</span>, fill <span class="op">=</span> <span class="st">"#2b5797"</span>,</span>
+<span>                   x_minor <span class="op">=</span> <span class="va">month_year</span>, ymin_minor <span class="op">=</span> <span class="va">min_monthly</span>,</span>
+<span>                   ymax_minor <span class="op">=</span> <span class="va">max_monthly</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="../reference/add_glyph_boxes.html">add_glyph_boxes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#FFAD60"</span>, </span>
+<span>                    fill <span class="op">=</span> <span class="st">"#FFEEAD"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>                    linewidth <span class="op">=</span> <span class="fl">1</span>, width <span class="op">=</span> <span class="fl">3</span>, height  <span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="../reference/add_ref_lines.html">add_ref_lines</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#FFAD60"</span>, alpha <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                  linewidth <span class="op">=</span> <span class="fl">1</span>, width <span class="op">=</span> <span class="fl">3</span>, height  <span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#A66E38"</span>, fill <span class="op">=</span> <span class="st">"#A66E38"</span>,</span>
 <span>                      width <span class="op">=</span> <span class="fl">3</span>, height  <span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span> </span>
 <span>  </span>
-<span>  <span class="va">file_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"../man/figures/glyph_"</span>, <span class="va">df_station</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".png"</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="va">file_path</span>, plot <span class="op">=</span> <span class="va">p</span>, width <span class="op">=</span> <span class="fl">3</span>, height <span class="op">=</span> <span class="fl">2</span>, units <span class="op">=</span> <span class="st">"in"</span>,</span>
-<span>         path <span class="op">=</span> <span class="st">"../man/figures"</span><span class="op">)</span></span>
+<span>  <span class="va">file_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"figures/glyph_"</span>, <span class="va">df_station</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".png"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="va">file_path</span>, plot <span class="op">=</span> <span class="va">p</span>, width <span class="op">=</span> <span class="fl">3</span>, height <span class="op">=</span> <span class="fl">2</span>, units <span class="op">=</span> <span class="st">"in"</span>, dpi <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>         bg <span class="op">=</span> <span class="st">"transparent"</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="op">}</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">train_png</span> </span></code></pre></div>
 <p>To create the base map for Leaflet, we use the <code>leaflet()</code>
@@ -415,6 +418,46 @@ station ID.</p>
 <span><span class="va">leaflet_map</span></span></code></pre></div>
 <p><img src="../reference/figures/leaflet-screenshot.jpg"></p>
 </div>
+<div class="section level2">
+<h2 id="create-interative-glyph-maps-with-ggiraph">Create interative glyph maps with ggiraph<a class="anchor" aria-label="anchor" href="#create-interative-glyph-maps-with-ggiraph"></a>
+</h2>
+<p>User can generate interactive glyphs with
+<code><a href="https://davidgohel.github.io/ggiraph/reference/girafe.html" class="external-link">ggiraph::girafe</a></code> using sugarglider. To illustrate, we will
+use the <code>aus_temp</code> dataset in this example. First, users need
+to specify tooltips, which are the details displayed when hovering over
+the glyphs. In this example, the tooltips consist of station id, month,
+minimum and maximum temperature across all month.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">vic_nsw</span> <span class="op">&lt;-</span> <span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ASN00026021"</span>, <span class="st">"ASN00085291"</span>, <span class="st">"ASN00084143"</span>,</span>
+<span>                   <span class="st">"ASN00055325"</span>, <span class="st">"ASN00049000"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Specify tooltip for ggiraph </span></span>
+<span><span class="va">vic_nsw</span> <span class="op">&lt;-</span> <span class="va">vic_nsw</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>tooltip <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Station ID: "</span>, <span class="va">id</span>,</span>
+<span>                         <span class="st">"\nmonth: "</span>, <span class="va">month</span>,</span>
+<span>                         <span class="st">"\nmin-temp: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">tmin</span>,<span class="fl">2</span><span class="op">)</span>,</span>
+<span>                         <span class="st">"\nmax-temp: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">tmax</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Tooltips needs to be provided in the asethetic to in the
+<code>tooltip</code> argument. User can then plot their desired glyph
+map and save it as a ggplot object. This ggplot object is then converted
+into girafe object using the <code>girafe()</code> function.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">temp</span> <span class="op">&lt;-</span> <span class="va">vic_nsw</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x_major <span class="op">=</span> <span class="va">long</span>, y_major <span class="op">=</span> <span class="va">lat</span>,</span>
+<span>             x_minor <span class="op">=</span> <span class="va">month</span>, y_minor <span class="op">=</span> <span class="va">tmin</span>,</span>
+<span>             yend_minor <span class="op">=</span> <span class="va">tmax</span>,</span>
+<span>             tooltip <span class="op">=</span> <span class="va">tooltip</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">abs_ste</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">NAME</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"New South Wales"</span>, <span class="st">"Victoria"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>          color <span class="op">=</span> <span class="st">"white"</span>,</span>
+<span>          fill <span class="op">=</span> <span class="st">"antiquewhite"</span>, inherit.aes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/add_glyph_boxes.html">add_glyph_boxes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#CD5C08"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/add_ref_lines.html">add_ref_lines</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#CD5C08"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_glyph_segment.html">geom_glyph_segment</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#CD5C08"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">140</span>,<span class="fl">153</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/theme_glyph.html">theme_glyph</a></span><span class="op">(</span><span class="op">)</span> </span>
+<span><span class="co"># Interactive plot using ggiraph</span></span>
+<span><span class="fu">girafe</span><span class="op">(</span>ggobj <span class="op">=</span> <span class="va">temp</span><span class="op">)</span></span></code></pre></div>
+<p><img src="../reference/figures/girafe-screenshot.jpg"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

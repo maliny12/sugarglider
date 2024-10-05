@@ -38,7 +38,7 @@ The `sugarglider` package extends the capabilities of ggplot2 by introducing fun
 
 The structure of glyph maps in `sugarglider` consists of four main layers: the base map, glyph boxes, reference lines, and ribbon or segment glyphs. Additionally, users can create a legend, adding an extra layer to the glyph maps. Apart from the base map, sugarglider offers functionalities to generate all the elements of a comprehensive glyph map, as illustrated in the figure below.
 
-![](../man/figures/glyphmap-layers.png)
+![](../man/figures/glyphmap-layer.png)
 Each layer can be plotted independently, and the package supports the creation of glyph plots using either ribbon or segment geometries. The core functionality includes:
 
 * `geom_glyph_ribbon()`:  Displays an interval on the y-axis for each *x_minor* value, with the bounds defined by *ymin_minor* and *ymax_minor*. This function draws ribbon geometry using `geom_ribbon()` from ggplot2 to draw ribbon geometry, resulting in ribbon glyphs. Each glyph is plotted based on the combination of *x_major* and *y_major* coordinates. This functionality is particularly useful for visualizing ranges or uncertainties in the data.
@@ -131,19 +131,19 @@ Additionally, the width and height of the glyphs are adjustable, allowing users 
 |`y_scale`      | `"identity"`          | This function scales each set of minor values within a grid cell along the y-dimension.
 |`width`         | `default`          |  The width of each glyph. The `default` is set to the smallest distance between two consecutive coordinates, converted from meters to degrees of latitude using the Haversine method.
 |`height`     | `default`     | The height of each glyph. The `default` is calculated using the ratio (1:1.618) relative to the `width`, to maintain a consistent aspect ratio.
-|`global_rescale`      | `TRUE`        | Determines whether rescaling is applied globally across all glyphs or individually for each glyph
+|`global_rescale`      | `TRUE`        | Determines whether rescaling is applied globally across all glyphs or individually for each glyph.
 
-## Interactivity
+# Interactivity
 
-Interactive graphics are particularly useful when working with spatio-temporal data as they allow users to explore the data from multiple perspectives. The [cubble](https://huizezhang-sherry.github.io/cubble/articles/cb6interactive.html) package exemplifies this by creating linked interactive plots using `crosswalk::bscols()`. In this vignette, we will demonstrate how to create interactive glyph maps using Leaflet and ggiraph.
+Interactive graphics are particularly useful when working with spatio-temporal data as they allow users to explore the data from multiple perspectives. The `cubble` package, exemplifies this by creating linked interactive plots using `crosswalk::bscols()` (@JSSv110i07). In this paper, we will demonstrate how to create interactive glyph maps using Leaflet.
 
-### Create glyph maps with leaflet
+# Create glyph maps with leaflet
 
-The dataset used in this example, `train`, provides a comprehensive monthly summary of hourly patronage at each train station in Victoria for the fiscal year 2023-2024. To create interactive glyph maps with Leaflet, we first need to save each glyph as a PNG and then add these to the Leaflet basemap as icons. The process starts by creating a list of unique train stations, then iterates through each station to generate ribbon glyphs using `geom_glyph_ribbon()`, `add_glyph_boxes()` and `add_ref_lines()`. Each glyph is saved in PNG format, and the file paths for all the PNGs are stored in an object for the next step.
-
+The dataset used in this example, `train`, provides a comprehensive monthly summary of daily patronage at each train station in Victoria for the fiscal year 2023-2024. To create interactive glyph maps with Leaflet, we first need to save each glyph as a PNG and then add these to the Leaflet basemap as icons. The process begins by creating a list of all unique train stations that service both metro and vline. We then iterate over each station and generate ribbon glyphs using `geom_glyph_ribbon()`, `add_glyph_boxes()` and `add_ref_lines()`. Each glyph is saved in PNG format, and the file paths for all the PNGs are stored in an object for the next step.
 
 ```{r, eval=FALSE}
-# Generate a list of unique train stations 
+
+# Generate a list of unique train stations
 df_station <- train$station_name |> unique()
 
 # Generate PNG of all the ribbon glyph
@@ -151,20 +151,21 @@ purrr::map(1:length(df_station), function(i) {
   dt <- train |> filter(station_name == df_station[i])
   p <- dt |>
   ggplot(aes(x_major = long, y_major = lat,
-                   x_minor = hour, ymin_minor = min_weekday,
-                   ymax_minor = max_weekday)) +
-    add_glyph_boxes(color = "#ffc40d", 
-                    fill = "#eff4ff", alpha = 0.5,
-                    linewidth = 2, width = 3, height  =2) +
-    add_ref_lines(color = "#ffc40d", alpha = 1,
-                  linewidth = 2, width = 3, height  =2) +
-    geom_glyph_ribbon(color = "#2b5797", fill = "#2b5797",
+                   x_minor = month_year, ymin_minor = min_monthly,
+                   ymax_minor = max_monthly)) +
+    add_glyph_boxes(color = "#FFAD60", 
+                    fill = "#FFEEAD", alpha = 0.5,
+                    linewidth = 1, width = 3, height  =2) +
+    add_ref_lines(color = "#FFAD60", alpha = 1,
+                  linewidth = 1, width = 3, height  =2) +
+    geom_glyph_ribbon(color = "#A66E38", fill = "#A66E38",
                       width = 3, height  =2) +
     theme_void() 
   
-  file_path <- paste0("../man/figures/glyph_", df_station[i], ".png")
-  ggsave(file_path, plot = p, width = 3, height = 2, units = "in",
-         path = "../man/figures")
+  file_path <- paste0("figures/glyph_", df_station[i], ".png")
+  ggsave(file_path, plot = p, width = 3, height = 2, units = "in", dpi = 300,
+         bg = "transparent")
+  return(file_path)
 
   }) -> train_png 
 
@@ -197,9 +198,43 @@ leaflet_map
 
 ![](../man/figures/leaflet-screenshot.jpg)
 
+# Create interative glyph maps with ggiraph
+
+User can generate interactive glyphs with `ggiraph::girafe` using sugarglider. To illustrate, we will use the `aus_temp` dataset in this example. First, users need to specify tooltips, which are the details displayed when hovering over the glyphs. In this example, the tooltips consist of station id, month, minimum and maximum temperature across all month. 
+
+```{r, eval=FALSE}
+vic_nsw <- aus_temp |>
+  filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143",
+                   "ASN00055325", "ASN00049000"))
+# Specify tooltip for ggiraph 
+vic_nsw <- vic_nsw |>
+  mutate(tooltip = paste("Station ID: ", id,
+                         "\nmonth: ", month,
+                         "\nmin-temp: ", round(tmin,2),
+                         "\nmax-temp: ", round(tmax,2)))
+```
 
 
+Tooltips needs to be provided in the asethetic to in the `tooltip` argument. User can then plot their desired glyph map and save it as a ggplot object. This ggplot object is then converted into girafe object using the `girafe()` function. 
 
+```{r, eval=FALSE}
+temp <- vic_nsw |> 
+  ggplot(aes(x_major = long, y_major = lat,
+             x_minor = month, y_minor = tmin,
+             yend_minor = tmax,
+             tooltip = tooltip)) + 
+  geom_sf(data = abs_ste |> filter(NAME %in% c("New South Wales", "Victoria")),
+          color = "white",
+          fill = "antiquewhite", inherit.aes = FALSE) +
+  add_glyph_boxes(color = "#CD5C08") +
+  add_ref_lines(color = "#CD5C08") +
+  geom_glyph_segment(color = "#CD5C08") +
+  coord_sf(xlim = c(140,153)) +
+  theme_glyph() 
+# Interactive plot using ggiraph
+girafe(ggobj = temp)
+```
 
+![](../man/figures/girafe-screenshot.jpg)
 
 

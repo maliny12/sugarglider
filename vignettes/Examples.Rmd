@@ -224,40 +224,6 @@ legend
 
 ```
 
-### Create interactive glyph maps with ggiraph
-
-User can generate interactive glyphs with `ggiraph::girafe` using sugarglider. To illustrate, we will use the `aus_temp` dataset in this example. First, users need to specify tooltips, which are the details displayed when hovering over the glyphs. In this example, the tooltips consist of station id, month, minimum and maximum temperature across all month.
-
-Tooltips needs to be provided in the aesthetic to in the `tooltip` argument. User can then plot their desired glyph map and save it as a ggplot object. This ggplot object is then converted into girafe object using the `girafe()` function. 
-
-```{r, eval=FALSE}
-# Specify tooltip for ggiraph 
-vic_nsw <- vic_nsw |>
-  mutate(tooltip = paste("Station ID: ", id,
-                         "\nmonth: ", month,
-                         "\nmin-temp: ", round(tmin,2),
-                         "\nmax-temp: ", round(tmax,2)))
-
-temp <- vic_nsw |> 
-  ggplot(aes(x_major = long, y_major = lat,
-             x_minor = month, y_minor = tmin,
-             yend_minor = tmax,
-             tooltip = tooltip)) + 
-  geom_sf(data = abs_ste |> filter(NAME %in% c("New South Wales", "Victoria")),
-          color = "white",
-          fill = "antiquewhite", inherit.aes = FALSE) +
-  add_glyph_boxes(color = "#CD5C08") +
-  add_ref_lines(color = "#CD5C08") +
-  geom_glyph_segment(color = "#CD5C08") +
-  coord_sf(xlim = c(140,153)) +
-  theme_glyph() 
-
-# Interactive plot using ggiraph
-girafe(ggobj = temp)
-```
-
-![](../man/figures/girafe-screenshot.jpg)
-
 #### Observations and Insights
 
 Both the Geom Glyph Segment and Geom Glyph Ribbon provide valuable insights into seasonal temperature trends across Australia. Disabling global rescaling reveals that most weather stations follow similar curvature trends relative to their neighboring stations. However, with global rescaling enabled, it becomes apparent that coastal regions exhibit far less temperature variation overall.
