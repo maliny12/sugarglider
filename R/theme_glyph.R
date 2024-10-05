@@ -10,9 +10,9 @@
 #' @details This theme includes:
 #' \itemize{
 #'   \item Legend positioned inside the plot, at the bottom left corner.
-#'   \item Horizontal legend direction with `monospace` font for text.
-#'   \item Centered plot titles with bold, `monospace` font.
-#'   \item `monospace` fonts for subtitles and captions.
+#'   \item Horizontal legend direction with `mono` font for text.
+#'   \item Centered plot titles with bold, `mono` font.
+#'   \item `mono` fonts for subtitles and captions.
 #'   \item White background for both the panel and plot.
 #' }
 #'

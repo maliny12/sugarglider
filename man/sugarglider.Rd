@@ -23,7 +23,7 @@ Also see the vignette for more usage examples:
 
 \code{browseVignettes("sugarglider")}
 
-Please report issues and suggest improvements at Github:
+Please report issues and suggest improvements at GitHub:
 
 \url{https://maliny12.github.io/sugarglider/}
 }

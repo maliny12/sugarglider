@@ -121,7 +121,7 @@ The functions `add_ref_box()`, `add_ref_line()`, and `add_geom_legend()` are com
 
 Options within the `sugarglider` package allow you to tailor the behavior of your visualizations to meet the specific needs of your analysis. The *global_rescale* argument provides control over whether rescaling should occur globally across all data points or be handled individually for each glyph.
 
-`sugarglider` also offers a variety of customizable features to enhance the flexibility and precision of visualizations. For example, it facilitates the scaling of minor values within the glyph along both the x and y axes. Users can specify their own rescale function by replacing *"identity"* with a custom function in *x_scale* and *y_scale*. If a user wishes to modify the rescaling function on only one axis, they can replace the value of the corresponding parameter with their chosen function and retain "identity" for the other. In this package, "identity" rescales the minor axes to an interval of [-1,1]. The impact of rescaling on glyphs and its implications for visual interpretation will be thoroughly discussed in the upcoming section.
+`sugarglider` also offers a variety of customizable features to enhance the flexibility and precision of visualizations. For example, it facilitates the scaling of minor values within the glyph along both the x and y axes. Users can specify their own rescale function by replacing *"identity"* with a custom function in *x_scale* and *y_scale*. If a user wishes to modify the rescaling function on only one axis, they can replace the value of the corresponding parameter with their chosen function and retain "identity" for the other. In this package, "identity" rescale the minor axes to an interval of [-1,1]. The impact of rescaling on glyphs and its implications for visual interpretation will be thoroughly discussed in the upcoming section.
 
 Additionally, the width and height of the glyphs are adjustable, allowing users to modify the appearance of each glyph to match the dimensions and scaling of the data being visualized. These customization options ensure that sugarglider can adapt to a broad range of data types and requirements, making it a versatile tool for seasonal spatiotemporal data visualization.
 
@@ -196,48 +196,6 @@ leaflet_map
 ```
 
 ![](../man/figures/leaflet-screenshot.jpg)
-
-### Create interative glyph maps with ggiraph
-
-User can generate interactive glyphs with `ggiraph::girafe` using sugarglider. To illustrate, we will use the `aus_temp` dataset in this example. First, users need to specify tooltips, which are the details displayed when hovering over the glyphs. In this example, the tooltips consist of station id, month, minimum and maximum temperature across all month. 
-
-```{r, eval=FALSE}
-
-vic_nsw <- aus_temp |>
-  filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143",
-                   "ASN00055325", "ASN00049000"))
-
-
-# Specify tooltip for ggiraph 
-vic_nsw <- vic_nsw |>
-  mutate(tooltip = paste("Station ID: ", id,
-                         "\nmonth: ", month,
-                         "\nmin-temp: ", round(tmin,2),
-                         "\nmax-temp: ", round(tmax,2)))
-```
-
-Tooltips needs to be provided in the asethetic to in the `tooltip` argument. User can then plot their desired glyph map and save it as a ggplot object. This ggplot object is then converted into girafe object using the `girafe()` function. 
-
-```{r, eval=FALSE}
-temp <- vic_nsw |> 
-  ggplot(aes(x_major = long, y_major = lat,
-             x_minor = month, y_minor = tmin,
-             yend_minor = tmax,
-             tooltip = tooltip)) + 
-  geom_sf(data = abs_ste |> filter(NAME %in% c("New South Wales", "Victoria")),
-          color = "white",
-          fill = "antiquewhite", inherit.aes = FALSE) +
-  add_glyph_boxes(color = "#CD5C08") +
-  add_ref_lines(color = "#CD5C08") +
-  geom_glyph_segment(color = "#CD5C08") +
-  coord_sf(xlim = c(140,153)) +
-  theme_glyph() 
-
-# Interactive plot using ggiraph
-girafe(ggobj = temp)
-```
-
-![](../man/figures/girafe-screenshot.jpg)
 
 
 

@@ -260,7 +260,7 @@ set of minor values within a grid cell. This method centers the glyphs
 both vertically and horizontally based on the station’s coordinates and
 adjusts the minor axes to fit within the interval [-1, 1]. This ensures
 that the glyphs are appropriately sized to fit the desired dimensions.
-In this example, we wil also be specifying the size of the glyph by
+In this example, we will also be specifying the size of the glyph by
 specifying the size of the width and height of the glyph.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
@@ -433,7 +433,7 @@ with each year distinguished by a different color for clarity.</p>
 one of the glyphs into the bottom left corner of the plot. This legend
 helps users interpret the scale of the data.</p>
 <p>In the example below, a series of glyph are created using
-<code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> and overlaid on a basemap to depict
+<code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> and overlaid on a base map to depict
 daily temperature variations across Australian weather stations. A
 legend is added through <code><a href="../reference/add_glyph_legend.html">add_glyph_legend()</a></code>, allowing users
 to easily interpret the range of daily temperature value based on a
@@ -459,6 +459,45 @@ for reproducibility to ensure consistent results.</p>
 <span><span class="va">legend</span></span></code></pre></div>
 <p><img src="Examples_files/figure-html/unnamed-chunk-7-1.png" width="960"></p>
 </div>
+</div>
+<div class="section level3">
+<h3 id="create-interactive-glyph-maps-with-ggiraph">Create interactive glyph maps with ggiraph<a class="anchor" aria-label="anchor" href="#create-interactive-glyph-maps-with-ggiraph"></a>
+</h3>
+<p>User can generate interactive glyphs with
+<code><a href="https://davidgohel.github.io/ggiraph/reference/girafe.html" class="external-link">ggiraph::girafe</a></code> using sugarglider. To illustrate, we will
+use the <code>aus_temp</code> dataset in this example. First, users need
+to specify tooltips, which are the details displayed when hovering over
+the glyphs. In this example, the tooltips consist of station id, month,
+minimum and maximum temperature across all month.</p>
+<p>Tooltips needs to be provided in the aesthetic to in the
+<code>tooltip</code> argument. User can then plot their desired glyph
+map and save it as a ggplot object. This ggplot object is then converted
+into girafe object using the <code>girafe()</code> function.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Specify tooltip for ggiraph </span></span>
+<span><span class="va">vic_nsw</span> <span class="op">&lt;-</span> <span class="va">vic_nsw</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>tooltip <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Station ID: "</span>, <span class="va">id</span>,</span>
+<span>                         <span class="st">"\nmonth: "</span>, <span class="va">month</span>,</span>
+<span>                         <span class="st">"\nmin-temp: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">tmin</span>,<span class="fl">2</span><span class="op">)</span>,</span>
+<span>                         <span class="st">"\nmax-temp: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">tmax</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">temp</span> <span class="op">&lt;-</span> <span class="va">vic_nsw</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x_major <span class="op">=</span> <span class="va">long</span>, y_major <span class="op">=</span> <span class="va">lat</span>,</span>
+<span>             x_minor <span class="op">=</span> <span class="va">month</span>, y_minor <span class="op">=</span> <span class="va">tmin</span>,</span>
+<span>             yend_minor <span class="op">=</span> <span class="va">tmax</span>,</span>
+<span>             tooltip <span class="op">=</span> <span class="va">tooltip</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">abs_ste</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">NAME</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"New South Wales"</span>, <span class="st">"Victoria"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>          color <span class="op">=</span> <span class="st">"white"</span>,</span>
+<span>          fill <span class="op">=</span> <span class="st">"antiquewhite"</span>, inherit.aes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/add_glyph_boxes.html">add_glyph_boxes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#CD5C08"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/add_ref_lines.html">add_ref_lines</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#CD5C08"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/geom_glyph_segment.html">geom_glyph_segment</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#CD5C08"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">coord_sf</a></span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">140</span>,<span class="fl">153</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/theme_glyph.html">theme_glyph</a></span><span class="op">(</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Interactive plot using ggiraph</span></span>
+<span><span class="fu">girafe</span><span class="op">(</span>ggobj <span class="op">=</span> <span class="va">temp</span><span class="op">)</span></span></code></pre></div>
+<p><img src="../reference/figures/girafe-screenshot.jpg"></p>
 <div class="section level4">
 <h4 id="observations-and-insights">Observations and Insights<a class="anchor" aria-label="anchor" href="#observations-and-insights"></a>
 </h4>

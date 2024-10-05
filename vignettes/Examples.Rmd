@@ -47,7 +47,7 @@ head(aus_temp) |>
 
 Using the default rescaling parameters, we can visualize the temperature data through `geom_glyph_segment()`, alongside `geom_point()` elements that mark the location of each weather station. Each segment glyph represents local climate data, offering an intuitive way to explore temperature variations across Australia.
 
-The default `identity` scaling function is applied to each set of minor values within a grid cell. This method centers the glyphs both vertically and horizontally based on the station's coordinates and adjusts the minor axes to fit within the interval [-1, 1]. This ensures that the glyphs are appropriately sized to fit the desired dimensions. In this example, we wil also be specifying the size of the glyph by specifying the size of the width and height of the glyph. 
+The default `identity` scaling function is applied to each set of minor values within a grid cell. This method centers the glyphs both vertically and horizontally based on the station's coordinates and adjusts the minor axes to fit within the interval [-1, 1]. This ensures that the glyphs are appropriately sized to fit the desired dimensions. In this example, we will also be specifying the size of the glyph by specifying the size of the width and height of the glyph. 
 
 ```{r}
 aus_temp |>
@@ -202,7 +202,7 @@ fact
 
 To further enhance map readability, the `add_geom_legend()` function integrates a larger version of one of the glyphs into the bottom left corner of the plot. This legend helps users interpret the scale of the data. 
 
-In the example below, a series of glyph are created using `geom_glyph_ribbon()` and overlaid on a basemap to depict daily temperature variations across Australian weather stations. A legend is added through `add_glyph_legend()`, allowing users to easily interpret the range of daily temperature value based on a randomly selected weather station. Since the legend data is drawn from a single, randomly chosen station, it's important for users to set a seed for reproducibility to ensure consistent results.
+In the example below, a series of glyph are created using `geom_glyph_ribbon()` and overlaid on a base map to depict daily temperature variations across Australian weather stations. A legend is added through `add_glyph_legend()`, allowing users to easily interpret the range of daily temperature value based on a randomly selected weather station. Since the legend data is drawn from a single, randomly chosen station, it's important for users to set a seed for reproducibility to ensure consistent results.
 
 ```{r, fig.height=6}
 set.seed(28493)
@@ -223,6 +223,40 @@ legend <- aus_temp |>
 legend
 
 ```
+
+### Create interactive glyph maps with ggiraph
+
+User can generate interactive glyphs with `ggiraph::girafe` using sugarglider. To illustrate, we will use the `aus_temp` dataset in this example. First, users need to specify tooltips, which are the details displayed when hovering over the glyphs. In this example, the tooltips consist of station id, month, minimum and maximum temperature across all month.
+
+Tooltips needs to be provided in the aesthetic to in the `tooltip` argument. User can then plot their desired glyph map and save it as a ggplot object. This ggplot object is then converted into girafe object using the `girafe()` function. 
+
+```{r, eval=FALSE}
+# Specify tooltip for ggiraph 
+vic_nsw <- vic_nsw |>
+  mutate(tooltip = paste("Station ID: ", id,
+                         "\nmonth: ", month,
+                         "\nmin-temp: ", round(tmin,2),
+                         "\nmax-temp: ", round(tmax,2)))
+
+temp <- vic_nsw |> 
+  ggplot(aes(x_major = long, y_major = lat,
+             x_minor = month, y_minor = tmin,
+             yend_minor = tmax,
+             tooltip = tooltip)) + 
+  geom_sf(data = abs_ste |> filter(NAME %in% c("New South Wales", "Victoria")),
+          color = "white",
+          fill = "antiquewhite", inherit.aes = FALSE) +
+  add_glyph_boxes(color = "#CD5C08") +
+  add_ref_lines(color = "#CD5C08") +
+  geom_glyph_segment(color = "#CD5C08") +
+  coord_sf(xlim = c(140,153)) +
+  theme_glyph() 
+
+# Interactive plot using ggiraph
+girafe(ggobj = temp)
+```
+
+![](../man/figures/girafe-screenshot.jpg)
 
 #### Observations and Insights
 

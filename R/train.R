@@ -1,8 +1,8 @@
 #' Hourly Train Station Patronage 2023-2024
 #'
-#' This dataset provides a comprehensive hourly summary of patronage at each
+#' This data set provides a comprehensive hourly summary of patronage at each
 #' train station in Victoria for the fiscal year 2023-2024. The number of patronage is definded by the
-#' total number of boardings and alightings at each station. This dataset includes detailed breakdowns by day types
+#' total number of boarding and alighting at each station. This data set includes detailed breakdowns by day types
 #' such as weekdays, weekends, and holidays (including school and public holidays). Note the influence of station
 #' closures which may skew or omit data on particular days.
 #'
