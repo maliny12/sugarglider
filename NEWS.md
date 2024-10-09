@@ -1,3 +1,5 @@
+# sugarglider 1.0.2
+
 sugarglider (development version)
 ===================================
 
