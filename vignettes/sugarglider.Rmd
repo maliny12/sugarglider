@@ -135,7 +135,7 @@ Additionally, the width and height of the glyphs are adjustable, allowing users 
 
 # Interactivity
 
-Interactive graphics are particularly useful when working with spatio-temporal data as they allow users to explore the data from multiple perspectives. The `cubble` package, exemplifies this by creating linked interactive plots using `crosswalk::bscols()` (@JSSv110i07). In this paper, we will demonstrate how to create interactive glyph maps using Leaflet.
+Interactive graphics are particularly useful when working with spatio-temporal data as they allow users to explore the data from multiple perspectives. The `cubble` package, exemplifies this by creating linked interactive plots using `crosswalk::bscols()`. In this vignette, we will demonstrate how to create interactive glyph maps using Leaflet.
 
 # Create glyph maps with leaflet
 
