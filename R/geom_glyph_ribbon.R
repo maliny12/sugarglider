@@ -361,6 +361,7 @@ GeomGlyphLegend <- ggplot2::ggproto(
 glyph_setup_data <- function(data, params,...) {
 
   arg <- list(...)
+  browser()
 
   if (!inherits(data$x_minor, c("Date", "yearmonth", "numeric", "factor",
                                 "yearweek", "yearquarter", "yearqtr",
@@ -372,11 +373,10 @@ glyph_setup_data <- function(data, params,...) {
 
   # Ensure geom draws each glyph as a distinct path
   if (dplyr::n_distinct(data$group) == 1 ||
-      (inherits(data$x_minor, "factor") && !any(c("color", "fill") %in% names(data)))) {
+      (inherits(data$x_minor, "factor") && !any(c("colour", "color", "fill") %in% names(data)))) {
     data$group <- as.integer(factor(paste(data$x_major, data$y_major)))
     data <- data |>  dplyr::group_by(.data$group)
   }
-
 
   # Convert minor axis to numeric
   if (!is.numeric(data$x_minor)){

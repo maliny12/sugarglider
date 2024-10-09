@@ -120,6 +120,354 @@ The list can contain the following components:</p><dl><dt>plot.title</dt>
 <span class="r-in"><span> <span class="fu"><a href="geom_glyph_ribbon.html">geom_glyph_ribbon</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span> <span class="fu">theme_glyph</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="theme_glyph-1.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Called from: glyph_setup_data(data, params, ...)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!inherits(data$x_minor, c("Date", "yearmonth", "numeric", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "factor", "yearweek", "yearquarter", "yearqtr", "POSIXct", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "POSIXlt"))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     stop("Error: Unsupported class for x_minor. Supported classes are Date,\n         yearmonth, numeric, factor, yearweek, yearquarter, yearqtr, POSIXct, and POSIXlt.")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (dplyr::n_distinct(data$group) == 1 || (inherits(data$x_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "factor") &amp;&amp; !any(c("colour", "color", "fill") %in% names(data)))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data$group &lt;- as.integer(factor(paste(data$x_major, data$y_major)))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::group_by(data, .data$group)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data$group &lt;- as.integer(factor(paste(data$x_major, data$y_major)))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- dplyr::group_by(data, .data$group)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!is.numeric(data$x_minor)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["x_minor"]] &lt;- as.numeric(data[["x_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["y_minor"]] &lt;- as.numeric(data[["y_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["yend_minor"]] &lt;- as.numeric(data[["yend_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["ymin_minor"]] &lt;- as.numeric(data[["ymin_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["ymax_minor"]] &lt;- as.numeric(data[["ymax_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data[["ymin_minor"]] &lt;- as.numeric(data[["ymin_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data[["ymax_minor"]] &lt;- as.numeric(data[["ymax_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (any(is.na(data))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     warning(paste("Removed rows containing missing values"))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- na.omit(data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (custom_scale(params$x_scale)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x_scale &lt;- get_scale(params$x_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, x_minor = x_scale(.data$x_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (custom_scale(params$y_scale)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         y_scale &lt;- get_scale(params$y_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, y_minor = y_scale(.data$y_minor), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             yend_minor = y_scale(.data$yend_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         y_scale &lt;- get_scale(params$y_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, ymin_minor = y_scale(.data$ymin_minor), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ymax_minor = y_scale(.data$ymax_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(params$global_rescale)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::ungroup(data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$legend)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::select(dplyr::filter(dplyr::mutate(data, com = interaction(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$y_major)), com == sample(com, 1)), -com)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, y_minor = rescale11y(y_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             yend_minor)[[1]], yend_minor = rescale11y(y_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             yend_minor)[[2]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- tidyr::pivot_wider(dplyr::select(dplyr::mutate(tidyr::pivot_longer(data, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             cols = c("ymin_minor", "ymax_minor"), names_to = "type", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             values_to = "value"), scaled_data = rescale(value)), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             -value), names_from = "type", values_from = "scaled_data")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rescale(.data$x_minor), params$width), xend = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rescale(.data$x_minor), params$width), y = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$y_minor, params$height), yend = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$yend_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rescale(.data$x_minor), params$width), ymin = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$ymin_minor, params$height), ymax = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$ymax_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, y_minor = rescale11y(y_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         yend_minor)[[1]], yend_minor = rescale11y(y_minor, yend_minor)[[2]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- tidyr::pivot_wider(dplyr::select(dplyr::mutate(tidyr::pivot_longer(data, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         cols = c("ymin_minor", "ymax_minor"), names_to = "type", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         values_to = "value"), scaled_data = rescale(value)), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         -value), names_from = "type", values_from = "scaled_data")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- tidyr::pivot_wider(dplyr::select(dplyr::mutate(tidyr::pivot_longer(data, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     cols = c("ymin_minor", "ymax_minor"), names_to = "type", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     values_to = "value"), scaled_data = rescale(value)), -value), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     names_from = "type", values_from = "scaled_data")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         rescale(.data$x_minor), params$width), xend = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         rescale(.data$x_minor), params$width), y = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$y_minor, params$height), yend = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$yend_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         rescale(.data$x_minor), params$width), ymin = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$ymin_minor, params$height), ymax = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$ymax_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     rescale(.data$x_minor), params$width), ymin = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     .data$ymin_minor, params$height), ymax = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     .data$ymax_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!("linewidth" %in% colnames(data))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data$linewidth &lt;- 0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data$linewidth &lt;- 0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: dplyr::ungroup(data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Called from: glyph_setup_data(data, params, ...)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!inherits(data$x_minor, c("Date", "yearmonth", "numeric", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "factor", "yearweek", "yearquarter", "yearqtr", "POSIXct", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "POSIXlt"))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     stop("Error: Unsupported class for x_minor. Supported classes are Date,\n         yearmonth, numeric, factor, yearweek, yearquarter, yearqtr, POSIXct, and POSIXlt.")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (dplyr::n_distinct(data$group) == 1 || (inherits(data$x_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "factor") &amp;&amp; !any(c("colour", "color", "fill") %in% names(data)))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data$group &lt;- as.integer(factor(paste(data$x_major, data$y_major)))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::group_by(data, .data$group)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data$group &lt;- as.integer(factor(paste(data$x_major, data$y_major)))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- dplyr::group_by(data, .data$group)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!is.numeric(data$x_minor)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["x_minor"]] &lt;- as.numeric(data[["x_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["y_minor"]] &lt;- as.numeric(data[["y_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["yend_minor"]] &lt;- as.numeric(data[["yend_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["ymin_minor"]] &lt;- as.numeric(data[["ymin_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["ymax_minor"]] &lt;- as.numeric(data[["ymax_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data[["ymin_minor"]] &lt;- as.numeric(data[["ymin_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data[["ymax_minor"]] &lt;- as.numeric(data[["ymax_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (any(is.na(data))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     warning(paste("Removed rows containing missing values"))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- na.omit(data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (custom_scale(params$x_scale)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x_scale &lt;- get_scale(params$x_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, x_minor = x_scale(.data$x_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (custom_scale(params$y_scale)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         y_scale &lt;- get_scale(params$y_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, y_minor = y_scale(.data$y_minor), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             yend_minor = y_scale(.data$yend_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         y_scale &lt;- get_scale(params$y_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, ymin_minor = y_scale(.data$ymin_minor), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ymax_minor = y_scale(.data$ymax_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(params$global_rescale)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::ungroup(data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$legend)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::select(dplyr::filter(dplyr::mutate(data, com = interaction(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$y_major)), com == sample(com, 1)), -com)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, y_minor = rescale11y(y_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             yend_minor)[[1]], yend_minor = rescale11y(y_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             yend_minor)[[2]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- tidyr::pivot_wider(dplyr::select(dplyr::mutate(tidyr::pivot_longer(data, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             cols = c("ymin_minor", "ymax_minor"), names_to = "type", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             values_to = "value"), scaled_data = rescale(value)), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             -value), names_from = "type", values_from = "scaled_data")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rescale(.data$x_minor), params$width), xend = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rescale(.data$x_minor), params$width), y = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$y_minor, params$height), yend = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$yend_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rescale(.data$x_minor), params$width), ymin = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$ymin_minor, params$height), ymax = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$ymax_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, y_minor = rescale11y(y_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         yend_minor)[[1]], yend_minor = rescale11y(y_minor, yend_minor)[[2]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- tidyr::pivot_wider(dplyr::select(dplyr::mutate(tidyr::pivot_longer(data, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         cols = c("ymin_minor", "ymax_minor"), names_to = "type", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         values_to = "value"), scaled_data = rescale(value)), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         -value), names_from = "type", values_from = "scaled_data")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- tidyr::pivot_wider(dplyr::select(dplyr::mutate(tidyr::pivot_longer(data, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     cols = c("ymin_minor", "ymax_minor"), names_to = "type", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     values_to = "value"), scaled_data = rescale(value)), -value), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     names_from = "type", values_from = "scaled_data")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         rescale(.data$x_minor), params$width), xend = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         rescale(.data$x_minor), params$width), y = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$y_minor, params$height), yend = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$yend_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         rescale(.data$x_minor), params$width), ymin = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$ymin_minor, params$height), ymax = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$ymax_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     rescale(.data$x_minor), params$width), ymin = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     .data$ymin_minor, params$height), ymax = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     .data$ymax_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!("linewidth" %in% colnames(data))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data$linewidth &lt;- 0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data$linewidth &lt;- 0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: dplyr::ungroup(data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Called from: glyph_setup_data(data, params)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!inherits(data$x_minor, c("Date", "yearmonth", "numeric", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "factor", "yearweek", "yearquarter", "yearqtr", "POSIXct", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "POSIXlt"))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     stop("Error: Unsupported class for x_minor. Supported classes are Date,\n         yearmonth, numeric, factor, yearweek, yearquarter, yearqtr, POSIXct, and POSIXlt.")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (dplyr::n_distinct(data$group) == 1 || (inherits(data$x_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "factor") &amp;&amp; !any(c("colour", "color", "fill") %in% names(data)))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data$group &lt;- as.integer(factor(paste(data$x_major, data$y_major)))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::group_by(data, .data$group)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data$group &lt;- as.integer(factor(paste(data$x_major, data$y_major)))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- dplyr::group_by(data, .data$group)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!is.numeric(data$x_minor)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["x_minor"]] &lt;- as.numeric(data[["x_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["y_minor"]] &lt;- as.numeric(data[["y_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["yend_minor"]] &lt;- as.numeric(data[["yend_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["ymin_minor"]] &lt;- as.numeric(data[["ymin_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data[["ymax_minor"]] &lt;- as.numeric(data[["ymax_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data[["ymin_minor"]] &lt;- as.numeric(data[["ymin_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data[["ymax_minor"]] &lt;- as.numeric(data[["ymax_minor"]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (any(is.na(data))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     warning(paste("Removed rows containing missing values"))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- na.omit(data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (custom_scale(params$x_scale)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     x_scale &lt;- get_scale(params$x_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, x_minor = x_scale(.data$x_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: x_scale &lt;- get_scale(params$x_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- dplyr::mutate(data, x_minor = x_scale(.data$x_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (custom_scale(params$y_scale)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         y_scale &lt;- get_scale(params$y_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, y_minor = y_scale(.data$y_minor), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             yend_minor = y_scale(.data$yend_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         y_scale &lt;- get_scale(params$y_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, ymin_minor = y_scale(.data$ymin_minor), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ymax_minor = y_scale(.data$ymax_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     y_scale &lt;- get_scale(params$y_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, y_minor = y_scale(.data$y_minor), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         yend_minor = y_scale(.data$yend_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     y_scale &lt;- get_scale(params$y_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, ymin_minor = y_scale(.data$ymin_minor), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         ymax_minor = y_scale(.data$ymax_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: y_scale &lt;- get_scale(params$y_scale)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- dplyr::mutate(data, ymin_minor = y_scale(.data$ymin_minor), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ymax_minor = y_scale(.data$ymax_minor))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(params$global_rescale)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::ungroup(data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- dplyr::ungroup(data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$legend)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::select(dplyr::filter(dplyr::mutate(data, com = interaction(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$y_major)), com == sample(com, 1)), -com)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, y_minor = rescale11y(y_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             yend_minor)[[1]], yend_minor = rescale11y(y_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             yend_minor)[[2]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- tidyr::pivot_wider(dplyr::select(dplyr::mutate(tidyr::pivot_longer(data, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             cols = c("ymin_minor", "ymax_minor"), names_to = "type", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             values_to = "value"), scaled_data = rescale(value)), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             -value), names_from = "type", values_from = "scaled_data")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rescale(.data$x_minor), params$width), xend = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rescale(.data$x_minor), params$width), y = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$y_minor, params$height), yend = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$yend_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rescale(.data$x_minor), params$width), ymin = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$ymin_minor, params$height), ymax = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             .data$ymax_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, y_minor = rescale11y(y_minor, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         yend_minor)[[1]], yend_minor = rescale11y(y_minor, yend_minor)[[2]])</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- tidyr::pivot_wider(dplyr::select(dplyr::mutate(tidyr::pivot_longer(data, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         cols = c("ymin_minor", "ymax_minor"), names_to = "type", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         values_to = "value"), scaled_data = rescale(value)), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         -value), names_from = "type", values_from = "scaled_data")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- tidyr::pivot_wider(dplyr::select(dplyr::mutate(tidyr::pivot_longer(data, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     cols = c("ymin_minor", "ymax_minor"), names_to = "type", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     values_to = "value"), scaled_data = rescale(value)), -value), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     names_from = "type", values_from = "scaled_data")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (isTRUE(arg$segment)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         rescale(.data$x_minor), params$width), xend = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         rescale(.data$x_minor), params$width), y = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$y_minor, params$height), yend = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$yend_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> } else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         rescale(.data$x_minor), params$width), ymin = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$ymin_minor, params$height), ymax = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         .data$ymax_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data &lt;- dplyr::mutate(data, x = glyph_mapping(.data$x_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     rescale(.data$x_minor), params$width), ymin = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     .data$ymin_minor, params$height), ymax = glyph_mapping(.data$y_major, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     .data$ymax_minor, params$height))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!("linewidth" %in% colnames(data))) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     data$linewidth &lt;- 0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: data$linewidth &lt;- 0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> debug: dplyr::ungroup(data)</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
