@@ -361,7 +361,6 @@ GeomGlyphLegend <- ggplot2::ggproto(
 glyph_setup_data <- function(data, params,...) {
 
   arg <- list(...)
-  browser()
 
   if (!inherits(data$x_minor, c("Date", "yearmonth", "numeric", "factor",
                                 "yearweek", "yearquarter", "yearqtr",
