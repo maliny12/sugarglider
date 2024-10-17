@@ -6,7 +6,12 @@
 \usage{
 custom_scale(dx)
 }
+\value{
+A logical value:
+`FALSE` if `dx` is `NULL` (no scaling function provided) or
+`TRUE` if `dx` is not the `identity` function (custom scaling function provided).
+}
 \description{
-Retrieve scaling function
+This function checks whether a custom scaling function (`dx`) has been provided.
 }
 \keyword{internal}

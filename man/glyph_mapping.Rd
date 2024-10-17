@@ -6,6 +6,10 @@
 \usage{
 glyph_mapping(spatial, scaled_value, length)
 }
+\value{
+numeric vector representing the spatio-temporal transformation of minor axes into
+spatial coordinates.
+}
 \description{
 Scaled positional adjustment
 }

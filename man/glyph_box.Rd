@@ -6,6 +6,10 @@
 \usage{
 glyph_box(data, params)
 }
+\value{
+A data frame with additional columns (`xmin`, `xmax`, `ymin`, `ymax`)
+defining the bounding box for each glyph based on the major axes and specified dimensions.
+}
 \description{
 Create reference boxes for glyph plot
 }

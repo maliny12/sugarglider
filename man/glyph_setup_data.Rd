@@ -2,11 +2,15 @@
 % Please edit documentation in R/geom_glyph_ribbon.R
 \name{glyph_setup_data}
 \alias{glyph_setup_data}
-\title{Prepare data for geom_glyph_ribbon}
+\title{Prepare data for ribbon and segment glyph maps}
 \usage{
 glyph_setup_data(data, params, ...)
 }
+\value{
+A processed data frame, where columns are adjusted and rescaled for
+different geometric types, such as `geom_glyph_ribbon()` or `geom_glyph_segment()`.
+}
 \description{
-Prepare data for geom_glyph_ribbon
+Prepare data for ribbon and segment glyph maps
 }
 \keyword{internal}

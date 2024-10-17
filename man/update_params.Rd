@@ -5,8 +5,16 @@
 \title{Defined Glyph dimension}
 \usage{
 update_params(data, params)
+
+update_params(data, params)
+}
+\value{
+A list containing updated `width` and `height` values.
+
+A list containing updated `width` and `height` values.
 }
 \description{
-Defined Glyph dimension
+Adjusts the width and height of glyphs based on the distinct values of
+`x_major` and `y_major` in the data.
 }
 \keyword{internal}

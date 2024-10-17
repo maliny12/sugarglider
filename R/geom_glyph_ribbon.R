@@ -356,7 +356,9 @@ GeomGlyphLegend <- ggplot2::ggproto(
 
 # Helper functions -------------------------------------------------------------
 
-#' Prepare data for geom_glyph_ribbon
+#' Prepare data for ribbon and segment glyph maps
+#' @return A processed data frame, where columns are adjusted and rescaled for
+#' different geometric types, such as `geom_glyph_ribbon()` or `geom_glyph_segment()`.
 #' @keywords internal
 glyph_setup_data <- function(data, params,...) {
 
@@ -496,6 +498,8 @@ glyph_setup_data <- function(data, params,...) {
 }
 
 #' Create reference boxes for glyph plot
+#' @return A data frame with additional columns (`xmin`, `xmax`, `ymin`, `ymax`)
+#' defining the bounding box for each glyph based on the major axes and specified dimensions.
 #' @keywords internal
 glyph_box <- function(data, params) {
   # Code from cubble:
@@ -511,6 +515,8 @@ glyph_box <- function(data, params) {
 }
 
 #' Calculate reference lines for glyph plot
+#' @return A data frame with additional columns (`x`, `y`, `group`) that define
+#' reference lines for each glyph based on the major axes and specified width.
 #' @keywords internal
 ref_line <- function(data, params){
   # Code from cubble:
@@ -525,6 +531,8 @@ ref_line <- function(data, params){
 }
 
 #' Scaled positional adjustment
+#' @return numeric vector representing the spatio-temporal transformation of minor axes into
+#' spatial coordinates.
 #' @keywords internal
 glyph_mapping <- function(spatial, scaled_value, length) {
 
@@ -532,6 +540,7 @@ glyph_mapping <- function(spatial, scaled_value, length) {
 }
 
 #' Convert ggplot2 object into grob
+#' @return A grob (graphical object) converted from a ggplot2 object.
 #' @keywords internal
 glyph_setup_grob <- function(data, panel_params){
 
@@ -584,6 +593,8 @@ glyph_setup_grob <- function(data, panel_params){
 
 
 #' Setup Glyph Data Based on Geometric Plot Type
+#' @return A modified data frame prepared for plotting glyphs, based on the
+#' geometric plot type.
 #' @keywords internal
 configure_glyph_data <- function(data, params,...){
 
@@ -642,6 +653,30 @@ calculate_min_dist <- function(data) {
 }
 
 #' Defined Glyph dimension
+#' @return A list containing updated `width` and `height` values.
+#' @keywords internal
+update_params <- function(data, params) {
+
+  if (dplyr::n_distinct(data$x_major) == 1 &&
+      dplyr::n_distinct(data$y_major) == 1) {
+    params$width <-  rel(3)
+    params$height <- rel(2)
+
+  } else {
+    min_dist <- calculate_min_dist(data)
+    params$width <- ifelse(params$width == "default", min_dist$width, params$width)
+    params$height <- ifelse(params$height == "default", min_dist$height, params$height)
+  }
+
+  return(params)
+}
+
+#' Update Glyph Dimensions
+#'
+#' Adjusts the width and height of glyphs based on the distinct values of
+#' `x_major` and `y_major` in the data.
+#'
+#' @return A list containing updated `width` and `height` values.
 #' @keywords internal
 update_params <- function(data, params) {
 
@@ -663,8 +698,10 @@ update_params <- function(data, params) {
 
 #' Rescale Functions
 #'
-#' Adjust minor axes to to fit within an interval of [-1,1]
-#' #' @param x numeric vector
+#' @param x numeric vector
+#' @return A rescaled numeric vector or list of numeric vectors,
+#' with values adjusted to fit within the interval [-1, 1] or [0, 1],
+#' depending on the function used.
 #' @name rescale
 
 
@@ -710,6 +747,11 @@ rescale11y <- function(y, yend, xlim=NULL) {
 }
 
 #' Retrieve function from global environment
+#'
+#' This function retrieves a function from a list.
+#'
+#' @return The function retrieved either directly from the list or from the global environment.
+#'
 #' @keywords internal
 get_scale <- function(x) {
   stopifnot(is.list(x))
@@ -723,6 +765,13 @@ get_scale <- function(x) {
 
 
 #' Retrieve scaling function
+#'
+#' This function checks whether a custom scaling function (`dx`) has been provided.
+#'
+#' @return A logical value:
+#' `FALSE` if `dx` is `NULL` (no scaling function provided) or
+#' `TRUE` if `dx` is not the `identity` function (custom scaling function provided).
+#'
 #' @keywords internal
 custom_scale <- function(dx){
   if (is.null(dx)){

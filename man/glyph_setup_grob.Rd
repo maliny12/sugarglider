@@ -6,6 +6,9 @@
 \usage{
 glyph_setup_grob(data, panel_params)
 }
+\value{
+A grob (graphical object) converted from a ggplot2 object.
+}
 \description{
 Convert ggplot2 object into grob
 }

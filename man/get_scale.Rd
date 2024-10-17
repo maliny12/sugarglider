@@ -6,7 +6,10 @@
 \usage{
 get_scale(x)
 }
+\value{
+The function retrieved either directly from the list or from the global environment.
+}
 \description{
-Retrieve function from global environment
+This function retrieves a function from a list.
 }
 \keyword{internal}

@@ -86,7 +86,7 @@ geom_glyph_segment <- function(mapping = NULL, data = NULL, stat = "identity",
   )
 }
 
-#' GeomSegmentGlyph-
+#' GeomSegmentGlyph
 #' @format NULL
 #' @usage NULL
 #' @seealso \link[ggplot2]{GeomSegment} from the ggplot2 package.

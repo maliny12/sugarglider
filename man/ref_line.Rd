@@ -6,6 +6,10 @@
 \usage{
 ref_line(data, params)
 }
+\value{
+A data frame with additional columns (`x`, `y`, `group`) that define
+reference lines for each glyph based on the major axes and specified width.
+}
 \description{
 Calculate reference lines for glyph plot
 }

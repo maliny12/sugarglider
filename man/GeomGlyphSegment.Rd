@@ -3,9 +3,9 @@
 \docType{data}
 \name{GeomGlyphSegment}
 \alias{GeomGlyphSegment}
-\title{GeomSegmentGlyph-}
+\title{GeomSegmentGlyph}
 \description{
-GeomSegmentGlyph-
+GeomSegmentGlyph
 }
 \seealso{
 \link[ggplot2]{GeomSegment} from the ggplot2 package.

@@ -6,6 +6,10 @@
 \usage{
 configure_glyph_data(data, params, ...)
 }
+\value{
+A modified data frame prepared for plotting glyphs, based on the
+geometric plot type.
+}
 \description{
 Setup Glyph Data Based on Geometric Plot Type
 }

@@ -12,8 +12,15 @@ rescale01y(y, yend, ylim = NULL)
 
 rescale11y(y, yend, xlim = NULL)
 }
+\arguments{
+\item{x}{numeric vector}
+}
+\value{
+A rescaled numeric vector or list of numeric vectors,
+with values adjusted to fit within the interval [-1, 1] or [0, 1],
+depending on the function used.
+}
 \description{
-Adjust minor axes to to fit within an interval of [-1,1]
-#' @param x numeric vector
+Rescale Functions
 }
 \keyword{internal}
