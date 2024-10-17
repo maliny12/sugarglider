@@ -2,8 +2,8 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Resized figures to reduce the tarball size to below 5 MB.
-* Corrected a typo in the hyperlink in README.Rmd
+* Added return values to internal function documentation.
+* Added a link to the manuscript in the description field.
 
 ## R CMD check results
 

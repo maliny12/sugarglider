@@ -531,7 +531,7 @@ ref_line <- function(data, params){
 }
 
 #' Scaled positional adjustment
-#' @return numeric vector representing the spatio-temporal transformation of minor axes into
+#' @return A numeric vector representing the spatio-temporal transformation of minor axes into
 #' spatial coordinates.
 #' @keywords internal
 glyph_mapping <- function(spatial, scaled_value, length) {

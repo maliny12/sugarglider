@@ -1,7 +1,7 @@
 Package: sugarglider
 Type: Package
 Title: Create Glyph-Maps of Spatiotemporal Data
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: c(
     person("Maliny", "Po", , "malinypo12@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0009-0008-4686-6631")),
@@ -12,7 +12,7 @@ Authors@R: c(
     person("Dianne", "Cook", , "dicook@monash.edu", role = "ctb",
            comment = c(ORCID = "0000-0002-3813-7155"))
   )
-Description: Provides 'ggplot2' extensions to construct glyph-maps for visualizing seasonality in spatiotemporal data. See the Journal of Statistical Software reference: <doi:10.18637/jss.v110.i07>.
+Description: Provides 'ggplot2' extensions to construct glyph-maps for visualizing seasonality in spatiotemporal data. See the Journal of Statistical Software reference: <doi:10.18637/jss.v110.i07>. The manuscript for this package is currently under preparation and can be found on GitHub at https://github.com/maliny12/paper-sugarglider . 
 License: MIT + file LICENSE
 URL: https://maliny12.github.io/sugarglider/, https://github.com/maliny12/sugarglider
 Encoding: UTF-8
