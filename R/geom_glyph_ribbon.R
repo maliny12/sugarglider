@@ -698,7 +698,6 @@ update_params <- function(data, params) {
 
 #' Rescale Functions
 #'
-#' @param x numeric vector
 #' @return A rescaled numeric vector or list of numeric vectors,
 #' with values adjusted to fit within the interval [-1, 1] or [0, 1],
 #' depending on the function used.
