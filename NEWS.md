@@ -1,5 +1,9 @@
 # sugarglider (development version)
 
+# sugarglider 1.0.3
+
+* Added authors and year to the description.
+
 # sugarglider 1.0.2
 
 * Add return values to internal function documentation.

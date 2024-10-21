@@ -2,8 +2,7 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Added return values to internal function documentation.
-* Added a link to the manuscript in the description field.
+* Added authors and year to the description.
 
 ## R CMD check results
 
