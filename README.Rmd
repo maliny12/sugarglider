@@ -41,10 +41,12 @@ devtools::install_github("maliny12/sugarglider")
 See the [examples](https://maliny12.github.io/sugarglider/articles/Examples.html) page to learn more about how to use sugarglider in your project.
 
 
-<a href="https://maliny12.github.io/sugarglider/articles/sugarglider.html"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/leaflet-screenshot.jpg" alt="Generate glyph-maps with leaflet."></img></a>
-<a href="https://maliny12.github.io/sugarglider/articles/sugarglider.html"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/segment-girafe.jpeg" alt="Generate interactive glyphs with ggiraph"></img></a>
-<a href="https://maliny12.github.io/sugarglider/articles/Examples.html"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/legend_plot.jpeg" alt="Add ribbon legend to the glyph map."></img></a>
-<a href="https://maliny12.github.io/sugarglider/articles/Examples.html"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/color-glyph.jpeg" alt="Color by year"></img></a>
+<a href="https://maliny12.github.io/sugarglider/articles/sugarglider.html#create-glyph-maps-with-leaflet"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/leaflet-screenshot.jpg" alt="Generate glyph-maps with leaflet."></img></a>
+<a href="https://maliny12.github.io/sugarglider/articles/sugarglider.html#create-interative-glyph-maps-with-ggiraph"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/segment-girafe.jpeg" alt="Generate interactive glyphs with ggiraph"></img></a>
+<a href="https://maliny12.github.io/sugarglider/articles/Examples.html#integrating-glyph-legends"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/legend_plot.jpeg" alt="Add ribbon legend to the glyph map."></img></a>
+<a href="https://maliny12.github.io/sugarglider/articles/Examples.html#highlighting-temperature-changes-with-color-coded-glyph"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/color-glyph.jpeg" alt="Color by year"></img></a>
 
+## R Journal
 
+The source code for the R journal article is available on GitHub at [link](https://github.com/maliny12/paper-sugarglider). 
 

@@ -79,8 +79,7 @@ aus_temp |>
 
 ```
 
-So far, all the visualizations have used global rescaling (enabled by default), meaning the glyphs are sized relative to one another based on their data values. By disabling global rescaling, we can see the effects of local rescaling, where each glyph is resized based on its individual values. 
-
+By disabling global rescaling, we can see the effects of local rescaling, where each glyph is resized based on its individual values. 
 - **Local Rescale (global_rescale = FALSE)**: Each line segment's length is determined by the local temperature range within a region, emphasizing regional differences in temperature patterns. 
 - **Global Rescale (global_rescale = TRUE)**: Global temperature range determined the length of each line segment, ensuring that data range remain consistent across all region for easy comparison.
 
@@ -137,7 +136,7 @@ grid.arrange(p1, p2, ncol = 2)
 Expanding on our temperature analysis, we now incorporate precipitation data across Australia using `geom_glyph_ribbon()`. The glyphs are color-coded to represent varying levels of rainfall, with reference lines and glyph boxes enhancing clarity and allow for easy comparison of precipitation level across the country.
 
 ```{r}
-prcp <- aus_temp |>
+aus_temp |>
    group_by(id) |>
    mutate(prcp = mean(prcp, na.rm = TRUE)) |>
    ggplot(aes(x_major = long, y_major = lat,
@@ -160,14 +159,13 @@ prcp <- aus_temp |>
   labs(fill = "Percepitation", color = "Percepitation",
        title = "Precipitation and Temperature Ranges Across Australia") 
 
-prcp
 ```
 
 If you're interested in comparing temperature trends across different years for specific regions in Victoria, `geom_glyph_ribbon()` provides a way to visualize how temperatures have evolved over time, with each year distinguished by a different color for clarity. 
 
 ```{r}
 
-fact <- historical_temp |> 
+historical_temp |> 
   filter(id %in% c("ASN00026021", "ASN00085291", "ASN00084143")) |>
    ggplot(aes(color = factor(year), fill = factor(year),
               group = interaction(year,id),
@@ -194,8 +192,6 @@ fact <- historical_temp |>
   scale_colour_wsj("colors6") +
   scale_fill_wsj("colors6") 
 
-fact
-
 ```
 
 #### Integrating Glyph Legends
@@ -206,7 +202,7 @@ In the example below, a series of glyph are created using `geom_glyph_ribbon()` 
 
 ```{r, fig.height=6}
 set.seed(28493)
-legend <- aus_temp |>
+aus_temp |>
    ggplot(aes(x_major = long, y_major = lat,
               x_minor = month, ymin_minor = tmin,
               ymax_minor = tmax)) +
@@ -219,8 +215,6 @@ legend <- aus_temp |>
   geom_glyph_ribbon(color = "#227B94", fill = "#227B94") +
   theme_glyph()  + 
   labs(title = "Temperature Ranges Across Australia with Glyph Legend") 
-
-legend
 
 ```
 

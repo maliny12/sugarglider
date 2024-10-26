@@ -95,15 +95,15 @@ includes:</p>
 <li><p><code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code>: Displays an interval on the
 y-axis for each <em>x_minor</em> value, with the bounds defined by
 <em>ymin_minor</em> and <em>ymax_minor</em>. This function draws ribbon
-geometry using <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon()</a></code> from ggplot2 to draw ribbon
-geometry, resulting in ribbon glyphs. Each glyph is plotted based on the
-combination of <em>x_major</em> and <em>y_major</em> coordinates. This
-functionality is particularly useful for visualizing ranges or
-uncertainties in the data.</p></li>
+geometry using <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon()</a></code> from <code>ggplot2</code> to
+draw ribbon geometry, resulting in ribbon glyphs. Each glyph is plotted
+by combining <em>x_major</em> and <em>y_major</em> coordinates. This
+functionality is handy for visualizing ranges or uncertainties in the
+data.</p></li>
 <li><p><code><a href="../reference/geom_glyph_segment.html">geom_glyph_segment()</a></code>: Connects <em>y_minor</em> to
 <em>yend_minor</em> with a straight line using
-<code><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment()</a></code> from ggplot2, resulting in segment glyphs.
-Each glyph is plotted based on the combination of <em>x_major</em> and
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment()</a></code> from <code>ggplot2</code>, resulting in
+segment glyphs. Each glyph is plotted by combining <em>x_major</em> and
 <em>y_major</em> coordinates.</p></li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -152,32 +152,33 @@ Each glyph is plotted based on the combination of <em>x_major</em> and
 <span></span>
 <span><span class="fu">grid.arrange</span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="sugarglider_files/figure-html/unnamed-chunk-2-1.png" width="960"></p>
-<p>In addition to these two functions, sugarglider offers several other
-features that enhance the customization of glyph maps. The
-<code>add_ref_box()</code> function introduces reference boxes that
-visually frame individual glyphs, helping to define boundaries and
-distinguish glyphs from each other. The <code>add_ref_line()</code>
-function draws a horizontal midpoint for each glyph, facilitating
-comparisons across data points. The <code><a href="../reference/add_glyph_legend.html">add_glyph_legend()</a></code>
-function allows users to display an enlarged version of a randomly
-chosen glyph in the bottom-left corner of the panel, enabling users to
-visualize the data range. Lastly, the <code><a href="../reference/theme_glyph.html">theme_glyph()</a></code>
-function provides a customized theme for glyph maps, built on top of
-<code>theme_map()</code> from <code>ggthemes</code>. It adjusts the
-plot’s appearance, including the legend position, text styles, and
-background settings, to create a clean, visually consistent layout for
-glyph visualizations.</p>
+<p>In addition to these two functions, <code>sugarglider</code> offers
+several other features that enhance the aesthetic and interpretability
+of glyph maps. The <code>add_ref_box()</code> function introduces
+reference boxes that visually frame individual glyphs, helping to define
+boundaries and distinguish glyphs from each other. The
+<code>add_ref_line()</code> function draws a horizontal midpoint for
+each glyph, facilitating comparisons across data points. The
+<code><a href="../reference/add_glyph_legend.html">add_glyph_legend()</a></code> function allows users to display an
+enlarged version of a randomly chosen glyph in the bottom-left corner of
+the panel, enabling users to visualize the data range. Lastly, the
+<code><a href="../reference/theme_glyph.html">theme_glyph()</a></code> function provides a customized theme for
+glyph maps, built on top of <code>theme_map()</code> from
+<code>ggthemes</code>. It adjusts the plot’s appearance, including the
+legend position, text styles, and background settings, to create a
+clean, visually consistent layout for glyph maps.</p>
 </div>
 <div class="section level3">
 <h3 id="aesthetics">Aesthetics<a class="anchor" aria-label="anchor" href="#aesthetics"></a>
 </h3>
-<p>sugarglider provides the same aesthetics for
-<code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> and <code><a href="../reference/geom_glyph_segment.html">geom_glyph_segment()</a></code>
-as those available in <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon()</a></code> and
-<code><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment()</a></code> from ggplot2. To include a variable in the
-glyph plot, it must be specified as an aesthetic. The functions in
-sugarglider expect spatial coordinates as the major axis and temporal
-data, along with some measurements, as the minor axis.</p>
+<p>The functions in <code>sugarglider</code> expect spatial coordinates
+as the major axis and temporal data, along with some measurements, as
+minor axes. For minor axes, <code>sugarglider</code> adopts the same
+aesthetics as <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">ggplot2::geom_ribbon()</a></code> and
+<code><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">ggplot2::geom_segment()</a></code>, but appends <code>_minor</code> to
+each aesthetic name for use in <code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> and
+<code><a href="../reference/geom_glyph_segment.html">geom_glyph_segment()</a></code>. To incorporate a variable into the
+glyph plot, it needs to be explicitly defined as an aesthetic.</p>
 <p>To produce glyph-maps, the following aesthetics are required:</p>
 <table class="table">
 <colgroup>
@@ -272,21 +273,21 @@ be handled individually for each glyph.</p>
 <p><code>sugarglider</code> also offers a variety of customizable
 features to enhance the flexibility and precision of visualizations. For
 example, it facilitates the scaling of minor values within the glyph
-along both the x and y axes. Users can specify their own rescale
-function by replacing <em>“identity”</em> with a custom function in
-<em>x_scale</em> and <em>y_scale</em>. If a user wishes to modify the
-rescaling function on only one axis, they can replace the value of the
-corresponding parameter with their chosen function and retain “identity”
-for the other. In this package, “identity” rescale the minor axes to an
-interval of [-1,1]. The impact of rescaling on glyphs and its
+along the x and y axes. Users can specify their rescale function by
+replacing <em>“identity”</em> with a custom function in <em>x_scale</em>
+and <em>y_scale</em>. Suppose a user wishes to modify the rescaling
+function on only one axis. In that case, they can replace the value of
+the corresponding parameter with their chosen function and retain
+“identity” for the other. In this package, “identity” rescales the minor
+axes to an interval of [-1,1]. The impact of rescaling on glyphs and its
 implications for visual interpretation will be thoroughly discussed in
 the upcoming section.</p>
 <p>Additionally, the width and height of the glyphs are adjustable,
 allowing users to modify the appearance of each glyph to match the
 dimensions and scaling of the data being visualized. These customization
-options ensure that sugarglider can adapt to a broad range of data types
-and requirements, making it a versatile tool for seasonal spatiotemporal
-data visualization.</p>
+options ensure that <code>sugarglider</code> can adapt to a broad range
+of data types and requirements, making it a versatile tool for seasonal
+spatiotemporal data visualization.</p>
 <table class="table">
 <colgroup>
 <col width="20%">
@@ -350,13 +351,13 @@ how to create interactive glyph maps using Leaflet.</p>
 <p>The dataset used in this example, <code>train</code>, provides a
 comprehensive monthly summary of daily patronage at each train station
 in Victoria for the fiscal year 2023-2024. To create interactive glyph
-maps with Leaflet, we first need to save each glyph as a PNG and then
+maps with Leaflet, we first need to save each glyph as images and then
 add these to the Leaflet basemap as icons. The process begins by
 creating a list of all unique train stations that service both metro and
 vline. We then iterate over each station and generate ribbon glyphs
 using <code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code>, <code><a href="../reference/add_glyph_boxes.html">add_glyph_boxes()</a></code>
 and <code><a href="../reference/add_ref_lines.html">add_ref_lines()</a></code>. Each glyph is saved in PNG format, and
-the file paths for all the PNGs are stored in an object for the next
+the file paths for all the images are stored in an object for the next
 step.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -368,8 +369,8 @@ step.</p>
 <span>  <span class="va">dt</span> <span class="op">&lt;-</span> <span class="va">train</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">station_name</span> <span class="op">==</span> <span class="va">df_station</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="va">dt</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x_major <span class="op">=</span> <span class="va">long</span>, y_major <span class="op">=</span> <span class="va">lat</span>,</span>
-<span>                   x_minor <span class="op">=</span> <span class="va">month_year</span>, ymin_minor <span class="op">=</span> <span class="va">min_monthly</span>,</span>
-<span>                   ymax_minor <span class="op">=</span> <span class="va">max_monthly</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>                   x_minor <span class="op">=</span> <span class="va">hour</span>, ymin_minor <span class="op">=</span> <span class="va">min_weekday</span>,</span>
+<span>                   ymax_minor <span class="op">=</span> <span class="va">max_weekday</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="../reference/add_glyph_boxes.html">add_glyph_boxes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#FFAD60"</span>, </span>
 <span>                    fill <span class="op">=</span> <span class="st">"#FFEEAD"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>                    linewidth <span class="op">=</span> <span class="fl">1</span>, width <span class="op">=</span> <span class="fl">3</span>, height  <span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
@@ -394,8 +395,8 @@ scale bar is added at the bottom left corner for reference.</p>
 <span><span class="va">leaflet_map</span> <span class="op">&lt;-</span> <span class="fu">leaflet</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">addProviderTiles</span><span class="op">(</span><span class="st">"CartoDB.Positron"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">addScaleBar</span><span class="op">(</span>position <span class="op">=</span> <span class="st">"bottomleft"</span><span class="op">)</span></span></code></pre></div>
-<p>Next, we iterate through all the PNG files and convert them into
-icons using the <code>makeIcon()</code> function. Users can control the
+<p>Next, we iterate through all the images and convert them into icons
+using the <code>makeIcon()</code> function. Users can control the
 dimensions of each icon by modifying the <code>iconWidth</code> and
 <code>iconHeight</code> arguments. The final step is to add each icon to
 the Leaflet map using <code>addMarkers()</code>. Within the options

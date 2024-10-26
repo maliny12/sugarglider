@@ -290,22 +290,15 @@ specifying the size of the width and height of the glyph.</p>
 <span>       title <span class="op">=</span> <span class="st">"Daily Temperature Variations Across Australian Weather Stations"</span><span class="op">)</span>  <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/theme_glyph.html">theme_glyph</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Examples_files/figure-html/unnamed-chunk-3-1.png" width="960"></p>
-<p>So far, all the visualizations have used global rescaling (enabled by
-default), meaning the glyphs are sized relative to one another based on
-their data values. By disabling global rescaling, we can see the effects
-of local rescaling, where each glyph is resized based on its individual
-values.</p>
-<ul>
-<li>
+<p>By disabling global rescaling, we can see the effects of local
+rescaling, where each glyph is resized based on its individual values. -
 <strong>Local Rescale (global_rescale = FALSE)</strong>: Each line
 segment’s length is determined by the local temperature range within a
-region, emphasizing regional differences in temperature patterns.</li>
-<li>
+region, emphasizing regional differences in temperature patterns. -
 <strong>Global Rescale (global_rescale = TRUE)</strong>: Global
 temperature range determined the length of each line segment, ensuring
 that data range remain consistent across all region for easy
-comparison.</li>
-</ul>
+comparison.</p>
 <p>Below is a comparison of the two rescaling approaches. In this
 example, we also specify the size of the glyphs by setting width = 3 and
 height = 2.</p>
@@ -364,7 +357,7 @@ represent varying levels of rainfall, with reference lines and glyph
 boxes enhancing clarity and allow for easy comparison of precipitation
 level across the country.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">prcp</span> <span class="op">&lt;-</span> <span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
 <span>   <span class="fu">group_by</span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>   <span class="fu">mutate</span><span class="op">(</span>prcp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">prcp</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x_major <span class="op">=</span> <span class="va">long</span>, y_major <span class="op">=</span> <span class="va">lat</span>,</span>
@@ -385,9 +378,7 @@ level across the country.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_fill_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#ADD8E6"</span>, <span class="st">"#2b5e82"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_color_gradientn</a></span><span class="op">(</span>colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"#ADD8E6"</span>, <span class="st">"#2b5e82"</span>, <span class="st">"dodgerblue4"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"Percepitation"</span>, color <span class="op">=</span> <span class="st">"Percepitation"</span>,</span>
-<span>       title <span class="op">=</span> <span class="st">"Precipitation and Temperature Ranges Across Australia"</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">prcp</span></span></code></pre></div>
+<span>       title <span class="op">=</span> <span class="st">"Precipitation and Temperature Ranges Across Australia"</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="Examples_files/figure-html/unnamed-chunk-5-1.png" width="960"></p>
 <p>If you’re interested in comparing temperature trends across different
 years for specific regions in Victoria, <code><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code>
@@ -395,7 +386,7 @@ provides a way to visualize how temperatures have evolved over time,
 with each year distinguished by a different color for clarity.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">fact</span> <span class="op">&lt;-</span> <span class="va">historical_temp</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">historical_temp</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ASN00026021"</span>, <span class="st">"ASN00085291"</span>, <span class="st">"ASN00084143"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span>,</span>
 <span>              group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">year</span>,<span class="va">id</span><span class="op">)</span>,</span>
@@ -420,9 +411,7 @@ with each year distinguished by a different color for clarity.</p>
 <span>  <span class="fu"><a href="../reference/theme_glyph.html">theme_glyph</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position.inside <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.4</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_colour_wsj</span><span class="op">(</span><span class="st">"colors6"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_fill_wsj</span><span class="op">(</span><span class="st">"colors6"</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">fact</span></span></code></pre></div>
+<span>  <span class="fu">scale_fill_wsj</span><span class="op">(</span><span class="st">"colors6"</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="Examples_files/figure-html/unnamed-chunk-6-1.png" width="960"></p>
 </div>
 <div class="section level4">
@@ -442,7 +431,7 @@ single, randomly chosen station, it’s important for users to set a seed
 for reproducibility to ensure consistent results.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">28493</span><span class="op">)</span></span>
-<span><span class="va">legend</span> <span class="op">&lt;-</span> <span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
+<span><span class="va">aus_temp</span> <span class="op">|&gt;</span></span>
 <span>   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x_major <span class="op">=</span> <span class="va">long</span>, y_major <span class="op">=</span> <span class="va">lat</span>,</span>
 <span>              x_minor <span class="op">=</span> <span class="va">month</span>, ymin_minor <span class="op">=</span> <span class="va">tmin</span>,</span>
 <span>              ymax_minor <span class="op">=</span> <span class="va">tmax</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -454,9 +443,7 @@ for reproducibility to ensure consistent results.</p>
 <span>  <span class="co"># Add a ribbon legend</span></span>
 <span>  <span class="fu"><a href="../reference/geom_glyph_ribbon.html">geom_glyph_ribbon</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"#227B94"</span>, fill <span class="op">=</span> <span class="st">"#227B94"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/theme_glyph.html">theme_glyph</a></span><span class="op">(</span><span class="op">)</span>  <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Temperature Ranges Across Australia with Glyph Legend"</span><span class="op">)</span> </span>
-<span></span>
-<span><span class="va">legend</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Temperature Ranges Across Australia with Glyph Legend"</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="Examples_files/figure-html/unnamed-chunk-7-1.png" width="960"></p>
 </div>
 <div class="section level4">
