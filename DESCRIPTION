@@ -1,7 +1,7 @@
 Package: sugarglider
 Type: Package
 Title: Create Glyph-Maps of Spatiotemporal Data
-Version: 1.0.3
+Version: 1.0.3.9000
 Authors@R: c(
     person("Maliny", "Po", , "malinypo12@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0009-0008-4686-6631")),
