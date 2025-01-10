@@ -153,14 +153,14 @@ purrr::map(1:length(df_station), function(i) {
   ggplot(aes(x_major = long, y_major = lat,
                    x_minor = hour, ymin_minor = min_weekday,
                    ymax_minor = max_weekday)) +
-    add_glyph_boxes(color = "#FFAD60", 
-                    fill = "#FFEEAD", alpha = 0.5,
-                    linewidth = 1, width = 3, height  =2) +
-    add_ref_lines(color = "#FFAD60", alpha = 1,
-                  linewidth = 1, width = 3, height  =2) +
-    geom_glyph_ribbon(color = "#A66E38", fill = "#A66E38",
-                      width = 3, height  =2) +
-    theme_void() 
+    add_glyph_boxes(color = "#ffc40d",
+                    fill = "#eff4ff", alpha = 0.5,
+                    linewidth = 1, width = 3, height  = 1.5) +
+    add_ref_lines(color = "#ffc40d", alpha = 1,
+                  linewidth = 1, width = 3, height  = 1.5) +
+    geom_glyph_ribbon(color = "#2b5797", fill = "#2b5797",
+                      width = 3, height  = 1.5) +
+    theme_void()
   
   file_path <- paste0("figures/glyph_", df_station[i], ".png")
   ggsave(file_path, plot = p, width = 3, height = 2, units = "in", dpi = 300,
