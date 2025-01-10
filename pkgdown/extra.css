@@ -65,7 +65,7 @@
 }
 
 .page-header {
-  display: none;
+  display: block; !important
 }
 
 

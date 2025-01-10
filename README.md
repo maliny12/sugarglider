@@ -9,8 +9,6 @@
 
 <!-- badges: end -->
 
-## Overview
-
 `sugarglider` provides ggplot2 extensions to create glyph maps that
 visualize seasonal aspects of spatio-temporal data with
 `geom_glyph_ribbon()` and `geom_glyph_segment()`.
@@ -26,8 +24,18 @@ straight line between `y_minor` and `yend_minor` with respect to
 
 ## Installation
 
+`sugarglider` is available on
+[CRAN](https://cran.r-project.org/web/packages/sugarglider/index.html):
+
 ``` r
-# Download the development version from GitHub:
+install.packages("sugarglider")
+```
+
+You can also install the latest development version directly from
+GitHub:
+
+``` r
+# install.packages("devtools")
 devtools::install_github("maliny12/sugarglider")
 ```
 
@@ -41,8 +49,3 @@ page to learn more about how to use sugarglider in your project.
 <a href="https://maliny12.github.io/sugarglider/articles/sugarglider.html#create-interative-glyph-maps-with-ggiraph"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/segment-girafe.jpeg" alt="Generate interactive glyphs with ggiraph"></img></a>
 <a href="https://maliny12.github.io/sugarglider/articles/Examples.html#integrating-glyph-legends"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/legend_plot.jpeg" alt="Add ribbon legend to the glyph map."></img></a>
 <a href="https://maliny12.github.io/sugarglider/articles/Examples.html#highlighting-temperature-changes-with-color-coded-glyph"><img width="350" height = "200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/color-glyph.jpeg" alt="Color by year"></img></a>
-
-## R Journal
-
-The source code for the R journal article is available on GitHub at
-[link](https://github.com/maliny12/paper-sugarglider).

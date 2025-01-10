@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">sugarglider</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,18 +63,18 @@
 <!-- badges: start -->
 
 <!-- badges: end -->
-<div class="section level2">
-<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
-</h2>
 <p><code>sugarglider</code> provides ggplot2 extensions to create glyph maps that visualize seasonal aspects of spatio-temporal data with <code><a href="reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> and <code><a href="reference/geom_glyph_segment.html">geom_glyph_segment()</a></code>.</p>
 <p>These functions create a ribbon or segment geometry designed to display glyphs based on the combination of <code>x_major</code> and <code>y_major</code>. For each <code>x_minor</code> value, <code><a href="reference/geom_glyph_ribbon.html">geom_glyph_ribbon()</a></code> displays a y interval defined by <code>ymin_minor</code> and <code>ymax_minor</code>. Meanwhile, <code><a href="reference/geom_glyph_segment.html">geom_glyph_segment()</a></code> draws a straight line between <code>y_minor</code> and <code>yend_minor</code> with respect to <code>x_minor</code>.</p>
 <p><img src="reference/figures/ribbon-segment-plot.jpeg"></p>
-</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
+<p><code>sugarglider</code> is available on <a href="https://cran.r-project.org/web/packages/sugarglider/index.html" class="external-link">CRAN</a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Download the development version from GitHub:</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"sugarglider"</span><span class="op">)</span></span></code></pre></div>
+<p>You can also install the latest development version directly from GitHub:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"maliny12/sugarglider"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -82,11 +82,6 @@
 </h2>
 <p>See the <a href="https://maliny12.github.io/sugarglider/articles/Examples.html">examples</a> page to learn more about how to use sugarglider in your project.</p>
 <p><a href="https://maliny12.github.io/sugarglider/articles/sugarglider.html#create-glyph-maps-with-leaflet"><img width="350" height="200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/leaflet-screenshot.jpg" alt="Generate glyph-maps with leaflet."></a> <a href="https://maliny12.github.io/sugarglider/articles/sugarglider.html#create-interative-glyph-maps-with-ggiraph"><img width="350" height="200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/segment-girafe.jpeg" alt="Generate interactive glyphs with ggiraph"></a> <a href="https://maliny12.github.io/sugarglider/articles/Examples.html#integrating-glyph-legends"><img width="350" height="200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/legend_plot.jpeg" alt="Add ribbon legend to the glyph map."></a> <a href="https://maliny12.github.io/sugarglider/articles/Examples.html#highlighting-temperature-changes-with-color-coded-glyph"><img width="350" height="200" src="https://raw.githubusercontent.com/maliny12/sugarglider/main/man/figures/color-glyph.jpeg" alt="Color by year"></a></p>
-</div>
-<div class="section level2">
-<h2 id="r-journal">R Journal<a class="anchor" aria-label="anchor" href="#r-journal"></a>
-</h2>
-<p>The source code for the R journal article is available on GitHub at <a href="https://github.com/maliny12/paper-sugarglider" class="external-link">link</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
