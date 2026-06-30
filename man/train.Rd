@@ -22,7 +22,7 @@ A data frame with each row representing aggregated monthly data per station, con
 }
 }
 \source{
-\url{https://discover.data.vic.gov.au/dataset/train-service-passenger-counts}
+Train Service Passenger Counts. DataVic – Victoria’s Open Data Portal. \url{https://discover.data.vic.gov.au/dataset/train-service-passenger-counts} .
 }
 \usage{
 data(train)

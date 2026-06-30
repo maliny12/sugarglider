@@ -22,10 +22,11 @@
 #'   \item{max_holiday}{Maximum hourly patronage during school and public holidays.}
 #' }
 #'
-#' @source \url{https://discover.data.vic.gov.au/dataset/train-service-passenger-counts}
+#' @source Train Service Passenger Counts. DataVic – Victoria’s Open Data Portal. \url{https://discover.data.vic.gov.au/dataset/train-service-passenger-counts} .
+#'
+#'
 #' @usage data(train)
 #' @keywords data
 #' @note Stations with incomplete entries due to closure are not included in this dataset.
 
 "train"
-
