@@ -17,7 +17,7 @@ A data frame with 120 rows and 6 columns:
 }
 }
 \source{
-Bureau of Transportation Statistics. (November 2023). Airline On-Time Performance Data. Retrieved from https://www.transtats.bts.gov/DL_SelectFields.aspx .
+Bureau of Transportation Statistics. (November 2023). Airline On-Time Performance Data. Retrieved from \url{https://www.transtats.bts.gov/DL_SelectFields.aspx} .
 }
 \usage{
 flights

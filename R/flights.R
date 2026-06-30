@@ -16,5 +16,5 @@
 #'   \item{min_flights}{The minimum number of flights that originated from the airport}
 #'   \item{max_flights}{The maximum number of flights that originated from the airport}
 #' }
-#' @source Bureau of Transportation Statistics. (November 2023). Airline On-Time Performance Data. Retrieved from https://www.transtats.bts.gov/DL_SelectFields.aspx .
+#' @source Bureau of Transportation Statistics. (November 2023). Airline On-Time Performance Data. Retrieved from \url{https://www.transtats.bts.gov/DL_SelectFields.aspx} .
 "flights"
