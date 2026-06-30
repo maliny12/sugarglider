@@ -41,6 +41,7 @@ The structure of glyph maps in `sugarglider` consists of four main layers: the b
 ```{r, echo=FALSE, out.width="80%"}
 knitr::include_graphics("../man/figures/glyphmap-layer.png")
 ```
+
 Each layer can be plotted independently, and the package supports the creation of glyph plots using either ribbon or segment geometries. The core functionality includes:
 
 * `geom_glyph_ribbon()`:  Displays an interval on the y-axis for each *x_minor* value, with the bounds defined by *ymin_minor* and *ymax_minor*. This function draws ribbon geometry using `geom_ribbon()` from `ggplot2` to draw ribbon geometry, resulting in ribbon glyphs. Each glyph is plotted by combining *x_major* and *y_major* coordinates. This functionality is handy for visualizing ranges or uncertainties in the data.

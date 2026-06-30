@@ -235,8 +235,6 @@ add_ref_lines <- function( mapping = NULL, data = NULL,
       linewidth = linewidth,
       ...)
   )
-
-
 }
 
 #' GeomGlyphLine
