@@ -103,8 +103,17 @@ GeomGlyphRibbon <- ggplot2::ggproto(
     ),
 
   setup_data = function(data, params) {
+
     params <- update_params(data, params)
     data <- glyph_setup_data(data, params)
+  },
+
+  setup_params = function(data, params) {
+    # Reviewer feedbacks: partial match of "x", "y", "ymin" and "ymax"
+    # The issue is caused by an internal function of ggplot2::geom_ribbon() the `has_flipped_aes()` function
+    # Therefore, this code chunk has been added to fix the issue
+    params$flipped_aes <- FALSE
+    params
   },
 
   # Draw polygons
@@ -495,6 +504,7 @@ glyph_setup_data <- function(data, params,...) {
           ymax = glyph_mapping(.data$y_major,
                             .data$ymax_minor,
                                params$height))
+       # dplyr::select(-x_minor, -ymin_minor, -ymax_minor)
     }
   }
 
