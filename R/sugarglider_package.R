@@ -21,6 +21,8 @@
 #' @docType package
 #' @import dplyr
 #' @import ggplot2
+#' @import ggplotify
+#' @import ggthemes
 #' @useDynLib sugarglider
 #' @keywords internal
 "_PACKAGE"

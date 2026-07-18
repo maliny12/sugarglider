@@ -809,7 +809,7 @@ utils::globalVariables(c(".data", "na.omit", "value", "com", "x_minor", "geom_se
                          "ymin_minor", "ymax_minor", "geom_ribbon", "theme_bw", "labs",
                          "theme", "margin", "element_blank", "y_minor", "yend_minor",
                          "scale_x_discrete", "x_major", "y_major", "unique_coord",
-                         "gpar"))
+                         "gpar", "group"))
 
 
 
