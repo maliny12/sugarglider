@@ -436,11 +436,24 @@ glyph_setup_data <- function(data, params,...) {
 
     ## Scale minor axis
     if (isTRUE(arg$segment)){
+
+      # data <- data |>
+      #   dplyr::mutate(
+      #     y_minor = rescale11y(y_minor, yend_minor)[[1]],
+      #     yend_minor = rescale11y(y_minor, yend_minor)[[2]]
+      #   )
+     # Reviewer feedback: dplyr::mutate sequentially evaluate which leads to incorrect yend_minor
+     # This issue has been fixed by calculating the rescaled value pior to mutate.
+      pair <- rescale11y(data$y_minor, data$yend_minor)
       data <- data |>
+        dplyr::ungroup() |>
         dplyr::mutate(
-          y_minor = rescale11y(y_minor, yend_minor)[[1]],
-          yend_minor = rescale11y(y_minor, yend_minor)[[2]]
-        )
+          y_minor = pair[[1]],
+          yend_minor = pair[[2]]
+        ) |>
+        dplyr::group_by(group)
+
+
     } else {
       data <- data |>
         tidyr::pivot_longer(cols = c("ymin_minor", "ymax_minor"),
