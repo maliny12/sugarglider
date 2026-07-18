@@ -24,7 +24,7 @@ Imports:
     ggthemes
 RoxygenNote: 7.3.1
 Depends:
-    R (>= 3.0.0)
+    R (>= 4.2.0)
 Suggests: 
     testthat (>= 3.0.0),
     cubble,
